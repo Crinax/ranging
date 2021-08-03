@@ -2,9 +2,9 @@
   "name": "ranges",
   "version": "1.0.0",
   "description": "Allows working with ranges",
-  "main": "ranges.js",
+  "main": "Range.js",
+  "type": "module",
   "scripts": {
-    "start": "node ranges.js",
     "test": "mocha tests/*.test.js"
   },
   "keywords": [

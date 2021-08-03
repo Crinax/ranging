@@ -10,6 +10,10 @@ class Checker {
   static isString(s) {
     return typeof s === 'string' && s.length > 1;
   }
+
+  static isDate(d) {
+    return typeof d === 'object' && d.constructor.name === 'Date';
+  }
 }
 
 module.exports = Checker;
