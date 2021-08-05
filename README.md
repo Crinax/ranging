@@ -102,7 +102,7 @@ for (let i = 1; i <= 20; i++) {
     sumOfInteger += i;
     sumOfFloat += i/10;
 }
-console.log({ suomOfInteger, sumOfFloat });
+console.log({ sumOfInteger, sumOfFloat });
 // { sumOfInteger: 210, sumOfFloat: 20.999999999999996 }
 ```
 As you can see there was an error when adding numbers from `0.1` to `2` to the Float type. Instead of `21` we got `20.99999999999999996`.
