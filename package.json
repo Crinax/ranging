@@ -12,7 +12,7 @@
     "module"
   ],
   "author": "Crinax",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",

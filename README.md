@@ -98,7 +98,7 @@ Let's start with an example:
 ```js
 let sumOfInteger = 0;
 let sumOfFloat = 0;
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i <= 20; i++) {
     sumOfInteger += i;
     sumOfFloat += i/10;
 }
