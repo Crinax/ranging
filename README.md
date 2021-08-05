@@ -144,4 +144,4 @@ for (let i of infinityRange) {
 console.log(result);
 // [1156, 1140, 1124, 1108, 1092, 1076, 1060, 1044, 1028, 1011]
 ```
-After executing this code we get an array of 10 elements in the range from 1005 to infinity, which are palindromes in hexadecimal notation in descending order.
+After executing this code we get an array of `10` elements in the range from `1005` to infinity, which are palindromes in hexadecimal notation in descending order.
