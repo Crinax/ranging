@@ -1,5 +1,5 @@
 # RangeJS (JavaScript library)
-> **Range helper functions & classes based on generators**
+> **Range helper classes based on iterators**
 
 ## Installation
 Using **npm**:
@@ -33,22 +33,40 @@ import { NumberRange, StringRange } from 'rangejs';
 ```javascript
 const { NumberRange } = require('rangejs');
 
-const integers = [...NumberRange.integer(1, 10)];
+const integers = [...new NumberRange.start(1).end(10)];
 // integers: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+// it's same as
+const otherIntegers = [...new NumberRange({ start: 1, end: 10 })]
 ```
 **Integers ranged with step of 2**
 ```javascript
-const integers = [...NumberRange.integer(1, 10, 2)];
+const integers = [
+  ...new NumberRange()
+    .start(1)
+    .end(10)
+    .step(2)
+];
 // integers: [ 1, 3, 5, 7, 9 ]
 ```
 
 ## Floating point numbers
 ```javascript
-const floats = [...NumberRange.float(2, 5, 0.5)];
+let floats = [
+  ...new NumberRange()
+    .start(2)
+    .end(5)
+    .step(0.5)
+    .isFloat(true)
+];
 console.log(floats);
 // [ 2, 2.5, 3, 3.5, 4, 4.5, 5 ]
 
-floats = [...NumberRange.float(2, 5)];
+floats = [[
+  ...new NumberRange()
+    .start(2)
+    .end(5)
+    .isFloat(true)
+]];
 console.log(floats);
 // [ 2, 3, 4, 5 ]
 ```
@@ -64,7 +82,14 @@ console.log(floats);
 > ```
 > **Use of NumberRange.sum (expected answer)**
 > ```javascript
-> console.log(NumberRange.sum(NumberRange.float(0.1, 2, 0.1)));
+> console.log(
+>  new NumberRange()
+>    .start(0.1)
+>    .end(2)
+>    .step(0.1)
+>    .isFloat(true)
+>     .sum
+>  );
 > // 21
 > ```
 
@@ -74,7 +99,7 @@ console.log(floats);
 let counter = 0;
 const result = [];
 
-for (let i of NumberRange.integer(1005)) {
+for (let i of new NumberRange({ start: 1005 })) {
   const hex = i.toString(16);
   if (hex == hex.split('').reverse().join('')) {
     counter++;

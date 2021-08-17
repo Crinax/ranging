@@ -1,3 +1,3 @@
-const range = require('./lib/index');
+const RangeModules = require('./lib/index');
 
-module.exports = range;
+module.exports = RangeModules;
