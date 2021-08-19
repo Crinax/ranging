@@ -14,17 +14,11 @@ yarn add rangejs
 # Examples
 ## Importing
 ```javascript
-// CommonJS
 const { Range } = require('rangejs');
-
-// ES6+ or TypeScript
-import { Range } from 'rangejs';
 ```
 **Import specific modules**
 ```javascript
 const { NumberRange, StringRange } = require('rangejs');
-// or
-import { NumberRange, StringRange } from 'rangejs';
 ```
 ---
 # Number ranges
@@ -33,10 +27,10 @@ import { NumberRange, StringRange } from 'rangejs';
 ```javascript
 const { NumberRange } = require('rangejs');
 
-const integers = [...new NumberRange.start(1).end(10)];
+const integers = [...new NumberRange().start(1).end(10)];
 // integers: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 // it's same as
-const otherIntegers = [...new NumberRange({ start: 1, end: 10 })]
+const sameIntegers = [...new NumberRange({ start: 1, end: 10 })]
 ```
 **Integers ranged with step of 2**
 ```javascript
@@ -61,12 +55,12 @@ let floats = [
 console.log(floats);
 // [ 2, 2.5, 3, 3.5, 4, 4.5, 5 ]
 
-floats = [[
+floats = [
   ...new NumberRange()
     .start(2)
     .end(5)
     .isFloat(true)
-]];
+];
 console.log(floats);
 // [ 2, 3, 4, 5 ]
 ```
@@ -88,8 +82,8 @@ console.log(floats);
 >    .end(2)
 >    .step(0.1)
 >    .isFloat(true)
->     .sum
->  );
+>    .sum
+> );
 > // 21
 > ```
 
@@ -111,3 +105,153 @@ console.log(result);
 // [ 1156, 1140, 1124, 1108, 1092, 1076, 1060, 1044, 1028, 1011 ]
 ```
 Starting from 1005, executes until finds 10 numbers that are palindromes in hexadecimal notation. The result is presented in descending order.
+
+# Char Ranges
+```javascript
+const { CharRange } = require('rangejs');
+
+console.log([
+  ...new CharRange()
+])
+// ['A', ..., 'Z']
+```
+So you can use this like NumberRange
+```javascript
+console.log([
+  ...new CharRange().start('a').end('f').step(2) // Note: step is an integer number
+])
+// ['a', 'c', 'e']
+// or
+console.log([
+  ...new CharRange({
+    start: 'a',
+    end: 'f',
+    step: 2
+  })
+])
+```
+
+# String Ranges
+This is almost the same as CharRange, only iterates over the passed string
+```javascript
+const { StringRange } = require('rangejs');
+
+console.log([
+  ...new StringRange().source('Hello world')
+])
+// ['H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']
+
+console.log([
+  ...new StringRange({
+    source: 'Hello world',
+    start: 6,
+    step: 2
+  })
+])
+// [ ' ', 'o', 'l' ]
+```
+
+# Date Ranges
+## Main date range
+```javascript
+const { DateRange } = require('rangejs');
+
+console.log([
+  ...new DateRange({
+    start: new Date(),
+    count: 5, // you can use `count` in all ranges if you set this, then that uses instead `end` property
+    step: 5
+  })
+])
+// [
+//   2021-08-18T09:23:55.670Z,
+//   2021-08-18T09:23:55.675Z,
+//   2021-08-18T09:23:55.680Z,
+//   2021-08-18T09:23:55.685Z,
+//   2021-08-18T09:23:55.690Z
+// ]
+```
+
+## Sub ranges
+You can use sub ranges, that names `[timeUnit]Range` for example: `SecondsRange`, `MinutesRange`, etc
+```javascript
+const { YearsRange } = require('rangejs');
+
+console.log([
+  ...new YearsRange()
+    .start(new Date())
+    .step(1)
+    .leepYear(true) // use this that your range consisted only of leap years
+    .count(10)
+])
+// [
+//   2024-08-18T09:34:01.866Z,
+//   2028-08-18T09:34:01.866Z,
+//   2032-08-18T09:34:01.866Z,
+//   2036-08-18T09:34:01.866Z,
+//   2040-08-18T09:34:01.866Z
+// ]
+```
+
+# Map, filter, length, reduce, sum (only NumberRange)
+## Map
+```javascript
+const { StringRange } = require('rangejs');
+
+const word = new StringRange().source('Some bad word').map((item) => (item === ' ' ? item : 'x'));
+console.log([...word].join(''))
+// xxxx xxx xxxx
+```
+
+## Filter
+```javascript
+const { NumberRange } = require('rangejs');
+
+const someSeq = new NumberRange({
+  start: 10,
+  end: 40,
+  filter: (item) => item % 3 === 0 && item % 5 === 0
+});
+
+console.log([...someSeq]);
+// [ 15, 30 ]
+```
+
+## Reduce
+```javascript
+const { StringRange } = require('rangejs');
+
+const word = new StringRange({
+  source: 'Some bad word',
+  map: (item) => (item === ' ' ? item : 'x')
+});
+
+console.log(word.reduce((prevValue, currValue) => prevValue + currValue, ''))
+// xxxx xxx xxxx
+```
+
+## Length
+```javascript
+const { NumberRange } = require('rangejs');
+
+const someSeq = new NumberRange().end(9);
+
+console.log(someSeq.length);
+// 9
+```
+
+## Sum
+This getter is designed to correctly sum floating point numbers
+```javascript
+const { NumberRange } = require('rangejs');
+
+console.log(
+  new NumberRange()
+    .start(0.1)
+    .end(2)
+    .step(0.1)
+    .isFloat(true)
+    .sum
+);
+// 21
+```
