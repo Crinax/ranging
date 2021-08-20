@@ -1,35 +1,35 @@
-# ranges-js (JavaScript library)
+# iter-ranges (JavaScript library)
 > **Range helper classes based on iterators**
 
 ## Installation
 Using **npm**:
 ```
-npm install ranges-js
+npm install iter-ranges
 ```
 Using **yarn**:
 ```
-yarn add ranges-js
+yarn add iter-ranges
 ```
 
 # Examples
 ## Importing
 ```javascript
-const { Range } = require('ranges-js');
+const { Range } = require('iter-ranges');
 // ES6+
-import { Range } from 'ranges-js';
+import { Range } from 'iter-ranges';
 ```
 **Import specific modules**
 ```javascript
-const { NumberRange, StringRange } = require('ranges-js');
+const { NumberRange, StringRange } = require('iter-ranges');
 // ES6+
-import { NumberRange, StringRange } from 'ranges-js';
+import { NumberRange, StringRange } from 'iter-ranges';
 ```
 ---
 # Number ranges
 ## Integers
 **A list of integers from 1 to 10 inclusive**
 ```javascript
-const { NumberRange } = require('ranges-js');
+const { NumberRange } = require('iter-ranges');
 
 const integers = [...new NumberRange().start(1).end(10)];
 // integers: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
@@ -119,7 +119,7 @@ Starting from 1005, executes until finds 10 numbers that are palindromes in hexa
 
 # Char Ranges
 ```javascript
-const { CharRange } = require('ranges-js');
+const { CharRange } = require('iter-ranges');
 
 console.log([
   ...new CharRange()
@@ -147,7 +147,7 @@ console.log([...new CharRange('a', 'f', 2)]);
 # String Ranges
 This is almost the same as CharRange, only iterates over the passed string
 ```javascript
-const { StringRange } = require('ranges-js');
+const { StringRange } = require('iter-ranges');
 
 console.log([
   ...new StringRange().source('Hello world')
@@ -167,7 +167,7 @@ console.log([
 # Date Ranges
 ## Main date range
 ```javascript
-const { DateRange } = require('ranges-js');
+const { DateRange } = require('iter-ranges');
 
 console.log([
   ...new DateRange({
@@ -188,7 +188,7 @@ console.log([
 ## Sub ranges
 You can use sub ranges, that names `[timeUnit]Range` for example: `SecondRange`, `MinuteRange`, etc
 ```javascript
-const { YearRange } = require('ranges-js');
+const { YearRange } = require('iter-ranges');
 
 console.log([
   ...new YearRange()
@@ -209,7 +209,7 @@ console.log([
 # Map, filter, length, reduce, sum (only NumberRange)
 ## Map
 ```javascript
-const { StringRange } = require('ranges-js');
+const { StringRange } = require('iter-ranges');
 
 const word = new StringRange().source('Some bad word').map((item) => (item === ' ' ? item : 'x'));
 // or 
@@ -221,7 +221,7 @@ console.log([...word].join(''))
 
 ## Filter
 ```javascript
-const { NumberRange } = require('ranges-js');
+const { NumberRange } = require('iter-ranges');
 
 const someSeq = new NumberRange({
   start: 10,
@@ -235,7 +235,7 @@ console.log([...someSeq]);
 
 ## Reduce
 ```javascript
-const { StringRange } = require('ranges-js');
+const { StringRange } = require('iter-ranges');
 
 const word = new StringRange({
   source: 'Some bad word',
@@ -248,7 +248,7 @@ console.log(word.reduce((prevValue, currValue) => prevValue + currValue, ''))
 
 ## Length
 ```javascript
-const { NumberRange } = require('ranges-js');
+const { NumberRange } = require('iter-ranges');
 
 const someSeq = new NumberRange().end(9);
 // or
@@ -261,7 +261,7 @@ console.log(someSeq.length);
 ## Sum
 This getter is designed to correctly sum floating point numbers
 ```javascript
-const { NumberRange } = require('ranges-js');
+const { NumberRange } = require('iter-ranges');
 
 console.log(
   new NumberRange()
