@@ -1,6 +1,6 @@
 {
   "name": "ranging",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Range helper classes based on iterators",
   "main": "range",
   "scripts": {
