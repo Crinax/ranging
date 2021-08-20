@@ -1,5 +1,5 @@
 {
-  "name": "ranges-js",
+  "name": "@crinax/ranges-js",
   "version": "1.0.0",
   "description": "Range helper classes based on iterators",
   "main": "range",
