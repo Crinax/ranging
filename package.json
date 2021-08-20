@@ -1,7 +1,7 @@
 {
-  "name": "iter-ranges",
+  "name": "ranges-js",
   "version": "1.0.0",
-  "description": "Allows working with ranges (based on iterators)",
+  "description": "Range helper classes based on iterators",
   "main": "range",
   "scripts": {
     "test": "mocha tests/*.test.js"
