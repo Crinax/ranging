@@ -1,7 +1,7 @@
 {
   "name": "ranging",
-  "version": "1.0.0",
-  "description": "Range helper classes based on iterators",
+  "version": "0.0.1",
+  "description": "Ranging helper classes based on iterators",
   "main": "range",
   "scripts": {
     "test": "mocha tests/*.test.js"
