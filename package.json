@@ -1,5 +1,5 @@
 {
-  "name": "range-module",
+  "name": "iter-ranges",
   "version": "1.0.0",
   "description": "Allows working with ranges (based on iterators)",
   "main": "range",
