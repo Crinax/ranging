@@ -15,10 +15,14 @@ yarn add rangejs
 ## Importing
 ```javascript
 const { Range } = require('rangejs');
+// ES6+
+import { Range } from 'rangejs';
 ```
 **Import specific modules**
 ```javascript
 const { NumberRange, StringRange } = require('rangejs');
+// ES6+
+import { NumberRange, StringRange } from 'rangejs';
 ```
 ---
 # Number ranges
@@ -29,8 +33,12 @@ const { NumberRange } = require('rangejs');
 
 const integers = [...new NumberRange().start(1).end(10)];
 // integers: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+
 // it's same as
-const sameIntegers = [...new NumberRange({ start: 1, end: 10 })]
+const sameIntegers = [...new NumberRange({ start: 1, end: 10 })];
+
+// and same as
+const sameIntegersTwo = [...new NumberRange(1, 10)];
 ```
 **Integers ranged with step of 2**
 ```javascript
@@ -41,6 +49,9 @@ const integers = [
     .step(2)
 ];
 // integers: [ 1, 3, 5, 7, 9 ]
+
+// it's same as
+const sameIntegers = [...new NumberRange(1, 10, 2)];
 ```
 
 ## Floating point numbers
@@ -112,14 +123,14 @@ const { CharRange } = require('rangejs');
 
 console.log([
   ...new CharRange()
-])
+]);
 // ['A', ..., 'Z']
 ```
 So you can use this like NumberRange
 ```javascript
 console.log([
   ...new CharRange().start('a').end('f').step(2) // Note: step is an integer number
-])
+]);
 // ['a', 'c', 'e']
 // or
 console.log([
@@ -128,7 +139,9 @@ console.log([
     end: 'f',
     step: 2
   })
-])
+]);
+// or
+console.log([...new CharRange('a', 'f', 2)]);
 ```
 
 # String Ranges
@@ -173,12 +186,12 @@ console.log([
 ```
 
 ## Sub ranges
-You can use sub ranges, that names `[timeUnit]Range` for example: `SecondsRange`, `MinutesRange`, etc
+You can use sub ranges, that names `[timeUnit]Range` for example: `SecondRange`, `MinuteRange`, etc
 ```javascript
-const { YearsRange } = require('rangejs');
+const { YearRange } = require('rangejs');
 
 console.log([
-  ...new YearsRange()
+  ...new YearRange()
     .start(new Date())
     .step(1)
     .leepYear(true) // use this that your range consisted only of leap years
@@ -199,6 +212,9 @@ console.log([
 const { StringRange } = require('rangejs');
 
 const word = new StringRange().source('Some bad word').map((item) => (item === ' ' ? item : 'x'));
+// or 
+const word2 = new StringRange('Some bad word', (item) => (item === ' ' ? item : 'x'));
+
 console.log([...word].join(''))
 // xxxx xxx xxxx
 ```
@@ -235,6 +251,8 @@ console.log(word.reduce((prevValue, currValue) => prevValue + currValue, ''))
 const { NumberRange } = require('rangejs');
 
 const someSeq = new NumberRange().end(9);
+// or
+const someSeq2 = new NumberRange(9);
 
 console.log(someSeq.length);
 // 9
@@ -253,5 +271,8 @@ console.log(
     .isFloat(true)
     .sum
 );
+// 21
+// or
+console.log(new NumberRange(0.1, 2, 0.1).isFloat(true).sum)
 // 21
 ```

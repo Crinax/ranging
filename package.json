@@ -1,18 +1,49 @@
 {
-  "name": "ranges",
+  "name": "range-mdl",
   "version": "1.0.0",
-  "description": "Allows working with ranges",
-  "main": "lib/index.js",
+  "description": "Allows working with ranges (based on iterators)",
+  "main": "range",
   "scripts": {
-    "start": "node index.js",
     "test": "mocha tests/*.test.js"
   },
   "keywords": [
     "ranges",
-    "module"
+    "module",
+    "iterators",
+    "Range",
+    "NumberRange",
+    "CharRange",
+    "StringRange",
+    "DateRange",
+    "SecondRange",
+    "MinuteRange",
+    "HourRange",
+    "DayRange",
+    "MonthRange",
+    "YearRange",
+    "number",
+    "string",
+    "date",
+    "second",
+    "minute",
+    "hour",
+    "day",
+    "dayweek",
+    "month",
+    "year",
+    "leepYear",
+    "leep"
   ],
-  "author": "Crinax",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Crinax/rangeJS"
+  },
+  "author": "crinax",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Crinax/rangeJS/issues"
+  },
+  "homepage": "https://github.com/Crinax/rangeJS#readme",
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
