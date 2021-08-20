@@ -1,5 +1,5 @@
 {
-  "name": "range-mdl",
+  "name": "range-module",
   "version": "1.0.0",
   "description": "Allows working with ranges (based on iterators)",
   "main": "range",
