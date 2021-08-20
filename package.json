@@ -1,6 +1,6 @@
 {
   "name": "ranging",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ranging helper classes based on iterators",
   "main": "range",
   "scripts": {
@@ -36,14 +36,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Crinax/rangeJS"
+    "url": "git+https://github.com/Crinax/ranging"
   },
   "author": "crinax",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Crinax/rangeJS/issues"
+    "url": "https://github.com/Crinax/ranging/issues"
   },
-  "homepage": "https://github.com/Crinax/rangeJS#readme",
+  "homepage": "https://github.com/Crinax/ranging#readme",
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
