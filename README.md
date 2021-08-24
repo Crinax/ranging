@@ -24,6 +24,16 @@ const { NumberRange, StringRange } = require('ranging');
 // ES6+
 import { NumberRange, StringRange } from 'ranging';
 ```
+## Typescript support (only v1.1.0+)
+Before compiling, create a `tsconfig.json` file, or open it and make sure it contains the following lines:
+```json
+{
+  "compilerOptions": {
+    "lib": ["ES6"], // The number of libraries used may vary, as long as the "ES6" library is present
+    "downlevelIteration": true
+  }
+}
+```
 ---
 # Number ranges
 ## Integers
