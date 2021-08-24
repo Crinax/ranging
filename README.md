@@ -29,8 +29,13 @@ Before compiling, create a `tsconfig.json` file, or open it and make sure it con
 ```json
 {
   "compilerOptions": {
-    "lib": ["ES6"], // The number of libraries used may vary, as long as the "ES6" library is present
-    "downlevelIteration": true
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["es6"], /* The number of libraries used may vary, as long as the "ES6" library is present */
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
 ```
