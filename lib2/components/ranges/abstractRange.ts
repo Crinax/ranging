@@ -1,9 +1,9 @@
 import { UnknownRangeOptionsT } from '../types';
 
-abstract class AbstractRange<EdgeT, ItemT> {
-  options!: UnknownRangeOptionsT;
+abstract class AbstractRange<EdgeT, ItemT, DateT = EdgeT> {
+  protected options!: UnknownRangeOptionsT;
 
-  end(value: EdgeT) {
+  end(value: EdgeT | DateT) {
     this.options.end = value;
     return this;
   }
@@ -53,6 +53,13 @@ abstract class AbstractRange<EdgeT, ItemT> {
     return i;
   }
 
+  [Symbol.iterator](): Iterator<ItemT> {
+    return {
+      next(): IteratorResult<ItemT, void> {
+        return { value: undefined, done: true }
+      }
+    }
+  }
 }
 
 export default AbstractRange;

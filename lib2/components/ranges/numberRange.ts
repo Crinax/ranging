@@ -3,14 +3,15 @@ import { NumberRangeOptionsT } from '../types';
 
 /**
  * Reworked floating point numbers addition operator.
- * @author [Eugen Gritz]{@link https://github.com/maycircle}
+ * @author [Eugen Gritz]
+ * @link https://github.com/maycircle
  * @function add
  * @param {Number} a
  * @param {Number} b
  * @returns {Number} Number
  * @protected
  */
-function add(a: number, b: number) {
+function add(a: number, b: number): number {
   let res = `${a + b}`;
   // Reliable absence of approximation error
   if (res.length < 16) return a + b;
@@ -61,28 +62,29 @@ function add(a: number, b: number) {
 }
 
 class NumberRange extends AbstractRange<number, number> {
-  options: NumberRangeOptionsT;
+  protected options: NumberRangeOptionsT;
+
   constructor(options: NumberRangeOptionsT) {
     super();
     this.options = {
+      ...options,
       start: 0,
       end: Infinity,
       step: 1,
       float: false,
-      ...options,
     };
   }
 
-  float(value: boolean) {
+  float(value: boolean): this {
     this.options.float = value;
     return this;
   }
 
-  get sum() {
+  get sum(): number {
     return this.reduce(add);
   }
 
-  [Symbol.iterator]() {
+  [Symbol.iterator](): Iterator<number> {
     let { start } = this.options;
     const {
       end,
@@ -94,7 +96,7 @@ class NumberRange extends AbstractRange<number, number> {
     } = this.options;
     let index = 0;
     return {
-      next() {
+      next(): IteratorResult<number, void> {
         if ((count && index < count) || (!count && start <= end)) {
           const startInc = () => {
             if (float) {
@@ -109,6 +111,7 @@ class NumberRange extends AbstractRange<number, number> {
           while (filter && !filter(start, index)) {
             if (!count && start > end) {
               return {
+                value: undefined,
                 done: true,
               };
             }
@@ -116,6 +119,7 @@ class NumberRange extends AbstractRange<number, number> {
           }
           if ((!count && start > end)) {
             return {
+              value: undefined,
               done: true,
             };
           }
@@ -128,6 +132,7 @@ class NumberRange extends AbstractRange<number, number> {
           };
         }
         return {
+          value: undefined,
           done: true,
         };
       },
