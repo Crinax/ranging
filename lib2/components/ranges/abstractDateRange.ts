@@ -9,10 +9,10 @@ abstract class AbstractDateRange extends AbstractRange<Date, Date, number> {
   constructor(private metric: string, options: DateRangeOptionsT) {
     super();
     this.options = {
-      ...options,
       start: new Date(),
       end: Infinity,
       step: 1,
+      ...options,
     }
     
   }
@@ -70,67 +70,67 @@ abstract class AbstractDateRange extends AbstractRange<Date, Date, number> {
       filter,
     } = this.options;
     let index = 0;
-    start = new Date(start);
+    start = new Date(start!);
     const self = this;
     
     return {
       next(): IteratorResult<Date, void> {
-        if ((count && index < count) || (!count && start <= end)) {
+        if ((count && index < count) || (!count && start! <= end!)) {
           if (index !== 0) {
-            self.setTime(start, self.getTime(start) + step);
+            self.setTime(start!, self.getTime(start!) + step);
           }
 
-          while (filter && !filter(new Date(start), index)) {
-            if (!count && start >= end) {
+          while (filter && !filter(new Date(start!), index)) {
+            if (!count && start! >= end!) {
               return {
                 value: undefined,
                 done: true,
               };
             }
-            self.setTime(start, self.getTime(start) + step);
+            self.setTime(start!, self.getTime(start!) + step);
           }
 
           if (leepYear) {
-            let year = start.getFullYear();
+            let year = start!.getFullYear();
             const isLeepYear = () => (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
             while (!isLeepYear()) {
-              if (!count && start > end) {
+              if (!count && start! > end!) {
                 return {
                   value: undefined,
                   done: true,
                 };
               }
-              self.setTime(start, self.getTime(start) + step);
-              year = start.getFullYear();
+              self.setTime(start!, self.getTime(start!) + step);
+              year = start!.getFullYear();
             }
           }
 
           if (weekdays) {
-            let weekday = start.getDay();
+            let weekday = start!.getDay();
             while (weekdays.indexOf(weekday) === -1) {
-              if (!count && start > end) {
+              if (!count && start! > end!) {
                 return {
                   value: undefined,
                   done: true,
                 };
               }
-              self.setTime(start, self.getTime(start) + step);
-              weekday = start.getDay();
+              self.setTime(start!, self.getTime(start!) + step);
+              weekday = start!.getDay();
             }
           }
-          if ((!count && start > end)) {
+          if ((!count && start! > end!)) {
             return {
               value: undefined,
               done: true,
             };
           }
           let mappedValue;
-          if (map) mappedValue = map(new Date(start), index);
+          if (map) mappedValue = map(new Date(start!), index);
           index += 1;
           if (mappedValue) mappedValue = new Date(mappedValue);
 
           return {
-            value: mappedValue || new Date(start),
+            value: mappedValue || new Date(start!),
             done: false,
           };
         }

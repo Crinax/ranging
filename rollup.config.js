@@ -4,21 +4,31 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  input: 'lib/index.js',
+  input: 'lib2/index.ts',
   output: [
     {
-      file: 'build/index.js',
+      name: 'ranging',
+      file: 'build/unmin/index.js',
       format: 'umd',
     },
     {
+      file: 'build/unmin/index.mjs',
+      format: 'es',
+    },
+    {
       name: 'ranging',
-      file: 'build/index.min.js',
+      file: 'build/index.js',
       format: 'umd',
-      plugins: [terser()]
-    }
+      plugins: [terser()],
+    },
+    {
+      file: 'build/index.mjs',
+      format: 'es',
+      plugins: [terser()],
+    },
   ],
   plugins: [
-    typescript(),
+    typescript({ tsconfig: './tsconfig.json', module: 'esnext' }),
     nodeResolve(),
     commonjs(),
   ],

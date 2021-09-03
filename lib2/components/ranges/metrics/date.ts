@@ -68,4 +68,5 @@ export {
   YearRange,
   SecondRange,
   MinuteRange,
+  HourRange,
 }

@@ -67,11 +67,11 @@ class NumberRange extends AbstractRange<number, number> {
   constructor(options: NumberRangeOptionsT) {
     super();
     this.options = {
-      ...options,
       start: 0,
       end: Infinity,
       step: 1,
       float: false,
+      ...options,
     };
   }
 
@@ -97,19 +97,19 @@ class NumberRange extends AbstractRange<number, number> {
     let index = 0;
     return {
       next(): IteratorResult<number, void> {
-        if ((count && index < count) || (!count && start <= end)) {
+        if ((count && index < count) || (!count && start! <= end!)) {
           const startInc = () => {
             if (float) {
-              start = add(start, step);
+              start = add(start!, step!);
             } else {
-              start += step;
+              start! += step!;
             }
           };
           if (index !== 0) {
             startInc();
           }
-          while (filter && !filter(start, index)) {
-            if (!count && start > end) {
+          while (filter && !filter(start!, index)) {
+            if (!count && start! > end!) {
               return {
                 value: undefined,
                 done: true,
@@ -117,14 +117,14 @@ class NumberRange extends AbstractRange<number, number> {
             }
             startInc();
           }
-          if ((!count && start > end)) {
+          if ((!count && start! > end!)) {
             return {
               value: undefined,
               done: true,
             };
           }
           let mappedValue;
-          if (map) mappedValue = map(start, index);
+          if (map) mappedValue = map(start!, index);
           index += 1;
           return {
             value: mappedValue || start,

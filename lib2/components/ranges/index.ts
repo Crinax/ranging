@@ -1,5 +1,5 @@
 import NumberRange from './numberRange';
-import CharRange from './numberRange';
+import CharRange from './charRange';
 import StringRange from './stringRange';
 import {
   DateRange,
@@ -8,6 +8,7 @@ import {
   YearRange,
   SecondRange,
   MinuteRange,
+  HourRange,
 } from './metrics/date';
 
 export {
@@ -20,4 +21,5 @@ export {
   YearRange,
   SecondRange,
   MinuteRange,
+  HourRange,
 }

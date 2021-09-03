@@ -7,10 +7,10 @@ class StringRange extends AbstractRange<number, string> {
   constructor(options: StringRangeOptionsT) {
     super();
     this.options = {
-      ...options,
       start: 0,
       end: options.source.length - 1,
       step: 1,
+      ...options,
       source: Array.from(options.source),
     };
   }
@@ -33,31 +33,31 @@ class StringRange extends AbstractRange<number, string> {
     let index = 0;
     return {
       next(): IteratorResult<string, void> {
-        if (source[start] !== undefined) {
-          if ((count && index < count) || (!count && start <= end)) {
+        if (source[start!] !== undefined) {
+          if ((count && index < count) || (!count && start! <= end!)) {
             if (index !== 0) {
-              start += step;
+              start! += step!;
             }
-            while (filter && !filter(source[start], index)) {
-              if (!count && start > end) {
+            while (filter && !filter(source[start!], index)) {
+              if (!count && start! > end!) {
                 return {
                   value: undefined,
                   done: true,
                 };
               }
-              start += step;
+              start! += step!;
             }
-            if (source[start] === undefined) {
+            if (source[start!] === undefined) {
               return {
                 value: undefined,
                 done: true,
               };
             }
             let mappedValue;
-            if (map) mappedValue = map(source[start], index);
+            if (map) mappedValue = map(source[start!], index);
             index += 1;
             return {
-              value: mappedValue || source[start],
+              value: mappedValue || source[start!],
               done: false,
             };
           }
