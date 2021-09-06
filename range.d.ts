@@ -10,8 +10,7 @@ import {
   SecondRange,
   MinuteRange,
   HourRange,
-// eslint-disable-next-line import/extensions
-} from './build/index.mjs';
+} from './build/index';
 
 export {
   Range,

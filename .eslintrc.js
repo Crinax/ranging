@@ -10,7 +10,7 @@ module.exports = {
     "parserOptions": {
         "ecmaVersion": 12
     },
-    "ignorePatterns": [".eslintrc.js", "tests/*.test.js"],
+    "ignorePatterns": [".eslintrc.js", "tests/*.test.js", "build"],
     "rules": {
     }
 };

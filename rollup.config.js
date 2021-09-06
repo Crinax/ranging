@@ -4,7 +4,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  input: 'lib2/index.ts',
+  input: 'lib/index.ts',
   output: [
     {
       name: 'ranging',

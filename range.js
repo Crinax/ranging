@@ -1,3 +1,3 @@
-const RangeModules = require('./build');
+const RangeModules = require('./build/index.js');
 
-exports = RangeModules;
+module.exports = RangeModules;
