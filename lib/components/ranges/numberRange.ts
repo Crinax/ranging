@@ -64,7 +64,7 @@ function add(a: number, b: number): number {
 class NumberRange extends AbstractRange<number, number> {
   protected options: NumberRangeOptionsT;
 
-  constructor(options: NumberRangeOptionsT) {
+  constructor(options?: NumberRangeOptionsT) {
     super();
     this.options = {
       start: 0,

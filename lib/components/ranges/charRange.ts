@@ -4,7 +4,7 @@ import { CharRangeOptionsT } from '../types';
 class CharRange extends AbstractRange<string, string> {
   protected options: CharRangeOptionsT;
 
-  constructor(options: CharRangeOptionsT) {
+  constructor(options?: CharRangeOptionsT) {
     super();
     this.options = {
       start: 'A',

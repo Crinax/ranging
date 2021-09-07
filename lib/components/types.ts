@@ -14,8 +14,8 @@ interface IStringRangeOptions extends IRangeOptions<number, string> {
   source: string | string[];
 }
 interface IDateRangeOptions extends IRangeOptions<Date, Date, number> {
-  weekdays: number[];
-  leepYear: boolean;
+  weekdays?: number[];
+  leepYear?: boolean;
 }
 
 interface ICharRangeOptions extends IRangeOptions<string, string> { }

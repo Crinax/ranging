@@ -6,7 +6,7 @@ abstract class AbstractDateRange extends AbstractRange<Date, Date, number> {
   private dateGetters!: { [key: string]: Function };
   private dateSetters!: { [key: string]: Function };
 
-  constructor(private metric: string, options: DateRangeOptionsT) {
+  constructor(private metric: string, options?: DateRangeOptionsT) {
     super();
     this.options = {
       start: new Date(),

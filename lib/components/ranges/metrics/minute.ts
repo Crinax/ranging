@@ -2,7 +2,7 @@ import { DateRangeOptionsT } from "../../types";
 import AbstractDateRange from "../abstractDateRange";
 
 class MinuteRange extends AbstractDateRange {
-  constructor(options: DateRangeOptionsT) {
+  constructor(options?: DateRangeOptionsT) {
     super('m', options);
   }
 }

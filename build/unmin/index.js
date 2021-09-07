@@ -349,6 +349,68 @@
         return StringRange;
     }(AbstractRange));
 
+    var ColorRange = /** @class */ (function (_super) {
+        __extends(ColorRange, _super);
+        function ColorRange(options) {
+            var _this = _super.call(this) || this;
+            _this.options = __assign({ start: '#000000', end: '#FFFFFF', step: 1 }, options);
+            return _this;
+        }
+        ColorRange.prototype[Symbol.iterator] = function () {
+            var _a = this.options, start = _a.start, end = _a.end;
+            start = start.toLowerCase();
+            end = end.toLowerCase();
+            var _b = this.options, step = _b.step, count = _b.count, map = _b.map, filter = _b.filter;
+            var index = 0;
+            return {
+                next: function () {
+                    if ((count && index < count) || (!count && start <= end)) {
+                        var addChar = function () {
+                            var intStart = parseInt(start.slice(1), 16);
+                            var hexStart = (intStart + step).toString(16);
+                            var zerosBefore = '';
+                            if (hexStart.length !== 6) {
+                                zerosBefore = Array.from({ length: 6 - hexStart.length }, function () { return '0'; }).join('');
+                            }
+                            start = "#" + zerosBefore + hexStart;
+                        };
+                        if (index !== 0) {
+                            addChar();
+                        }
+                        while (filter && !filter(start, index)) {
+                            if (!count && start > end) {
+                                return {
+                                    value: undefined,
+                                    done: true,
+                                };
+                            }
+                            addChar();
+                        }
+                        if ((!count && start > end)) {
+                            return {
+                                value: undefined,
+                                done: true,
+                            };
+                        }
+                        var mappedValue = void 0;
+                        if (map)
+                            mappedValue = map(start, index);
+                        index += 1;
+                        return {
+                            value: mappedValue || start,
+                            done: false,
+                        };
+                    }
+                    return {
+                        value: undefined,
+                        done: true,
+                    };
+                },
+            };
+        };
+        return ColorRange;
+    }(AbstractRange));
+
     var AbstractDateRange = /** @class */ (function (_super) {
         __extends(AbstractDateRange, _super);
         function AbstractDateRange(metric, options) {
@@ -577,9 +639,9 @@
         Range.date = function (options) {
             return new DateRange(options);
         };
-        /* static color(options: types.CharRangeOptionsT) {
-          
-        } */
+        Range.color = function (options) {
+            return new ColorRange(options);
+        };
         Range.prototype.number = function (options) {
             return new NumberRange(options);
         };
@@ -592,10 +654,14 @@
         Range.prototype.date = function (options) {
             return new DateRange(options);
         };
+        Range.prototype.color = function (options) {
+            return new ColorRange(options);
+        };
         return Range;
     }());
 
     exports.CharRange = CharRange;
+    exports.ColorRange = ColorRange;
     exports.DateRange = DateRange;
     exports.DayRange = DayRange;
     exports.HourRange = HourRange;
