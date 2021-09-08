@@ -1,7 +1,7 @@
 import AbstractRange from './abstractRange';
 import { ColorRangeOptionsT } from '../types';
 
-class ColorRange extends AbstractRange<string, string> {
+class ColorRange extends AbstractRange<string> {
   constructor(options?: ColorRangeOptionsT) {
     super();
     this.options = {

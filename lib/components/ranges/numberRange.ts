@@ -61,7 +61,7 @@ function add(a: number, b: number): number {
   return +(res + exponent);
 }
 
-class NumberRange extends AbstractRange<number, number> {
+class NumberRange extends AbstractRange<number> {
   protected options: NumberRangeOptionsT;
 
   constructor(options?: NumberRangeOptionsT) {
@@ -73,11 +73,6 @@ class NumberRange extends AbstractRange<number, number> {
       float: false,
       ...options,
     };
-  }
-
-  float(value: boolean): this {
-    this.options.float = value;
-    return this;
   }
 
   get sum(): number {

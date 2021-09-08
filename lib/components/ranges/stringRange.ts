@@ -1,7 +1,7 @@
 import AbstractRange from './abstractRange';
 import { StringRangeOptionsT } from '../types';
 
-class StringRange extends AbstractRange<number, string> {
+class StringRange extends AbstractRange<string> {
   protected options: StringRangeOptionsT;
 
   constructor(options: StringRangeOptionsT) {
@@ -13,11 +13,6 @@ class StringRange extends AbstractRange<number, string> {
       ...options,
       source: Array.from(options.source),
     };
-  }
-
-  source(source: string): this {
-    this.options.source = Array.from(source);
-    return this;
   }
 
   [Symbol.iterator](): Iterator<string> {

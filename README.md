@@ -15,30 +15,17 @@ yarn add ranging
 ## Importing
 ```javascript
 const { Range } = require('ranging');
-// ES6+
+// ES
 import { Range } from 'ranging';
 ```
 **Import specific modules**
 ```javascript
 const { NumberRange, StringRange } = require('ranging');
-// ES6+
+// ES
 import { NumberRange, StringRange } from 'ranging';
 ```
 ## Typescript support (only v1.1.0+)
-Before compiling, create a `tsconfig.json` file, or open it and make sure it contains the following lines:
-```json
-{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "lib": ["es6"], /* The number of libraries used may vary, as long as the "ES6" library is present */
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  }
-}
-```
+There is support for TS with a specification higher than ES5.
 ---
 # Number ranges
 ## Integers
@@ -46,46 +33,40 @@ Before compiling, create a `tsconfig.json` file, or open it and make sure it con
 ```javascript
 const { NumberRange } = require('ranging');
 
-const integers = [...new NumberRange().start(1).end(10)];
-// integers: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
-
 // it's same as
 const sameIntegers = [...new NumberRange({ start: 1, end: 10 })];
-
-// and same as
-const sameIntegersTwo = [...new NumberRange(1, 10)];
 ```
 **Integers ranged with step of 2**
 ```javascript
 const integers = [
-  ...new NumberRange()
-    .start(1)
-    .end(10)
-    .step(2)
+  ...new NumberRange({
+    start: 1,
+    end: 10,
+    step: 2
+  })
 ];
 // integers: [ 1, 3, 5, 7, 9 ]
-
-// it's same as
-const sameIntegers = [...new NumberRange(1, 10, 2)];
 ```
 
 ## Floating point numbers
 ```javascript
 let floats = [
-  ...new NumberRange()
-    .start(2)
-    .end(5)
-    .step(0.5)
-    .isFloat(true)
+  ...new NumberRange({
+    start: 2,
+    end: 5,
+    step: 0.5,
+    float: true
+  })
 ];
 console.log(floats);
 // [ 2, 2.5, 3, 3.5, 4, 4.5, 5 ]
 
 floats = [
-  ...new NumberRange()
-    .start(2)
-    .end(5)
-    .isFloat(true)
+  ...new NumberRange({
+    start: 2,
+    end: 5,
+    float: true
+  })
 ];
 console.log(floats);
 // [ 2, 3, 4, 5 ]
@@ -103,12 +84,11 @@ console.log(floats);
 > **Use of NumberRange.sum (expected answer)**
 > ```javascript
 > console.log(
->  new NumberRange()
->    .start(0.1)
->    .end(2)
->    .step(0.1)
->    .isFloat(true)
->    .sum
+>  new NumberRange({
+>     start: 0.1,
+>     end: 2,
+>     step: 0.1
+>   }).sum
 > );
 > // 21
 > ```
@@ -144,19 +124,12 @@ console.log([
 So you can use this like NumberRange
 ```javascript
 console.log([
-  ...new CharRange().start('a').end('f').step(2) // Note: step is an integer number
-]);
-// ['a', 'c', 'e']
-// or
-console.log([
   ...new CharRange({
     start: 'a',
     end: 'f',
     step: 2
   })
 ]);
-// or
-console.log([...new CharRange('a', 'f', 2)]);
 ```
 
 # String Ranges
@@ -165,7 +138,7 @@ This is almost the same as CharRange, only iterates over the passed string
 const { StringRange } = require('ranging');
 
 console.log([
-  ...new StringRange().source('Hello world')
+  ...new StringRange({ source: 'Hello world' })
 ])
 // ['H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']
 
@@ -206,11 +179,11 @@ You can use sub ranges, that names `[timeUnit]Range` for example: `SecondRange`,
 const { YearRange } = require('ranging');
 
 console.log([
-  ...new YearRange()
-    .start(new Date())
-    .step(1)
-    .leepYear(true) // use this that your range consisted only of leap years
-    .count(10)
+  ...new YearRange({
+    step: 1,
+    leepYear: true,
+    count: 10
+  })
 ])
 // [
 //   2024-08-18T09:34:01.866Z,
@@ -220,15 +193,23 @@ console.log([
 //   2040-08-18T09:34:01.866Z
 // ]
 ```
+## Color range
+I think this range will be useful for those who often work with color
+```javascript
+const { ColorRange } = require('ranging');
 
+console.log(...new ColorRange({ end: '#00000F' }));
+// #000000 #000001 #000002 #000003 #000004 #000005 #000006 #000007 #000008 #000009 #00000a #00000b #00000c #00000d #00000e #00000f
+```
 # Map, filter, length, reduce, sum (only NumberRange)
 ## Map
 ```javascript
 const { StringRange } = require('ranging');
 
-const word = new StringRange().source('Some bad word').map((item) => (item === ' ' ? item : 'x'));
-// or 
-const word2 = new StringRange('Some bad word', (item) => (item === ' ' ? item : 'x'));
+const word = new StringRange({
+  source: 'Some bad word',
+  map: (item) => (item === ' ' ? item : 'x')
+});
 
 console.log([...word].join(''))
 // xxxx xxx xxxx
@@ -265,9 +246,7 @@ console.log(word.reduce((prevValue, currValue) => prevValue + currValue, ''))
 ```javascript
 const { NumberRange } = require('ranging');
 
-const someSeq = new NumberRange().end(9);
-// or
-const someSeq2 = new NumberRange(9);
+const someSeq = new NumberRange({ end: 9 });
 
 console.log(someSeq.length);
 // 9
@@ -279,16 +258,13 @@ This getter is designed to correctly sum floating point numbers
 const { NumberRange } = require('ranging');
 
 console.log(
-  new NumberRange()
-    .start(0.1)
-    .end(2)
-    .step(0.1)
-    .isFloat(true)
-    .sum
+  new NumberRange({
+    start: 0.1,
+    end: 2,
+    step: 0.1,
+    float: true
+  }).sum
 );
-// 21
-// or
-console.log(new NumberRange(0.1, 2, 0.1).isFloat(true).sum)
 // 21
 ```
 

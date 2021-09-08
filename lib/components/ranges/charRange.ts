@@ -1,7 +1,7 @@
 import AbstractRange from './abstractRange';
 import { CharRangeOptionsT } from '../types';
 
-class CharRange extends AbstractRange<string, string> {
+class CharRange extends AbstractRange<string> {
   protected options: CharRangeOptionsT;
 
   constructor(options?: CharRangeOptionsT) {

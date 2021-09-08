@@ -49,30 +49,6 @@
     var AbstractRange = /** @class */ (function () {
         function AbstractRange() {
         }
-        AbstractRange.prototype.end = function (value) {
-            this.options.end = value;
-            return this;
-        };
-        AbstractRange.prototype.start = function (value) {
-            this.options.start = value;
-            return this;
-        };
-        AbstractRange.prototype.step = function (value) {
-            this.options.step = value;
-            return this;
-        };
-        AbstractRange.prototype.count = function (value) {
-            this.options.count = value;
-            return this;
-        };
-        AbstractRange.prototype.map = function (f) {
-            this.options.map = f;
-            return this;
-        };
-        AbstractRange.prototype.filter = function (f) {
-            this.options.filter = f;
-            return this;
-        };
         AbstractRange.prototype.reduce = function (f, initial) {
             if (initial === void 0) { initial = 0; }
             var result = initial;
@@ -171,10 +147,6 @@
             _this.options = __assign({ start: 0, end: Infinity, step: 1, float: false }, options);
             return _this;
         }
-        NumberRange.prototype.float = function (value) {
-            this.options.float = value;
-            return this;
-        };
         Object.defineProperty(NumberRange.prototype, "sum", {
             get: function () {
                 return this.reduce(add);
@@ -295,10 +267,6 @@
             _this.options = __assign(__assign({ start: 0, end: options.source.length - 1, step: 1 }, options), { source: Array.from(options.source) });
             return _this;
         }
-        StringRange.prototype.source = function (source) {
-            this.options.source = Array.from(source);
-            return this;
-        };
         StringRange.prototype[Symbol.iterator] = function () {
             var start = this.options.start;
             var _a = this.options, source = _a.source, end = _a.end, step = _a.step, count = _a.count, map = _a.map, filter = _a.filter;
@@ -448,14 +416,6 @@
             if (!this.dateSetters)
                 this.setSearchMetricMap(start);
             return this.dateSetters[this.metric](value);
-        };
-        AbstractDateRange.prototype.weekdays = function (value) {
-            this.options.weekdays = value;
-            return this;
-        };
-        AbstractDateRange.prototype.leepYear = function (value) {
-            this.options.leepYear = value;
-            return this;
         };
         AbstractDateRange.prototype[Symbol.iterator] = function () {
             var start = this.options.start;

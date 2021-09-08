@@ -1,7 +1,7 @@
 import AbstractRange from './abstractRange';
 import { DateRangeOptionsT } from '../types';
 
-abstract class AbstractDateRange extends AbstractRange<Date, Date, number> {
+abstract class AbstractDateRange extends AbstractRange<Date> {
   protected options: DateRangeOptionsT;
   private dateGetters!: { [key: string]: Function };
   private dateSetters!: { [key: string]: Function };
@@ -46,16 +46,6 @@ abstract class AbstractDateRange extends AbstractRange<Date, Date, number> {
   private setTime(start: Date, value: Date | number) {
     if (!this.dateSetters) this.setSearchMetricMap(start);
     return this.dateSetters[this.metric](value);
-  }
-
-  weekdays(value: number[]) {
-    this.options.weekdays = value;
-    return this;
-  }
-
-  leepYear(value: boolean) {
-    this.options.leepYear = value;
-    return this;
   }
 
   [Symbol.iterator](): Iterator<Date> {
