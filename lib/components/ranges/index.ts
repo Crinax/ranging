@@ -1,9 +1,8 @@
+import NumberRange from './numberRange';
+import CharRange from './charRange';
+import StringRange from './stringRange';
+import ColorRange from './colorRange';
 import {
-  Range,
-  NumberRange,
-  CharRange,
-  StringRange,
-  ColorRange,
   DateRange,
   DayRange,
   MonthRange,
@@ -11,11 +10,9 @@ import {
   SecondRange,
   MinuteRange,
   HourRange,
-// eslint-disable-next-line import/extensions
-} from './build/index.mjs';
+} from './metrics/date';
 
 export {
-  Range,
   NumberRange,
   CharRange,
   StringRange,
@@ -27,4 +24,4 @@ export {
   SecondRange,
   MinuteRange,
   HourRange,
-};
+}
