@@ -25,7 +25,7 @@ const { NumberRange, StringRange } = require('ranging');
 import { NumberRange, StringRange } from 'ranging';
 ```
 ## Typescript support (only v1.1.0+)
-There is support for TS with a specification higher than ES5.
+- There is support for TS with a specification higher than ES5
 ---
 # Number ranges
 ## Integers
@@ -200,6 +200,46 @@ const { ColorRange } = require('ranging');
 
 console.log(...new ColorRange({ end: '#00000F' }));
 // #000000 #000001 #000002 #000003 #000004 #000005 #000006 #000007 #000008 #000009 #00000a #00000b #00000c #00000d #00000e #00000f
+```
+
+## Merging ranges
+You can merge a few ranges
+```javascript
+const { NumberRange, CharRange, MergeRanges } = require('./range');
+
+const numbers = new NumberRange({ end: 5 });
+const chars = new CharRange({ end: 'D' });
+
+const merging = new MergeRanges({ ranges: [numbers, chars] });
+
+console.log(...merging);
+// 0 1 2 3 4 5 A B C D
+```
+
+## Combining ranges
+You also can combine a two ranges
+```javascript
+const { NumberRange, CharRange, CombineRange } = require('./range');
+
+const numbers = new NumberRange({ start: 1 });
+const chars = new CharRange({ end: 'D' });
+
+const combine = new CombineRange({ keys: chars, values: numbers });
+
+console.log(...combine);
+// {'A': 1}
+// {'B': 2}
+// {'C': 3}
+// {'D': 4}
+
+// or
+console.log(combine.ranged);
+// {
+//   'A': 1,
+//   'B': 2,
+//   'C': 3,
+//   'D': 4
+// }
 ```
 # Map, filter, length, reduce, sum (only NumberRange)
 ## Map
