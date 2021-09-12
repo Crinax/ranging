@@ -219,12 +219,12 @@ console.log(...merging);
 ## Combining ranges
 You also can combine a two ranges
 ```javascript
-const { NumberRange, CharRange, CombineRange } = require('./range');
+const { NumberRange, CharRange, ZipRange } = require('./range');
 
 const numbers = new NumberRange({ start: 1 });
 const chars = new CharRange({ end: 'D' });
 
-const combine = new CombineRange({ keys: chars, values: numbers });
+const combine = new ZipRange({ keys: chars, values: numbers });
 
 console.log(...combine);
 // {'A': 1}
