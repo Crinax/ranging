@@ -1,3 +1,5 @@
+import AbstractRange from "./ranges/abstractRange";
+
 interface IRangeOptions<EdgeT, ItemT, DateT = EdgeT> {
   start?: EdgeT;
   end?: EdgeT | DateT;
@@ -18,6 +20,22 @@ interface IDateRangeOptions extends IRangeOptions<Date, Date, number> {
   leepYear?: boolean;
 }
 
+interface IMergeRangesOptions {
+  ranges: AbstractRange<any>[];
+  step?: number;
+  count?: number;
+  map?: (item: any, index: number) => any;
+  filter?: (item: any, index: number) => boolean;
+}
+interface ICombineRangesOptions {
+  keys: AbstractRange<any>;
+  values: AbstractRange<any>;
+  step?: number;
+  count?: number;
+  map?: (item: any, index: number) => any;
+  filter?: (item: any, index: any) => boolean;
+}
+
 interface ICharRangeOptions extends IRangeOptions<string, string> { }
 interface IColorRangeOptions extends IRangeOptions<string, string> { }
 interface IUnknownRangeOptions extends IRangeOptions<any, any> { }
@@ -28,6 +46,8 @@ type StringRangeOptionsT = IStringRangeOptions;
 type CharRangeOptionsT = ICharRangeOptions;
 type DateRangeOptionsT = IDateRangeOptions;
 type ColorRangeOptionsT = IColorRangeOptions;
+type MergeRangesOptionsT = IMergeRangesOptions;
+type CombineRangesOptionsT = ICombineRangesOptions;
 
 export {
   UnknownRangeOptionsT,
@@ -35,5 +55,7 @@ export {
   StringRangeOptionsT,
   CharRangeOptionsT,
   DateRangeOptionsT,
-  ColorRangeOptionsT
+  ColorRangeOptionsT,
+  MergeRangesOptionsT,
+  CombineRangesOptionsT
 }

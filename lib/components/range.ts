@@ -11,6 +11,7 @@ import {
   SecondRange,
   MinuteRange,
   HourRange,
+  MergeRanges,
 } from './ranges';
 
 class Range {
@@ -34,6 +35,10 @@ class Range {
     return new ColorRange(options);
   }
 
+  static merge(options: types.MergeRangesOptionsT) {
+    return new MergeRanges(options);
+  }
+
   number(options?: types.NumberRangeOptionsT) {
     return new NumberRange(options);
   }
@@ -53,6 +58,10 @@ class Range {
   color(options?: types.ColorRangeOptionsT) {
     return new ColorRange(options)
   }
+
+  merge(options: types.MergeRangesOptionsT) {
+    return new MergeRanges(options);
+  }
 }
 
 export {
@@ -68,4 +77,5 @@ export {
   SecondRange,
   MinuteRange,
   HourRange,
+  MergeRanges,
 }

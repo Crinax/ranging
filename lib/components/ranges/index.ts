@@ -11,6 +11,7 @@ import {
   MinuteRange,
   HourRange,
 } from './metrics/date';
+import MergeRanges from './mergeRanges';
 
 export {
   NumberRange,
@@ -24,4 +25,5 @@ export {
   SecondRange,
   MinuteRange,
   HourRange,
+  MergeRanges,
 }
