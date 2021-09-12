@@ -12,6 +12,7 @@ import {
   MinuteRange,
   HourRange,
   MergeRanges,
+  ZipRanges,
 } from './ranges';
 
 class Range {
@@ -39,6 +40,10 @@ class Range {
     return new MergeRanges(options);
   }
 
+  static zip(options: types.ZipRangesOptionsT) {
+    return new ZipRanges(options);
+  }
+
   number(options?: types.NumberRangeOptionsT) {
     return new NumberRange(options);
   }
@@ -62,6 +67,10 @@ class Range {
   merge(options: types.MergeRangesOptionsT) {
     return new MergeRanges(options);
   }
+
+  zip(options: types.ZipRangesOptionsT) {
+    return new ZipRanges(options);
+  }
 }
 
 export {
@@ -78,4 +87,5 @@ export {
   MinuteRange,
   HourRange,
   MergeRanges,
+  ZipRanges
 }

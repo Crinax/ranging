@@ -113,6 +113,13 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(AbstractRange.prototype, "iterator", {
+            get: function () {
+                return this[Symbol.iterator]();
+            },
+            enumerable: false,
+            configurable: true
+        });
         AbstractRange.prototype[Symbol.iterator] = function () {
             return {
                 next: function () {
@@ -419,6 +426,147 @@
         return ColorRange;
     }(AbstractRange));
 
+    var MergeRanges = /** @class */ (function (_super) {
+        __extends(MergeRanges, _super);
+        function MergeRanges(options) {
+            var _this = _super.call(this) || this;
+            _this.options = options;
+            return _this;
+        }
+        MergeRanges.prototype[Symbol.iterator] = function () {
+            var _a, ranges, _b, step, count, map, filter, elementIndex, extIndex, rangeIndex, _c, _d, element, e_1_1;
+            var e_1, _e;
+            return __generator(this, function (_f) {
+                switch (_f.label) {
+                    case 0:
+                        _a = this.options, ranges = _a.ranges, _b = _a.step, step = _b === void 0 ? 1 : _b, count = _a.count, map = _a.map, filter = _a.filter;
+                        elementIndex = 0;
+                        extIndex = 1;
+                        rangeIndex = 0;
+                        _f.label = 1;
+                    case 1:
+                        if (!(rangeIndex < ranges.length)) return [3 /*break*/, 14];
+                        _f.label = 2;
+                    case 2:
+                        _f.trys.push([2, 11, 12, 13]);
+                        _c = (e_1 = void 0, __values(ranges[rangeIndex])), _d = _c.next();
+                        _f.label = 3;
+                    case 3:
+                        if (!!_d.done) return [3 /*break*/, 10];
+                        element = _d.value;
+                        if (!(extIndex % step !== 0)) return [3 /*break*/, 4];
+                        extIndex++;
+                        return [3 /*break*/, 9];
+                    case 4:
+                        if (filter) {
+                            if (!filter(element, elementIndex - 1))
+                                return [3 /*break*/, 9];
+                        }
+                        if (!map) return [3 /*break*/, 6];
+                        return [4 /*yield*/, map(element, elementIndex)];
+                    case 5:
+                        _f.sent();
+                        return [3 /*break*/, 8];
+                    case 6: return [4 /*yield*/, element];
+                    case 7:
+                        _f.sent();
+                        _f.label = 8;
+                    case 8:
+                        elementIndex++;
+                        extIndex++;
+                        if (count && elementIndex == count) {
+                            return [2 /*return*/, {
+                                    value: undefined,
+                                    done: true
+                                }];
+                        }
+                        _f.label = 9;
+                    case 9:
+                        _d = _c.next();
+                        return [3 /*break*/, 3];
+                    case 10: return [3 /*break*/, 13];
+                    case 11:
+                        e_1_1 = _f.sent();
+                        e_1 = { error: e_1_1 };
+                        return [3 /*break*/, 13];
+                    case 12:
+                        try {
+                            if (_d && !_d.done && (_e = _c.return)) _e.call(_c);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                        return [7 /*endfinally*/];
+                    case 13:
+                        rangeIndex += 1;
+                        return [3 /*break*/, 1];
+                    case 14: return [2 /*return*/];
+                }
+            });
+        };
+        return MergeRanges;
+    }(AbstractRange));
+
+    var ZipRanges = /** @class */ (function (_super) {
+        __extends(ZipRanges, _super);
+        function ZipRanges(options) {
+            var _this = _super.call(this) || this;
+            _this.options = options;
+            return _this;
+        }
+        Object.defineProperty(ZipRanges.prototype, "merged", {
+            get: function () {
+                return this.reduce(function (prev, curr) { return Object.assign(prev, curr); }, {});
+            },
+            enumerable: false,
+            configurable: true
+        });
+        ZipRanges.prototype[Symbol.iterator] = function () {
+            var count, _a, keys, values, map, filter, elementIndex, keysIterator, valuesIterator, keysObj, valuesObj, objResult;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        count = this.options.count;
+                        _a = this.options, keys = _a.keys, values = _a.values, map = _a.map, filter = _a.filter;
+                        elementIndex = 0;
+                        keysIterator = keys.iterator;
+                        valuesIterator = values.iterator;
+                        keysObj = keysIterator.next();
+                        valuesObj = valuesIterator.next();
+                        _c.label = 1;
+                    case 1:
+                        if (!(!keysObj.done && !valuesObj.done)) return [3 /*break*/, 6];
+                        objResult = Object.fromEntries([[keysObj.value, valuesObj.value]]);
+                        if (filter) {
+                            if (!filter(objResult, elementIndex))
+                                return [3 /*break*/, 1];
+                        }
+                        if (!map) return [3 /*break*/, 3];
+                        return [4 /*yield*/, map(objResult, elementIndex)];
+                    case 2:
+                        _c.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, objResult];
+                    case 4:
+                        _c.sent();
+                        _c.label = 5;
+                    case 5:
+                        keysObj = keysIterator.next();
+                        valuesObj = valuesIterator.next();
+                        elementIndex++;
+                        if (count)
+                            count--;
+                        if (count && count === 0)
+                            return [2 /*return*/, {
+                                    value: undefined,
+                                    done: true,
+                                }];
+                        return [3 /*break*/, 1];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        };
+        return ZipRanges;
+    }(AbstractRange));
+
     var AbstractDateRange = /** @class */ (function (_super) {
         __extends(AbstractDateRange, _super);
         function AbstractDateRange(metric, options) {
@@ -624,85 +772,6 @@
         return DateRange;
     }(AbstractDateRange));
 
-    var MergeRanges = /** @class */ (function (_super) {
-        __extends(MergeRanges, _super);
-        function MergeRanges(options) {
-            var _this = _super.call(this) || this;
-            _this.options = options;
-            return _this;
-        }
-        MergeRanges.prototype[Symbol.iterator] = function () {
-            var _a, ranges, _b, step, count, map, filter, elementIndex, extIndex, rangeIndex, _c, _d, element, e_1_1;
-            var e_1, _e;
-            return __generator(this, function (_f) {
-                switch (_f.label) {
-                    case 0:
-                        _a = this.options, ranges = _a.ranges, _b = _a.step, step = _b === void 0 ? 1 : _b, count = _a.count, map = _a.map, filter = _a.filter;
-                        elementIndex = 0;
-                        extIndex = 1;
-                        rangeIndex = 0;
-                        _f.label = 1;
-                    case 1:
-                        if (!(rangeIndex < ranges.length)) return [3 /*break*/, 14];
-                        _f.label = 2;
-                    case 2:
-                        _f.trys.push([2, 11, 12, 13]);
-                        _c = (e_1 = void 0, __values(ranges[rangeIndex])), _d = _c.next();
-                        _f.label = 3;
-                    case 3:
-                        if (!!_d.done) return [3 /*break*/, 10];
-                        element = _d.value;
-                        if (!(extIndex % step !== 0)) return [3 /*break*/, 4];
-                        extIndex++;
-                        return [3 /*break*/, 9];
-                    case 4:
-                        if (filter) {
-                            if (!filter(element, elementIndex - 1))
-                                return [3 /*break*/, 9];
-                        }
-                        if (!map) return [3 /*break*/, 6];
-                        return [4 /*yield*/, map(element, elementIndex)];
-                    case 5:
-                        _f.sent();
-                        return [3 /*break*/, 8];
-                    case 6: return [4 /*yield*/, element];
-                    case 7:
-                        _f.sent();
-                        _f.label = 8;
-                    case 8:
-                        elementIndex++;
-                        extIndex++;
-                        if (count && elementIndex == count) {
-                            return [2 /*return*/, {
-                                    value: undefined,
-                                    done: true
-                                }];
-                        }
-                        _f.label = 9;
-                    case 9:
-                        _d = _c.next();
-                        return [3 /*break*/, 3];
-                    case 10: return [3 /*break*/, 13];
-                    case 11:
-                        e_1_1 = _f.sent();
-                        e_1 = { error: e_1_1 };
-                        return [3 /*break*/, 13];
-                    case 12:
-                        try {
-                            if (_d && !_d.done && (_e = _c.return)) _e.call(_c);
-                        }
-                        finally { if (e_1) throw e_1.error; }
-                        return [7 /*endfinally*/];
-                    case 13:
-                        rangeIndex += 1;
-                        return [3 /*break*/, 1];
-                    case 14: return [2 /*return*/];
-                }
-            });
-        };
-        return MergeRanges;
-    }(AbstractRange));
-
     var Range = /** @class */ (function () {
         function Range() {
         }
@@ -724,6 +793,9 @@
         Range.merge = function (options) {
             return new MergeRanges(options);
         };
+        Range.zip = function (options) {
+            return new ZipRanges(options);
+        };
         Range.prototype.number = function (options) {
             return new NumberRange(options);
         };
@@ -742,6 +814,9 @@
         Range.prototype.merge = function (options) {
             return new MergeRanges(options);
         };
+        Range.prototype.zip = function (options) {
+            return new ZipRanges(options);
+        };
         return Range;
     }());
 
@@ -758,6 +833,7 @@
     exports.SecondRange = SecondRange;
     exports.StringRange = StringRange;
     exports.YearRange = YearRange;
+    exports.ZipRanges = ZipRanges;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

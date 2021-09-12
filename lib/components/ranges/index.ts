@@ -2,6 +2,8 @@ import NumberRange from './numberRange';
 import CharRange from './charRange';
 import StringRange from './stringRange';
 import ColorRange from './colorRange';
+import MergeRanges from './mergeRanges';
+import ZipRanges from './zipRanges';
 import {
   DateRange,
   DayRange,
@@ -11,7 +13,6 @@ import {
   MinuteRange,
   HourRange,
 } from './metrics/date';
-import MergeRanges from './mergeRanges';
 
 export {
   NumberRange,
@@ -26,4 +27,5 @@ export {
   MinuteRange,
   HourRange,
   MergeRanges,
+  ZipRanges
 }

@@ -27,7 +27,7 @@ interface IMergeRangesOptions {
   map?: (item: any, index: number) => any;
   filter?: (item: any, index: number) => boolean;
 }
-interface ICombineRangesOptions {
+interface IZipRangesOptions {
   keys: AbstractRange<any>;
   values: AbstractRange<any>;
   step?: number;
@@ -47,7 +47,7 @@ type CharRangeOptionsT = ICharRangeOptions;
 type DateRangeOptionsT = IDateRangeOptions;
 type ColorRangeOptionsT = IColorRangeOptions;
 type MergeRangesOptionsT = IMergeRangesOptions;
-type CombineRangesOptionsT = ICombineRangesOptions;
+type ZipRangesOptionsT = IZipRangesOptions;
 
 export {
   UnknownRangeOptionsT,
@@ -57,5 +57,5 @@ export {
   DateRangeOptionsT,
   ColorRangeOptionsT,
   MergeRangesOptionsT,
-  CombineRangesOptionsT
+  ZipRangesOptionsT
 }

@@ -1,12 +1,8 @@
-const { NumberRange, CharRange, MergeRanges } = require('./range');
+const { NumberRange, CharRange, CombineRange } = require('./range');
 
-const numbers = new NumberRange({ end: 20 });
-const characters = new CharRange();
+const numbers = new NumberRange({ start: 1 });
+const chars = new CharRange();
 
-const merging = new MergeRanges({
-  ranges: [numbers, characters],
-  count: 13,
-  step: 3,
-});
+const combine = new CombineRange({ keys: chars, values: numbers });
 
-console.log(merging);
+console.log(combine.merged);

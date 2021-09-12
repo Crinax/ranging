@@ -11,7 +11,8 @@ import {
   SecondRange,
   MinuteRange,
   HourRange,
-  MergeRanges
+  MergeRanges,
+  ZipRanges
 } from './components/range';
 
 export {
@@ -28,4 +29,5 @@ export {
   MinuteRange,
   HourRange,
   MergeRanges,
+  ZipRanges
 }

@@ -22,6 +22,10 @@ abstract class AbstractRange<ItemT> {
     while (!gen.next().done) i += 1;
     return i;
   }
+  
+  get iterator() {
+    return this[Symbol.iterator]();
+  }
 
   [Symbol.iterator](): Iterator<ItemT> {
     return {
