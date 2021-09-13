@@ -1,4 +1,4 @@
-const { CharRange } = require('../');
+/* const { CharRange } = require('../');
 var assert = require('assert');
 
 console.clear();
@@ -31,3 +31,4 @@ describe('CharRange', function() {
         assert.equal(new CharRange("D").length, 4);
     });
 });
+ */
