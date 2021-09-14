@@ -47,17 +47,17 @@ function add(a: number, b: number): number {
   }
   if (exponentPos - fractionPos - 1 < 16 - fractionPos) return a + b;
 
-  // Cut exponent power from result, calculate it's length
-  res = res.slice(0, (sA.length > sB.length ? sA.length : sB.length) + 1);
   const fractionLength = res.length - res.indexOf('.') - 2;
-
-  if (res[res.length - 1] === '9') {
+  if (res[res.length - 2] === '9') {
     // Round up the last number (9) from result
     let exponetialForm: string = `${res}e${fractionLength}`;
     let ceiledNumber: number = Math.ceil(Number(exponetialForm));
     exponetialForm = `${ceiledNumber}e${-fractionLength}`;
     return +(+(exponetialForm) + exponent);
   }
+
+  // Cut exponent power from result, calculate it's length
+  res = res.slice(0, (sA.length > sB.length ? sA.length : sB.length) + 1);
   return +(res + exponent);
 }
 

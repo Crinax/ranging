@@ -48,12 +48,10 @@ const tests = [
       float: true
     }).sum should returns 21
   `,
-  //! Error Test
-  //TODO: fix it
   `#8
     new NumberRange({
-      start: 1,
-      end: 2,
+      start: 1.0,
+      end: 2.0,
       step: 0.1,
       float: true
     }).sum should returns 16.5
