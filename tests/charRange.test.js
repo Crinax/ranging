@@ -1,34 +1,29 @@
-/* const { CharRange } = require('../');
-var assert = require('assert');
+const { NumberRange } = require('../');
+const initTest = require('./initTest');
+
+const tests = [
+  `#1
+    [...new CharRange({ end: 'D' })] should return ['A', 'B', 'C', 'D']
+  `,
+  `#2
+    [...new CharRange({ start: 'f', end: 'i' })] should return ['f', 'g', 'h', 'i']
+  `,
+  `#3
+    [...new CharRange({
+        start: 'a',
+        end: 'i',
+        map: (x) => x.charCodeAt(0)
+    })] should return [97, 98, 99, 100, 101, 102, 103, 104, 105]
+  `,
+  `#4
+    [...new CharRange({
+        start: 'a',
+        end: 'i',
+        map: (x) => x.charCodeAt(0),
+        filter: (x) => (x.charCodeAt(0) % 2 === 0)
+    })] should return [98, 100, 102, 104]
+  `
+]
 
 console.clear();
-describe('CharRange', function() {
-    it('[...new CharRange().start("1").end("3")] should returns ["1", "2", "3"]', function() {
-        assert.deepStrictEqual([...new CharRange().start("1").end("3")], ['1', '2', '3']);
-    });
-    it('[...new CharRange({ start: "1", end: "3" })] should returns ["1", "2", "3"]', function() {
-        assert.deepStrictEqual([...new CharRange({ start: "1", end: "3" })], ['1', '2', '3']);
-    });
-    it('[...new CharRange("1", "3")] should returns ["1", "2", "3"]', function() {
-        assert.deepStrictEqual([...new CharRange("1", "3")], ['1', '2', '3']);
-    });
-    it('[...new CharRange().start("1").end("3").step(2)] should returns ["1", "3"]', function() {
-        assert.deepStrictEqual([...new CharRange().start("1").end("3").step(2)], ['1', '3']);
-    });
-    it('[...new CharRange({ start: "1", end: "3", step: 2 })] should returns ["1", "3"]', function() {
-        assert.deepStrictEqual([...new CharRange({ start: "1", end: "3", step: 2 })], ['1', '3']);
-    });
-    it('[...new CharRange("1", "3", 2)] should returns ["1", "3"]', function() {
-        assert.deepStrictEqual([...new CharRange("1", "3", 2)], ['1', '3']);
-    });
-    it('[...new CharRange({ start: "1", end: "9", filter: (x) => x === "5" })] should returns ["5"]', function*() {
-        assert.deepStrictEqual(
-            [...new CharRange({ start: "1", end: "9", filter: (x) => x === "5" })],
-            ["5"]
-        );
-    });
-    it('new CharRange("D").length should returns 4 (from "A" to "D")', function() {
-        assert.equal(new CharRange("D").length, 4);
-    });
-});
- */
+initTest('CharRange', tests);
