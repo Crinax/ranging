@@ -1,6 +1,5 @@
 const { NumberRange } = require('../');
-const assert = require('assert');
-const parser = require('./parser');
+const initTest = require('./initTest');
 
 const tests = [
   `#1
@@ -57,15 +56,20 @@ const tests = [
       step: 0.1,
       float: true
     }).sum should returns 16.5
+  `,
+  `#9
+    new NumberRange({
+      start: 1,
+      count: 10
+    }).length should returns 10
+  `,
+  `#10
+    [...new NumberRange({
+      count: 5,
+      filter: (x) => (x % 5 === 0 && x % 3 === 0)
+    })] should returns [0, 15, 30, 45, 60]
   `
 ]
 
 console.clear();
-describe('NumberRange', function() {
-  for (test of tests) {
-    let testParsed = parser(test);
-    it(test, function() {
-      assert.deepEqual(eval(testParsed.code), eval(testParsed.except))
-    });
-  }
-});
+initTest('NumberRange', tests);
