@@ -119,9 +119,9 @@ const { CharRange } = require('ranging');
 console.log([
   ...new CharRange()
 ]);
-// ['A', ..., 'Z']
+// [ 'A', ..., 'Z' ]
 ```
-So you can use this like NumberRange
+Simillary, you can use options like `step`, `count` and etc.
 ```javascript
 console.log([
   ...new CharRange({
@@ -130,10 +130,11 @@ console.log([
     step: 2
   })
 ]);
+// [ 'a', 'c', 'e' ]
 ```
 
 # String Ranges
-This is almost the same as CharRange, only iterates over the passed string
+**Iteration over a passed string**
 ```javascript
 const { StringRange } = require('ranging');
 
@@ -153,17 +154,18 @@ console.log([
 ```
 
 # Date Ranges
-## Main date range
+## Simple Date Range
 ```javascript
 const { DateRange } = require('ranging');
 
 console.log([
   ...new DateRange({
     start: new Date(),
-    count: 5, // you can use `count` in all ranges if you set this, then that uses instead `end` property
+    count: 5, // if given, overrides `step`
     step: 5
   })
 ])
+
 // [
 //   2021-08-18T09:23:55.670Z,
 //   2021-08-18T09:23:55.675Z,
@@ -173,8 +175,8 @@ console.log([
 // ]
 ```
 
-## Sub ranges
-You can use sub ranges, that names `[timeUnit]Range` for example: `SecondRange`, `MinuteRange`, etc
+## Other time units
+You can use various time units, such as `SecondRange`, `MinuteRange` and etc.
 ```javascript
 const { YearRange } = require('ranging');
 
@@ -185,6 +187,7 @@ console.log([
     count: 10
   })
 ])
+
 // [
 //   2024-08-18T09:34:01.866Z,
 //   2028-08-18T09:34:01.866Z,
@@ -193,8 +196,9 @@ console.log([
 //   2040-08-18T09:34:01.866Z
 // ]
 ```
-## Color range
-I think this range will be useful for those who often work with color
+
+# Less known solutions
+## Color Range
 ```javascript
 const { ColorRange } = require('ranging');
 
@@ -202,8 +206,11 @@ console.log(...new ColorRange({ end: '#00000F' }));
 // #000000 #000001 #000002 #000003 #000004 #000005 #000006 #000007 #000008 #000009 #00000a #00000b #00000c #00000d #00000e #00000f
 ```
 
+<br>
+<hr>
+
 ## Merging ranges
-You can merge a few ranges
+Glue ranges together.
 ```javascript
 const { NumberRange, CharRange, MergeRanges } = require('./range');
 
@@ -216,24 +223,24 @@ console.log(...merging);
 // 0 1 2 3 4 5 A B C D
 ```
 
-## Combining ranges
-You also can combine a two ranges
+## Combining (zipping) ranges
+Works as the known function from other programming languages.
 ```javascript
-const { NumberRange, CharRange, ZipRange } = require('./range');
+const { NumberRange, CharRange, ZipRanges } = require('./range');
 
 const numbers = new NumberRange({ start: 1 });
 const chars = new CharRange({ end: 'D' });
 
-const combine = new ZipRange({ keys: chars, values: numbers });
+const zipped = new ZipRanges({ keys: chars, values: numbers });
 
-console.log(...combine);
+console.log(...zipped);
 // {'A': 1}
 // {'B': 2}
 // {'C': 3}
 // {'D': 4}
 
 // or
-console.log(combine.ranged);
+console.log(zipped.ranged);
 // {
 //   'A': 1,
 //   'B': 2,
@@ -241,18 +248,20 @@ console.log(combine.ranged);
 //   'D': 4
 // }
 ```
-# Map, filter, length, reduce, sum (only NumberRange)
+*Note:* `numbers` is set up as an infinite iterator, but zipping it with `chars` limits it to just 4 entries.
+
+# Range Functions
 ## Map
 ```javascript
 const { StringRange } = require('ranging');
 
 const word = new StringRange({
-  source: 'Some bad word',
-  map: (item) => (item === ' ' ? item : 'x')
+  source: 'Crypted.',
+  map: (x) => String.fromCharCode(x.charCodeAt(0) + 1)
 });
 
 console.log([...word].join(''))
-// xxxx xxx xxxx
+// Dszqufe/
 ```
 
 ## Filter
@@ -292,8 +301,7 @@ console.log(someSeq.length);
 // 9
 ```
 
-## Sum
-This getter is designed to correctly sum floating point numbers
+## Sum (only `NumberRange`)
 ```javascript
 const { NumberRange } = require('ranging');
 
@@ -309,4 +317,4 @@ console.log(
 ```
 
 # License
-Copyright (c) 2021 Kirill (Crinax), Eugen Gritz (maycircle). [MIT license](https://github.com/Crinax/rangeJS/blob/main/LICENSE).
+Copyright (c) 2021 by Kirill (Crinax), Eugene Gritz (maycircle). [MIT license](https://github.com/Crinax/rangeJS/blob/main/LICENSE).
