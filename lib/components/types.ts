@@ -1,4 +1,4 @@
-import AbstractRange from "./ranges/abstractRange";
+import AbstractRange from "./ranges/AbstractRange";
 
 interface IRangeOptions<EdgeT, ItemT, DateT = EdgeT> {
   start?: EdgeT;

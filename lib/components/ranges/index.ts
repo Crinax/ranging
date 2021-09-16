@@ -1,9 +1,9 @@
-import NumberRange from './numberRange';
-import CharRange from './charRange';
-import StringRange from './stringRange';
-import ColorRange from './colorRange';
-import MergeRanges from './mergeRanges';
-import ZipRanges from './zipRanges';
+import NumberRange from './NumberRange';
+import CharRange from './CharRange';
+import StringRange from './StringRange';
+import ColorRange from './ColorRange';
+import MergeRanges from './MergeRanges';
+import ZipRanges from './ZipRanges';
 import {
   DateRange,
   DayRange,
