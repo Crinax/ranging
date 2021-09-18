@@ -11,10 +11,10 @@ import { NumberRangeOptionsT } from '../types';
  * @returns {Number} Number
  * @protected
  */
-function add(a: number, b: number): number {
-  let res = `${a + b}`;
+function fixOperation(a: number, b: number, oper: string):number {
+  let res = `${oper === '+' ? a + b : a * b}`;
   // Reliable absence of approximation error
-  if (res.length < 16) return a + b;
+  if (res.length < 16) return oper === '+' ? a + b : a * b;
 
   const sA = `${a}`;
   const sB = `${b}`;
@@ -45,7 +45,7 @@ function add(a: number, b: number): number {
     || bExponentPos - bFractionPos - 1 >= 16 - bFractionPos)) {
     return a + b;
   }
-  if (exponentPos - fractionPos - 1 < 16 - fractionPos) return a + b;
+  if (exponentPos - fractionPos - 1 < 16 - fractionPos) return oper === '+' ? a + b : a * b;
 
   const fractionLength = res.length - res.indexOf('.') - 2;
   if (res[res.length - 2] === '9') {
@@ -60,6 +60,8 @@ function add(a: number, b: number): number {
   res = res.slice(0, (sA.length > sB.length ? sA.length : sB.length) + 1);
   return +(res + exponent);
 }
+const add = (a: number, b: number): number => fixOperation(a, b, '+');
+const product = (a: number, b: number): number => fixOperation(a, b, '*');
 
 class NumberRange extends AbstractRange<number> {
   protected options: NumberRangeOptionsT;
@@ -77,6 +79,10 @@ class NumberRange extends AbstractRange<number> {
 
   get sum(): number {
     return this.reduce(add);
+  }
+
+  get product(): number {
+    return this.reduce(product, 1)
   }
 
   [Symbol.iterator](): Iterator<number> {

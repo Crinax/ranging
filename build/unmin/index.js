@@ -147,11 +147,11 @@
      * @returns {Number} Number
      * @protected
      */
-    function add(a, b) {
-        var res = "" + (a + b);
+    function fixOperation(a, b, oper) {
+        var res = "" + (oper === '+' ? a + b : a * b);
         // Reliable absence of approximation error
         if (res.length < 16)
-            return a + b;
+            return oper === '+' ? a + b : a * b;
         var sA = "" + a;
         var sB = "" + b;
         var fractionPos = res.indexOf('.');
@@ -181,7 +181,7 @@
             return a + b;
         }
         if (exponentPos - fractionPos - 1 < 16 - fractionPos)
-            return a + b;
+            return oper === '+' ? a + b : a * b;
         var fractionLength = res.length - res.indexOf('.') - 2;
         if (res[res.length - 2] === '9') {
             // Round up the last number (9) from result
@@ -194,6 +194,8 @@
         res = res.slice(0, (sA.length > sB.length ? sA.length : sB.length) + 1);
         return +(res + exponent);
     }
+    var add = function (a, b) { return fixOperation(a, b, '+'); };
+    var product = function (a, b) { return fixOperation(a, b, '*'); };
     var NumberRange = /** @class */ (function (_super) {
         __extends(NumberRange, _super);
         function NumberRange(options) {
@@ -204,6 +206,13 @@
         Object.defineProperty(NumberRange.prototype, "sum", {
             get: function () {
                 return this.reduce(add);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(NumberRange.prototype, "product", {
+            get: function () {
+                return this.reduce(product, 1);
             },
             enumerable: false,
             configurable: true

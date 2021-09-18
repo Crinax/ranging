@@ -61,10 +61,11 @@ const tests = [
     }).length should return 10
   `,
   `#10
-    [...new NumberRange({
+    new NumberRange({
+      start: 1,
       count: 5,
-      filter: (x) => (x % 5 === 0 && x % 3 === 0)
-    })] should return [0, 15, 30, 45, 60]
+      // filter: (x) => (x % 5 === 0 && x % 3 === 0)
+    }).product should return 120/* 1215000 */
   `
 ]
 

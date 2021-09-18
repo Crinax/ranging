@@ -28,10 +28,7 @@ abstract class AbstractRange<ItemT> {
   }
 
   get stringify() {
-    return this.reduce(
-      (prev, curr) => String(prev) + String(curr),
-      ''
-    );
+    return this.reduce((prev, curr) => String(prev) + String(curr), '');
   }
 
   [Symbol.iterator](): Iterator<ItemT> {
