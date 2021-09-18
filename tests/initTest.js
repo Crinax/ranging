@@ -19,7 +19,7 @@ const {
 
 const initTest = (header, tests, assertMethod) => {
   describe(header, function () {
-    for (test of tests) {
+    for (let test of tests) {
       const testParsed = parser(test);
       it(test, function () {
         assert[assertMethod](eval(testParsed.code), eval(testParsed.except));

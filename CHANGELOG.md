@@ -5,3 +5,4 @@
 - Added more tests
 - Fixed approximation error in sum
 - Added `product` getter
+- Fix `map` function in `DateRange` and other `[TimeUnit]Range`

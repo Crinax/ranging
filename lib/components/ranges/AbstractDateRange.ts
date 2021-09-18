@@ -117,7 +117,7 @@ abstract class AbstractDateRange extends AbstractRange<Date> {
           let mappedValue;
           if (map) mappedValue = map(new Date(start!), index);
           index += 1;
-          if (mappedValue) mappedValue = new Date(mappedValue);
+          if (mappedValue) mappedValue = mappedValue;
 
           return {
             value: mappedValue || new Date(start!),

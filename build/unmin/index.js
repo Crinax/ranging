@@ -688,7 +688,7 @@
                             mappedValue = map(new Date(start), index);
                         index += 1;
                         if (mappedValue)
-                            mappedValue = new Date(mappedValue);
+                            mappedValue = mappedValue;
                         return {
                             value: mappedValue || new Date(start),
                             done: false,
