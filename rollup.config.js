@@ -10,6 +10,7 @@ export default {
       name: 'ranging',
       file: 'build/unmin/index.js',
       format: 'umd',
+      plugins: [],
     },
     {
       file: 'build/unmin/index.mjs',

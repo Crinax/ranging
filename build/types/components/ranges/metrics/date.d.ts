@@ -1,5 +1,5 @@
 import { DateRangeOptionsT } from "../../types";
-import AbstractDateRange from '../abstractDateRange';
+import AbstractDateRange from '../AbstractDateRange';
 import DayRange from "./day";
 import HourRange from "./hour";
 import MinuteRange from "./minute";

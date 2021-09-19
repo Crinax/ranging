@@ -120,6 +120,13 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(AbstractRange.prototype, "stringify", {
+            get: function () {
+                return this.reduce(function (prev, curr) { return String(prev) + String(curr); }, '');
+            },
+            enumerable: false,
+            configurable: true
+        });
         AbstractRange.prototype[Symbol.iterator] = function () {
             return {
                 next: function () {
@@ -140,11 +147,11 @@
      * @returns {Number} Number
      * @protected
      */
-    function add(a, b) {
-        var res = "" + (a + b);
+    function fixOperation(a, b, oper) {
+        var res = "" + (oper === '+' ? a + b : a * b);
         // Reliable absence of approximation error
         if (res.length < 16)
-            return a + b;
+            return oper === '+' ? a + b : a * b;
         var sA = "" + a;
         var sB = "" + b;
         var fractionPos = res.indexOf('.');
@@ -174,19 +181,21 @@
             return a + b;
         }
         if (exponentPos - fractionPos - 1 < 16 - fractionPos)
-            return a + b;
-        // Cut exponent power from result, calculate it's length
-        res = res.slice(0, (sA.length > sB.length ? sA.length : sB.length) + 1);
+            return oper === '+' ? a + b : a * b;
         var fractionLength = res.length - res.indexOf('.') - 2;
-        if (res[res.length - 1] === '9') {
+        if (res[res.length - 2] === '9') {
             // Round up the last number (9) from result
             var exponetialForm = res + "e" + fractionLength;
             var ceiledNumber = Math.ceil(Number(exponetialForm));
             exponetialForm = ceiledNumber + "e" + -fractionLength;
             return +(+(exponetialForm) + exponent);
         }
+        // Cut exponent power from result, calculate it's length
+        res = res.slice(0, (sA.length > sB.length ? sA.length : sB.length) + 1);
         return +(res + exponent);
     }
+    var add = function (a, b) { return fixOperation(a, b, '+'); };
+    var product = function (a, b) { return fixOperation(a, b, '*'); };
     var NumberRange = /** @class */ (function (_super) {
         __extends(NumberRange, _super);
         function NumberRange(options) {
@@ -197,6 +206,13 @@
         Object.defineProperty(NumberRange.prototype, "sum", {
             get: function () {
                 return this.reduce(add);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(NumberRange.prototype, "product", {
+            get: function () {
+                return this.reduce(product, 1);
             },
             enumerable: false,
             configurable: true
@@ -513,6 +529,16 @@
             return _this;
         }
         Object.defineProperty(ZipRanges.prototype, "merged", {
+            /**
+             * @deprecated
+             */
+            get: function () {
+                return this.reduce(function (prev, curr) { return Object.assign(prev, curr); }, {});
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ZipRanges.prototype, "dict", {
             get: function () {
                 return this.reduce(function (prev, curr) { return Object.assign(prev, curr); }, {});
             },
@@ -520,13 +546,14 @@
             configurable: true
         });
         ZipRanges.prototype[Symbol.iterator] = function () {
-            var count, _a, keys, values, map, filter, elementIndex, keysIterator, valuesIterator, keysObj, valuesObj, objResult;
+            var count, _a, keys, values, _b, step, map, filter, elementIndex, extIndex, keysIterator, valuesIterator, keysObj, valuesObj, objResult;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         count = this.options.count;
-                        _a = this.options, keys = _a.keys, values = _a.values, map = _a.map, filter = _a.filter;
+                        _a = this.options, keys = _a.keys, values = _a.values, _b = _a.step, step = _b === void 0 ? 1 : _b, map = _a.map, filter = _a.filter;
                         elementIndex = 0;
+                        extIndex = 1;
                         keysIterator = keys.iterator;
                         valuesIterator = values.iterator;
                         keysObj = keysIterator.next();
@@ -534,6 +561,11 @@
                         _c.label = 1;
                     case 1:
                         if (!(!keysObj.done && !valuesObj.done)) return [3 /*break*/, 6];
+                        while (extIndex % step !== 0) {
+                            keysObj = keysIterator.next();
+                            valuesObj = valuesIterator.next();
+                            extIndex++;
+                        }
                         objResult = Object.fromEntries([[keysObj.value, valuesObj.value]]);
                         if (filter) {
                             if (!filter(objResult, elementIndex))
@@ -552,6 +584,7 @@
                         keysObj = keysIterator.next();
                         valuesObj = valuesIterator.next();
                         elementIndex++;
+                        extIndex++;
                         if (count)
                             count--;
                         if (count && count === 0)
@@ -598,12 +631,12 @@
         AbstractDateRange.prototype.getTime = function (start) {
             if (!this.dateGetters)
                 this.setSearchMetricMap(start);
-            return this.dateGetters[this.metric]();
+            return this.dateGetters[this.metric].call(start);
         };
         AbstractDateRange.prototype.setTime = function (start, value) {
             if (!this.dateSetters)
                 this.setSearchMetricMap(start);
-            return this.dateSetters[this.metric](value);
+            return this.dateSetters[this.metric].call(start, value);
         };
         AbstractDateRange.prototype[Symbol.iterator] = function () {
             var start = this.options.start;
@@ -664,7 +697,7 @@
                             mappedValue = map(new Date(start), index);
                         index += 1;
                         if (mappedValue)
-                            mappedValue = new Date(mappedValue);
+                            mappedValue = mappedValue;
                         return {
                             value: mappedValue || new Date(start),
                             done: false,
