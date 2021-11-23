@@ -1,6 +1,7 @@
 import * as types from './types';
 import {
   NumberRange,
+  newNumberRange,
   CharRange,
   StringRange,
   ColorRange,
@@ -76,6 +77,7 @@ class Range {
 export {
   Range,
   NumberRange,
+  newNumberRange,
   CharRange,
   StringRange,
   ColorRange,

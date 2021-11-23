@@ -1,4 +1,5 @@
 import NumberRange from './NumberRange';
+import newNumberRange from './newNumberRange';
 import CharRange from './CharRange';
 import StringRange from './StringRange';
 import ColorRange from './ColorRange';
@@ -16,6 +17,7 @@ import {
 
 export {
   NumberRange,
+  newNumberRange,
   CharRange,
   StringRange,
   ColorRange,

@@ -1,3 +1,9 @@
+# v3.0.0
+- Refactoring
+- Added `RandomRange`
+- Added more tests
+- Removed `merged` getter
+- Added Wiki
 # v2.2.0
 - For `ZipRange` use `dict` getter instead a `merged`. `merged` getter is deprecated.
 - Added new getter `stringify`.

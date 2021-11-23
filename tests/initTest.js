@@ -3,18 +3,18 @@ const assert = require('assert');
 const {
   Range,
   NumberRange,
-  CharRange,
-  StringRange,
-  ColorRange,
-  DateRange,
-  DayRange,
-  MonthRange,
-  YearRange,
-  SecondRange,
-  MinuteRange,
-  HourRange,
-  MergeRanges,
-  ZipRanges
+  // CharRange,
+  // StringRange,
+  // ColorRange,
+  // DateRange,
+  // DayRange,
+  // MonthRange,
+  // YearRange,
+  // SecondRange,
+  // MinuteRange,
+  // HourRange,
+  // MergeRanges,
+  // ZipRanges
 } = require('../');
 
 const initTest = (header, tests, assertMethod) => {

@@ -1,6 +1,7 @@
 import {
   Range,
   NumberRange,
+  newNumberRange,
   CharRange,
   StringRange,
   ColorRange,
@@ -18,6 +19,7 @@ import {
 export {
   Range,
   NumberRange,
+  newNumberRange,
   CharRange,
   StringRange,
   ColorRange,

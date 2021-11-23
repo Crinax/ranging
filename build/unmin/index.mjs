@@ -141,6 +141,138 @@ var AbstractRange = /** @class */ (function () {
  * @returns {Number} Number
  * @protected
  */
+function fixOperation$1(a, b, oper) {
+    var res = "" + (oper === '+' ? a + b : a * b);
+    // Reliable absence of approximation error
+    if (res.length < 16)
+        return oper === '+' ? a + b : a * b;
+    var sA = "" + a;
+    var sB = "" + b;
+    var fractionPos = res.indexOf('.');
+    var exponentPos = res.lastIndexOf('e');
+    var aFractionPos = sA.indexOf('.');
+    var aExponentPos = sA.lastIndexOf('e');
+    var bFractionPos = sB.indexOf('.');
+    var bExponentPos = sB.lastIndexOf('e');
+    // Obtain exponent power from result
+    var exponent;
+    if (exponentPos !== -1) {
+        exponent = res.slice(exponentPos, res.length);
+    }
+    else {
+        exponent = '';
+    }
+    if (exponentPos === -1)
+        exponentPos = res.length;
+    if (aExponentPos === -1)
+        aExponentPos = sA.length;
+    if (bExponentPos === -1)
+        bExponentPos = sB.length;
+    // The more numbers in decimal places the less fractional places
+    if (exponentPos - fractionPos - 1 >= 17 - fractionPos
+        && (aExponentPos - aFractionPos - 1 >= 16 - aFractionPos
+            || bExponentPos - bFractionPos - 1 >= 16 - bFractionPos)) {
+        return a + b;
+    }
+    if (exponentPos - fractionPos - 1 < 16 - fractionPos)
+        return oper === '+' ? a + b : a * b;
+    var fractionLength = res.length - res.indexOf('.') - 2;
+    if (res[res.length - 2] === '9') {
+        // Round up the last number (9) from result
+        var exponetialForm = res + "e" + fractionLength;
+        var ceiledNumber = Math.ceil(Number(exponetialForm));
+        exponetialForm = ceiledNumber + "e" + -fractionLength;
+        return +(+(exponetialForm) + exponent);
+    }
+    // Cut exponent power from result, calculate it's length
+    res = res.slice(0, (sA.length > sB.length ? sA.length : sB.length) + 1);
+    return +(res + exponent);
+}
+var add$1 = function (a, b) { return fixOperation$1(a, b, '+'); };
+var product$1 = function (a, b) { return fixOperation$1(a, b, '*'); };
+var NumberRange = /** @class */ (function (_super) {
+    __extends(NumberRange, _super);
+    function NumberRange(options) {
+        var _this = _super.call(this) || this;
+        _this.options = __assign({ start: 0, end: Infinity, step: 1, float: false }, options);
+        return _this;
+    }
+    Object.defineProperty(NumberRange.prototype, "sum", {
+        get: function () {
+            return this.reduce(add$1);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(NumberRange.prototype, "product", {
+        get: function () {
+            return this.reduce(product$1, 1);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    NumberRange.prototype[Symbol.iterator] = function () {
+        var start = this.options.start;
+        var _a = this.options, end = _a.end, step = _a.step, count = _a.count, float = _a.float, map = _a.map, filter = _a.filter;
+        var index = 0;
+        return {
+            next: function () {
+                if ((count && index < count) || (!count && start <= end)) {
+                    var startInc = function () {
+                        if (float) {
+                            start = add$1(start, step);
+                        }
+                        else {
+                            start += step;
+                        }
+                    };
+                    if (index !== 0) {
+                        startInc();
+                    }
+                    while (filter && !filter(start, index)) {
+                        if (!count && start > end) {
+                            return {
+                                value: undefined,
+                                done: true,
+                            };
+                        }
+                        startInc();
+                    }
+                    if ((!count && start > end)) {
+                        return {
+                            value: undefined,
+                            done: true,
+                        };
+                    }
+                    var mappedValue = void 0;
+                    if (map)
+                        mappedValue = map(start, index);
+                    index += 1;
+                    return {
+                        value: mappedValue || start,
+                        done: false,
+                    };
+                }
+                return {
+                    value: undefined,
+                    done: true,
+                };
+            },
+        };
+    };
+    return NumberRange;
+}(AbstractRange));
+
+/**
+ * Reworked floating point numbers addition operator.
+ * @author [Eugen Gritz]
+ * @link https://github.com/maycircle
+ * @function add
+ * @param {Number} a
+ * @param {Number} b
+ * @returns {Number} Number
+ * @protected
+ */
 function fixOperation(a, b, oper) {
     var res = "" + (oper === '+' ? a + b : a * b);
     // Reliable absence of approximation error
@@ -190,77 +322,96 @@ function fixOperation(a, b, oper) {
 }
 var add = function (a, b) { return fixOperation(a, b, '+'); };
 var product = function (a, b) { return fixOperation(a, b, '*'); };
-var NumberRange = /** @class */ (function (_super) {
-    __extends(NumberRange, _super);
-    function NumberRange(options) {
+var newNumberRange = /** @class */ (function (_super) {
+    __extends(newNumberRange, _super);
+    function newNumberRange(options) {
         var _this = _super.call(this) || this;
         _this.options = __assign({ start: 0, end: Infinity, step: 1, float: false }, options);
         return _this;
     }
-    Object.defineProperty(NumberRange.prototype, "sum", {
+    Object.defineProperty(newNumberRange.prototype, "sum", {
         get: function () {
             return this.reduce(add);
         },
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(NumberRange.prototype, "product", {
+    Object.defineProperty(newNumberRange.prototype, "product", {
         get: function () {
             return this.reduce(product, 1);
         },
         enumerable: false,
         configurable: true
     });
-    NumberRange.prototype[Symbol.iterator] = function () {
-        var start = this.options.start;
-        var _a = this.options, end = _a.end, step = _a.step, count = _a.count, float = _a.float, map = _a.map, filter = _a.filter;
-        var index = 0;
-        return {
-            next: function () {
-                if ((count && index < count) || (!count && start <= end)) {
-                    var startInc = function () {
-                        if (float) {
+    newNumberRange.prototype[Symbol.iterator] = function () {
+        var _a, start, _b, _c, end, _d, step, count, float, map, filter, index, addStep, filterValues;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
+                    _a = this.options.start, start = _a === void 0 ? 0 : _a;
+                    _b = this.options, _c = _b.end, end = _c === void 0 ? Infinity : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, float = _b.float, map = _b.map, filter = _b.filter;
+                    index = 0;
+                    addStep = function () {
+                        if (float)
                             start = add(start, step);
-                        }
-                        else {
+                        else
                             start += step;
+                    };
+                    filterValues = function () {
+                        if (filter) {
+                            while (!filter(start, end)) {
+                                if (!count && start > end)
+                                    return false;
+                                addStep();
+                            }
                         }
                     };
-                    if (index !== 0) {
-                        startInc();
-                    }
-                    while (filter && !filter(start, index)) {
-                        if (!count && start > end) {
-                            return {
-                                value: undefined,
-                                done: true,
-                            };
-                        }
-                        startInc();
-                    }
-                    if ((!count && start > end)) {
-                        return {
-                            value: undefined,
-                            done: true,
-                        };
-                    }
-                    var mappedValue = void 0;
-                    if (map)
-                        mappedValue = map(start, index);
+                    if (!count) return [3 /*break*/, 8];
+                    _e.label = 1;
+                case 1:
+                    if (!(index < count)) return [3 /*break*/, 7];
+                    filterValues();
+                    if (!map) return [3 /*break*/, 3];
+                    return [4 /*yield*/, map(start, index)];
+                case 2:
+                    _e.sent();
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, start];
+                case 4:
+                    _e.sent();
+                    _e.label = 5;
+                case 5:
+                    addStep();
+                    _e.label = 6;
+                case 6:
+                    index++;
+                    return [3 /*break*/, 1];
+                case 7: return [3 /*break*/, 15];
+                case 8:
+                    _e.label = 9;
+                case 9:
+                    if (!(start <= end)) return [3 /*break*/, 15];
+                    filterValues();
+                    if (!map) return [3 /*break*/, 11];
+                    return [4 /*yield*/, map(start, index)];
+                case 10:
+                    _e.sent();
+                    return [3 /*break*/, 13];
+                case 11: return [4 /*yield*/, start];
+                case 12:
+                    _e.sent();
+                    _e.label = 13;
+                case 13:
                     index += 1;
-                    return {
-                        value: mappedValue || start,
-                        done: false,
-                    };
-                }
-                return {
-                    value: undefined,
-                    done: true,
-                };
-            },
-        };
+                    _e.label = 14;
+                case 14:
+                    addStep();
+                    return [3 /*break*/, 9];
+                case 15: return [2 /*return*/];
+            }
+        });
     };
-    return NumberRange;
+    return newNumberRange;
 }(AbstractRange));
 
 var CharRange = /** @class */ (function (_super) {
@@ -847,4 +998,4 @@ var Range = /** @class */ (function () {
     return Range;
 }());
 
-export { CharRange, ColorRange, DateRange, DayRange, HourRange, MergeRanges, MinuteRange, MonthRange, NumberRange, Range, SecondRange, StringRange, YearRange, ZipRanges };
+export { CharRange, ColorRange, DateRange, DayRange, HourRange, MergeRanges, MinuteRange, MonthRange, NumberRange, Range, SecondRange, StringRange, YearRange, ZipRanges, newNumberRange };
