@@ -3,6 +3,7 @@ import NumberRangeGeneratorT from './NumberRangeGeneratorT';
 import StringRangeGeneratorT from './StringRangeGeneratorT';
 import CharRangeGeneratorT from './CharRangeGeneratorT';
 import DateRangeGeneratorT from './DateRangeGeneratorT';
+import ColorRangeGeneratorT from './ColorRangeGeneratorT';
 
 //TODO: Add MergeRangesGeneratorT and ZipRangesGeneratorT
 
@@ -15,4 +16,5 @@ export {
   StringRangeGeneratorT,
   CharRangeGeneratorT,
   DateRangeGeneratorT,
+  ColorRangeGeneratorT,
 }

@@ -1,11 +1,10 @@
 const parser = require('./parser');
 const assert = require('assert');
 const {
-  Range,
   NumberRange,
-  // CharRange,
-  // StringRange,
-  // ColorRange,
+  CharRange,
+  StringRange,
+  ColorRange,
   // DateRange,
   // DayRange,
   // MonthRange,

@@ -2,7 +2,7 @@ import { AbstractRange } from '../abstract';
 import { NumberRangeGeneratorT, NumberRangeOptionsT } from '../types';
 import { add, product } from './utils/fixNumberOperations';
 
-class NumberRange extends AbstractRange<NumberRangeOptionsT, NumberRangeGeneratorT> {
+export default class NumberRange extends AbstractRange<NumberRangeOptionsT, NumberRangeGeneratorT> {
   constructor(options?: NumberRangeOptionsT) {
     super(
       options ||
@@ -35,7 +35,7 @@ class NumberRange extends AbstractRange<NumberRangeOptionsT, NumberRangeGenerato
     const addStep = () => {
       if (float) return (start = add(start, step), start)
         else (start = start + step, start);
-    }
+    };
 
     while ((count && index < count) || (!count && start <= end)) {
       if (filter && !filter(start, index)) {
@@ -50,5 +50,3 @@ class NumberRange extends AbstractRange<NumberRangeOptionsT, NumberRangeGenerato
     }
   }
 }
-
-export default NumberRange;
