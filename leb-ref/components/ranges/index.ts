@@ -10,6 +10,7 @@ import DayRange from './DayRange';
 import MonthRange from './MonthRange';
 import YearRange from './YearRange';
 import MergeRange from './MergeRange';
+import ZipRange from './ZipRange';
 
 export {
   CharRange,
@@ -24,4 +25,5 @@ export {
   MonthRange,
   YearRange,
   MergeRange,
+  ZipRange,
 }

@@ -616,4 +616,72 @@ var MergeRange = /** @class */ (function (_super) {
     return MergeRange;
 }(AbstractRange));
 
-export { AbstractDateRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, SecondRange, StringRange, YearRange };
+var ZipRange = /** @class */ (function (_super) {
+    __extends(ZipRange, _super);
+    function ZipRange(options) {
+        return _super.call(this, options) || this;
+    }
+    Object.defineProperty(ZipRange.prototype, "dict", {
+        get: function () {
+            return this.reduce(function (prev, curr) { return Object.assign(prev, curr); }, {});
+        },
+        enumerable: false,
+        configurable: true
+    });
+    ZipRange.prototype[Symbol.iterator] = function () {
+        var _a, keys, count, values, _b, step, map, filter, keysIterator, valuesIterator, index, elementIndex, extIndex, keysObj, valuesObj, addStep, objResult;
+        var _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    _a = this.options, keys = _a.keys, count = _a.count, values = _a.values, _b = _a.step, step = _b === void 0 ? 1 : _b, map = _a.map, filter = _a.filter;
+                    keysIterator = keys.iterator;
+                    valuesIterator = values.iterator;
+                    index = 0;
+                    elementIndex = 0;
+                    extIndex = 1;
+                    keysObj = keysIterator.next();
+                    valuesObj = valuesIterator.next();
+                    addStep = function () {
+                        keysObj = keysIterator.next();
+                        valuesObj = valuesIterator.next();
+                    };
+                    _d.label = 1;
+                case 1:
+                    if (!(!keysObj.done && !valuesObj.done)) return [3 /*break*/, 6];
+                    if (count && count === 0)
+                        return [2 /*return*/];
+                    if (extIndex % step !== 0) {
+                        addStep();
+                        extIndex++;
+                        return [3 /*break*/, 1];
+                    }
+                    objResult = (_c = {}, _c[keysObj.value] = valuesObj.value, _c);
+                    if (filter && !filter(objResult, elementIndex)) {
+                        addStep();
+                        elementIndex++;
+                        return [3 /*break*/, 1];
+                    }
+                    if (!map) return [3 /*break*/, 3];
+                    return [4 /*yield*/, map(objResult, index)];
+                case 2:
+                    _d.sent();
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, objResult];
+                case 4:
+                    _d.sent();
+                    _d.label = 5;
+                case 5:
+                    addStep();
+                    elementIndex++;
+                    extIndex++;
+                    index++;
+                    return [3 /*break*/, 1];
+                case 6: return [2 /*return*/];
+            }
+        });
+    };
+    return ZipRange;
+}(AbstractRange));
+
+export { AbstractDateRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, SecondRange, StringRange, YearRange, ZipRange };

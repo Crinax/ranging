@@ -12,8 +12,8 @@ const {
   DayRange,
   MonthRange,
   YearRange,
-  // ZipRanges,
   MergeRange,
+  ZipRange,
 } = require('../');
 
 const initTest = (header, tests, assertMethod) => {
