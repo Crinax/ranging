@@ -1,8 +1,7 @@
-import { AbstractRangeGenerator, NumberRange, NumberRangeGeneratorT } from '..';
 import AbstractRange from './AbstractRange';
+import { GeneratorTypeFromClass, OptionsTypeFromClass, RandomRangeOptionsT } from '../types';
 
-type A<T> = T extends AbstractRange<infer OptionsT, any> ? OptionsT : never;
-type B<T> = NumberRange extends AbstractRange<A<T>, infer GeneratorT> ? GeneratorT: never;
-
-let f: A<NumberRange>;
-let d: B<NumberRange>;
+export default abstract class AbstractRandomRange<T> extends AbstractRange<
+  RandomRangeOptionsT<OptionsTypeFromClass<T>>,
+  GeneratorTypeFromClass<T>
+> { }

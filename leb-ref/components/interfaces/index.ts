@@ -7,6 +7,7 @@ import IDateRangeOptions from './IDateRangeOptions';
 import IAnyRangeOptions from './IAnyRangeOptions';
 import IMergeRangeOptions from './IMergeRangeOptions';
 import IZipRangeOptions from './IZipRangeOptions';
+import IRandomRangeOptions from './IRandomRangeOptions';
 
 export {
   IRangeOptions,
@@ -18,4 +19,5 @@ export {
   IAnyRangeOptions,
   IMergeRangeOptions,
   IZipRangeOptions,
+  IRandomRangeOptions,
 }
