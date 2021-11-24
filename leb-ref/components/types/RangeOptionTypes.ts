@@ -11,12 +11,9 @@ type MergeRangeOptionsT = Interfaces.IMergeRangeOptions;
 type ZipRangeOptionsT = Interfaces.IZipRangeOptions;
 
 type OptionsType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? T : never;
-type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT>
-  ? EdgeT : never;
-type OptionsItemType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT>
-  ? ItemT : never;
-type OptionsDateType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT>
-  ? DateT : never;
+type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? EdgeT : never;
+type OptionsItemType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? ItemT : never;
+type OptionsDateType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? DateT : never;
 
 export {
   AnyRangeOptionsT,

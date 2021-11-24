@@ -1,7 +1,7 @@
 import AbstractRangeGenerator from './AbstractRangeGenerator';
 import { OptionsType } from '../types';
 
-abstract class AbstractRange<OptionsT, GeneratorT> extends AbstractRangeGenerator<GeneratorT> {
+export default abstract class AbstractRange<OptionsT, GeneratorT> extends AbstractRangeGenerator<GeneratorT> {
   constructor(protected options: OptionsType<OptionsT>) {
     super();
   }
@@ -38,5 +38,3 @@ abstract class AbstractRange<OptionsT, GeneratorT> extends AbstractRangeGenerato
     return this.reduce((prev, curr) => String(prev) + String(curr), '');
   }
 }
-
-export default AbstractRange;

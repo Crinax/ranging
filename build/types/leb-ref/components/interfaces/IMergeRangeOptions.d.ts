@@ -1,9 +1,6 @@
+import IAnyRangeOptions from "./IAnyRangeOptions";
 import { AbstractRange } from "../abstract";
 import { AnyRangeOptionsT, AnyRangeGeneratorT } from "../types";
-export default interface IMergeRangeOptions {
+export default interface IMergeRangeOptions extends Omit<Omit<IAnyRangeOptions, 'start'>, 'end'> {
     ranges: AbstractRange<AnyRangeOptionsT, AnyRangeGeneratorT>[];
-    step?: number;
-    count?: number;
-    map?: (item: any, index: number) => any;
-    filter?: (item: any, index: number) => boolean;
 }

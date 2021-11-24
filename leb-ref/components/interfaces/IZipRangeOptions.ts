@@ -1,11 +1,8 @@
+import IRangeOptions from "./IRangeOptions";
 import { AbstractRange } from "../abstract";
 import { AnyRangeOptionsT, AnyRangeGeneratorT } from "../types";
 
-export default interface IZipRangeOptions {
+export default interface IZipRangeOptions extends Omit<Omit<IRangeOptions<never, object>, 'start'>, 'end'> {
   keys: AbstractRange<AnyRangeOptionsT, AnyRangeGeneratorT>;
   values: AbstractRange<AnyRangeOptionsT, AnyRangeGeneratorT>;
-  step?: number;
-  count?: number;
-  map?: (item: object, index: number) => any;
-  filter?: (item: object, index: any) => boolean;
 }

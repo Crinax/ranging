@@ -14,12 +14,6 @@ yarn add ranging
 # Examples
 ## Importing
 ```javascript
-const { Range } = require('ranging');
-// ES
-import { Range } from 'ranging';
-```
-**Import specific modules**
-```javascript
 const { NumberRange, StringRange } = require('ranging');
 // ES
 import { NumberRange, StringRange } from 'ranging';
