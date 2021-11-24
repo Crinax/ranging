@@ -1,29 +1,29 @@
 const initTest = require('./initTest');
 
 const tests = {
-  DateRange: [
+  MillisecondRange: [
     `#1
-      [...new DateRange({
+      [...new MillisecondRange({
         start: new Date('2021-09-18T05:35:37.352'),
         count: 5,
         map: (x) => x.getMilliseconds(),
       })] should return [352, 353, 354, 355, 356]
     `,
     `#2
-    [...new DateRange({
+    [...new MillisecondRange({
       start: new Date('2021-09-18T05:35:37.352'),
       end: new Date('2021-09-18T05:35:37.357'),
       map: (x) => x.getMilliseconds(),
     })] should return [352, 353, 354, 355, 356, 357]
     `,
     `#3
-    new DateRange({
+    new MillisecondRange({
       start: new Date('2021-09-18T05:35:37.352'),
       end: new Date('2021-09-18T05:35:37.451'),
     }).length should return 100
     `,
     `#4
-      [...new DateRange({
+      [...new MillisecondRange({
         start: new Date('2021-09-18T05:35:37.352'),
         end: new Date('2021-09-18T05:35:37.360'),
         filter: (x) => (x.getMilliseconds() % 2 === 0),
@@ -31,7 +31,7 @@ const tests = {
       })] should return [352, 354, 356, 358, 360]
     `,
     `#5
-      [...new DateRange({
+      [...new MillisecondRange({
         start: new Date('2021-09-18T05:35:37.352'),
         end: new Date('2021-09-18T05:35:40.352'),
         step: 1000,
@@ -136,7 +136,7 @@ const tests = {
       [...new YearRange({
         start: new Date('2021-09-18T08:35:37.352'),
         count: 7,
-        leepYear: true,
+        leapYear: true,
         map: (x) => x.getFullYear(),
       })] should return [2024, 2028, 2032, 2036, 2040, 2044, 2048]
     `,

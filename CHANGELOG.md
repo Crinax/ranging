@@ -1,9 +1,12 @@
 # v3.0.0
-- Refactoring
-- Added `RandomRange`
-- Added more tests
-- Removed `merged` getter
-- Added Wiki
+- Refactoring.
+- Added more tests.
+- Added `RandomRange`.
+- Removed `merged` getter.
+- Removed `DateRange` class. Use `MillisecondRange` instead.
+- Removed `leepYear` parameter in `DateRangeOptionsT`. Use `leapYear` instead (grammar mistake :D)
+- Added Wiki.
+- Added CHANGELOG.md.
 # v2.2.0
 - For `ZipRange` use `dict` getter instead a `merged`. `merged` getter is deprecated.
 - Added new getter `stringify`.

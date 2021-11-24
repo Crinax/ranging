@@ -120,6 +120,92 @@
         return AbstractRange;
     }(AbstractRangeGenerator));
 
+    var AbstractDateRange = /** @class */ (function (_super) {
+        __extends(AbstractDateRange, _super);
+        function AbstractDateRange(metric, options) {
+            var _this = _super.call(this, options) || this;
+            _this.metric = metric;
+            return _this;
+        }
+        AbstractDateRange.prototype.setSearchMetricMap = function (start) {
+            this.dateGetters = {
+                'ms': start.getTime,
+                's': start.getSeconds,
+                'm': start.getMinutes,
+                'h': start.getHours,
+                'D': start.getDate,
+                'M': start.getMonth,
+                'Y': start.getFullYear,
+            };
+            this.dateSetters = {
+                'ms': start.setTime,
+                's': start.setSeconds,
+                'm': start.setMinutes,
+                'h': start.setHours,
+                'D': start.setDate,
+                'M': start.setMonth,
+                'Y': start.setFullYear,
+            };
+        };
+        AbstractDateRange.prototype.getTime = function (start) {
+            if (!this.dateGetters)
+                this.setSearchMetricMap(start);
+            return this.dateGetters[this.metric].call(start);
+        };
+        AbstractDateRange.prototype.setTime = function (start, value) {
+            if (!this.dateSetters)
+                this.setSearchMetricMap(start);
+            return this.dateSetters[this.metric].call(start, value);
+        };
+        AbstractDateRange.prototype[Symbol.iterator] = function () {
+            var _a, start, _b, _c, end, _d, step, count, map, filter, leapYear, weekdays, index, isLeepYear, addStep;
+            var _this = this;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        _a = this.options.start, start = _a === void 0 ? new Date() : _a;
+                        _b = this.options, _c = _b.end, end = _c === void 0 ? Infinity : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, map = _b.map, filter = _b.filter, leapYear = _b.leapYear, weekdays = _b.weekdays;
+                        index = 0;
+                        start = new Date(start);
+                        isLeepYear = function (year) { return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0); };
+                        addStep = function () {
+                            _this.setTime(start, _this.getTime(start) + step);
+                        };
+                        _e.label = 1;
+                    case 1:
+                        if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
+                        if (filter && !filter(new Date(start), index)) {
+                            addStep();
+                            return [3 /*break*/, 1];
+                        }
+                        if (leapYear && !isLeepYear(start.getFullYear())) {
+                            addStep();
+                            return [3 /*break*/, 1];
+                        }
+                        if (weekdays && weekdays.indexOf(start.getDay()) === -1) {
+                            addStep();
+                            return [3 /*break*/, 1];
+                        }
+                        if (!map) return [3 /*break*/, 3];
+                        return [4 /*yield*/, map(new Date(start), index)];
+                    case 2:
+                        _e.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, new Date(start)];
+                    case 4:
+                        _e.sent();
+                        _e.label = 5;
+                    case 5:
+                        index += 1;
+                        addStep();
+                        return [3 /*break*/, 1];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        };
+        return AbstractDateRange;
+    }(AbstractRange));
+
     /**
      * Reworked floating point numbers addition operator.
      * @author [Eugen Gritz]
@@ -378,12 +464,76 @@
         return ColorRange;
     }(AbstractRange));
 
+    var MillisecondRange = /** @class */ (function (_super) {
+        __extends(MillisecondRange, _super);
+        function MillisecondRange(options) {
+            return _super.call(this, 'ms', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+        }
+        return MillisecondRange;
+    }(AbstractDateRange));
+
+    var SecondRange = /** @class */ (function (_super) {
+        __extends(SecondRange, _super);
+        function SecondRange(options) {
+            return _super.call(this, 's', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+        }
+        return SecondRange;
+    }(AbstractDateRange));
+
+    var MinuteRange = /** @class */ (function (_super) {
+        __extends(MinuteRange, _super);
+        function MinuteRange(options) {
+            return _super.call(this, 'm', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+        }
+        return MinuteRange;
+    }(AbstractDateRange));
+
+    var HourRange$1 = /** @class */ (function (_super) {
+        __extends(HourRange, _super);
+        function HourRange(options) {
+            return _super.call(this, 'h', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+        }
+        return HourRange;
+    }(AbstractDateRange));
+
+    var HourRange = /** @class */ (function (_super) {
+        __extends(HourRange, _super);
+        function HourRange(options) {
+            return _super.call(this, 'D', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+        }
+        return HourRange;
+    }(AbstractDateRange));
+
+    var MonthRange = /** @class */ (function (_super) {
+        __extends(MonthRange, _super);
+        function MonthRange(options) {
+            return _super.call(this, 'M', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+        }
+        return MonthRange;
+    }(AbstractDateRange));
+
+    var YearRange = /** @class */ (function (_super) {
+        __extends(YearRange, _super);
+        function YearRange(options) {
+            return _super.call(this, 'Y', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+        }
+        return YearRange;
+    }(AbstractDateRange));
+
+    exports.AbstractDateRange = AbstractDateRange;
     exports.AbstractRange = AbstractRange;
     exports.AbstractRangeGenerator = AbstractRangeGenerator;
     exports.CharRange = CharRange;
     exports.ColorRange = ColorRange;
+    exports.DayRange = HourRange;
+    exports.HourRange = HourRange$1;
+    exports.MillisecondRange = MillisecondRange;
+    exports.MinuteRange = MinuteRange;
+    exports.MonthRange = MonthRange;
     exports.NumberRange = NumberRange;
+    exports.SecondRange = SecondRange;
     exports.StringRange = StringRange;
+    exports.YearRange = YearRange;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
