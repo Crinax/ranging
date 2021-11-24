@@ -30,6 +30,7 @@ export default class NumberRange extends AbstractRange<NumberRangeOptionsT, Numb
       filter,
     } = this.options;
     let index = 0;
+    let extIndex = 0;
 
     // Adding `step` in dependences of float
     const addStep = () => {
@@ -38,14 +39,17 @@ export default class NumberRange extends AbstractRange<NumberRangeOptionsT, Numb
     };
 
     while ((count && index < count) || (!count && start <= end)) {
-      if (filter && !filter(start, index)) {
+      if (filter && !filter(start, extIndex)) {
+        extIndex++;
         addStep();
         continue;
       }
 
       if (map) yield map(start, index)
         else yield start;
-      index += 1;
+      
+      index++;
+      extIndex++;
       addStep();
     }
   }

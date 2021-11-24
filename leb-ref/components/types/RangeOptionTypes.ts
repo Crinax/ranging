@@ -7,6 +7,8 @@ type DateRangeOptionsT = Interfaces.IDateRangeOptions;
 type NumberRangeOptionsT = Interfaces.INumberRangeOptions;
 type RangeOptionsT<EdgeT, ItemT, DateT = EdgeT> = Interfaces.IRangeOptions<EdgeT, ItemT, DateT>;
 type StringRangeOptionsT = Interfaces.IStringRangeOptions;
+type MergeRangeOptionsT = Interfaces.IMergeRangeOptions;
+type ZipRangeOptionsT = Interfaces.IZipRangeOptions;
 
 type OptionsType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? T : never;
 type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT>
@@ -28,4 +30,6 @@ export {
   NumberRangeOptionsT,
   RangeOptionsT,
   StringRangeOptionsT,
+  MergeRangeOptionsT,
+  ZipRangeOptionsT,
 }

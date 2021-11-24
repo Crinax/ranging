@@ -5,4 +5,6 @@ import ICharRangeOptions from './ICharRangeOptions';
 import IColorRangeOptions from './IColorRangeOptions';
 import IDateRangeOptions from './IDateRangeOptions';
 import IAnyRangeOptions from './IAnyRangeOptions';
-export { IRangeOptions, INumberRangeOptions, IStringRangeOptions, ICharRangeOptions, IColorRangeOptions, IDateRangeOptions, IAnyRangeOptions, };
+import IMergeRangeOptions from './IMergeRangeOptions';
+import IZipRangeOptions from './IZipRangeOptions';
+export { IRangeOptions, INumberRangeOptions, IStringRangeOptions, ICharRangeOptions, IColorRangeOptions, IDateRangeOptions, IAnyRangeOptions, IMergeRangeOptions, IZipRangeOptions, };

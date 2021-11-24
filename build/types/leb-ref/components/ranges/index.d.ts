@@ -9,4 +9,5 @@ import HourRange from './HourRange';
 import DayRange from './DayRange';
 import MonthRange from './MonthRange';
 import YearRange from './YearRange';
-export { CharRange, ColorRange, StringRange, MillisecondRange, NumberRange, SecondRange, MinuteRange, HourRange, DayRange, MonthRange, YearRange, };
+import MergeRange from './MergeRange';
+export { CharRange, ColorRange, StringRange, MillisecondRange, NumberRange, SecondRange, MinuteRange, HourRange, DayRange, MonthRange, YearRange, MergeRange, };

@@ -18,6 +18,7 @@ export default class ColorRange extends AbstractRange<ColorRangeOptionsT, ColorR
       filter,
     } = this.options;
     let index = 0;
+    let extIndex = 0;
     start = start.toLowerCase();
     end = end.toLowerCase();
 
@@ -32,14 +33,17 @@ export default class ColorRange extends AbstractRange<ColorRangeOptionsT, ColorR
     };
 
     while ((count && index < count) || (!count && start <= end)) {
-      if (filter && !filter(start, index)) {
+      if (filter && !filter(start, extIndex)) {
+        extIndex++;
         addStep();
         continue;
       }
 
       if (map) yield map(start, index)
         else yield start;
-      index += 1;
+      
+      index++;
+      extIndex++;
       addStep();
     }
   }

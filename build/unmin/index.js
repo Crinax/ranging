@@ -63,6 +63,18 @@
         }
     }
 
+    function __values(o) {
+        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+        if (m) return m.call(o);
+        if (o && typeof o.length === "number") return {
+            next: function () {
+                if (o && i >= o.length) o = void 0;
+                return { value: o && o[i++], done: !o };
+            }
+        };
+        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+    }
+
     var AbstractRangeGenerator = /** @class */ (function () {
         function AbstractRangeGenerator() {
         }
@@ -158,7 +170,7 @@
             return this.dateSetters[this.metric].call(start, value);
         };
         AbstractDateRange.prototype[Symbol.iterator] = function () {
-            var _a, start, _b, _c, end, _d, step, count, map, filter, leapYear, weekdays, index, isLeepYear, addStep;
+            var _a, start, _b, _c, end, _d, step, count, map, filter, leapYear, weekdays, index, extIndex, isLeepYear, addStep;
             var _this = this;
             return __generator(this, function (_e) {
                 switch (_e.label) {
@@ -166,6 +178,7 @@
                         _a = this.options.start, start = _a === void 0 ? new Date() : _a;
                         _b = this.options, _c = _b.end, end = _c === void 0 ? Infinity : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, map = _b.map, filter = _b.filter, leapYear = _b.leapYear, weekdays = _b.weekdays;
                         index = 0;
+                        extIndex = 0;
                         start = new Date(start);
                         isLeepYear = function (year) { return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0); };
                         addStep = function () {
@@ -174,7 +187,8 @@
                         _e.label = 1;
                     case 1:
                         if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                        if (filter && !filter(new Date(start), index)) {
+                        if (filter && !filter(new Date(start), extIndex)) {
+                            extIndex++;
                             addStep();
                             return [3 /*break*/, 1];
                         }
@@ -196,7 +210,8 @@
                         _e.sent();
                         _e.label = 5;
                     case 5:
-                        index += 1;
+                        index++;
+                        extIndex++;
                         addStep();
                         return [3 /*break*/, 1];
                     case 6: return [2 /*return*/];
@@ -287,13 +302,14 @@
             configurable: true
         });
         NumberRange.prototype[Symbol.iterator] = function () {
-            var _a, start, _b, _c, end, _d, step, count, float, map, filter, index, addStep;
+            var _a, start, _b, _c, end, _d, step, count, float, map, filter, index, extIndex, addStep;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
                         _a = this.options.start, start = _a === void 0 ? 0 : _a;
                         _b = this.options, _c = _b.end, end = _c === void 0 ? Infinity : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, float = _b.float, map = _b.map, filter = _b.filter;
                         index = 0;
+                        extIndex = 0;
                         addStep = function () {
                             if (float)
                                 return (start = add(start, step), start);
@@ -303,7 +319,8 @@
                         _e.label = 1;
                     case 1:
                         if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                        if (filter && !filter(start, index)) {
+                        if (filter && !filter(start, extIndex)) {
+                            extIndex++;
                             addStep();
                             return [3 /*break*/, 1];
                         }
@@ -317,7 +334,8 @@
                         _e.sent();
                         _e.label = 5;
                     case 5:
-                        index += 1;
+                        index++;
+                        extIndex++;
                         addStep();
                         return [3 /*break*/, 1];
                     case 6: return [2 /*return*/];
@@ -334,18 +352,20 @@
                 { start: 'A', end: 'Z', step: 1 }) || this;
         }
         CharRange.prototype[Symbol.iterator] = function () {
-            var _a, start, _b, _c, end, _d, step, count, map, filter, index, addStep;
+            var _a, start, _b, _c, end, _d, step, count, map, filter, index, extIndex, addStep;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
                         _a = this.options.start, start = _a === void 0 ? 'A' : _a;
                         _b = this.options, _c = _b.end, end = _c === void 0 ? 'Z' : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, map = _b.map, filter = _b.filter;
                         index = 0;
+                        extIndex = 0;
                         addStep = function () { return start = String.fromCodePoint(start.codePointAt(0) + step); };
                         _e.label = 1;
                     case 1:
                         if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                        if (filter && !filter(start, index)) {
+                        if (filter && !filter(start, extIndex)) {
+                            extIndex++;
                             addStep();
                             return [3 /*break*/, 1];
                         }
@@ -359,7 +379,8 @@
                         _e.sent();
                         _e.label = 5;
                     case 5:
-                        index += 1;
+                        index++;
+                        extIndex++;
                         addStep();
                         return [3 /*break*/, 1];
                     case 6: return [2 /*return*/];
@@ -377,18 +398,20 @@
             return _this;
         }
         StringRange.prototype[Symbol.iterator] = function () {
-            var _a, start, _b, source, _c, end, _d, step, count, map, filter, index, addStep;
+            var _a, start, _b, source, _c, end, _d, step, count, map, filter, index, extIndex, addStep;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
                         _a = this.options.start, start = _a === void 0 ? 0 : _a;
                         _b = this.options, source = _b.source, _c = _b.end, end = _c === void 0 ? this.options.source.length : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, map = _b.map, filter = _b.filter;
                         index = 0;
+                        extIndex = 0;
                         addStep = function () { return start += step; };
                         _e.label = 1;
                     case 1:
                         if (!((source[start] !== undefined) && ((count && index < count) || (!count && start <= end)))) return [3 /*break*/, 6];
-                        if (filter && !filter(source[start], index)) {
+                        if (filter && !filter(source[start], extIndex)) {
+                            extIndex++;
                             addStep();
                             return [3 /*break*/, 1];
                         }
@@ -402,7 +425,8 @@
                         _e.sent();
                         _e.label = 5;
                     case 5:
-                        index += 1;
+                        index++;
+                        extIndex++;
                         addStep();
                         return [3 /*break*/, 1];
                     case 6: return [2 /*return*/];
@@ -419,13 +443,14 @@
                 { start: '#000000', end: '#FFFFFF', step: 1 }) || this;
         }
         ColorRange.prototype[Symbol.iterator] = function () {
-            var _a, _b, start, _c, end, _d, _e, step, count, map, filter, index, addStep;
+            var _a, _b, start, _c, end, _d, _e, step, count, map, filter, index, extIndex, addStep;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
                         _a = this.options, _b = _a.start, start = _b === void 0 ? '#000000' : _b, _c = _a.end, end = _c === void 0 ? '#FFFFFF' : _c;
                         _d = this.options, _e = _d.step, step = _e === void 0 ? 1 : _e, count = _d.count, map = _d.map, filter = _d.filter;
                         index = 0;
+                        extIndex = 0;
                         start = start.toLowerCase();
                         end = end.toLowerCase();
                         addStep = function () {
@@ -440,7 +465,8 @@
                         _f.label = 1;
                     case 1:
                         if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                        if (filter && !filter(start, index)) {
+                        if (filter && !filter(start, extIndex)) {
+                            extIndex++;
                             addStep();
                             return [3 /*break*/, 1];
                         }
@@ -454,7 +480,8 @@
                         _f.sent();
                         _f.label = 5;
                     case 5:
-                        index += 1;
+                        index++;
+                        extIndex++;
                         addStep();
                         return [3 /*break*/, 1];
                     case 6: return [2 /*return*/];
@@ -520,6 +547,81 @@
         return YearRange;
     }(AbstractDateRange));
 
+    var MergeRange = /** @class */ (function (_super) {
+        __extends(MergeRange, _super);
+        function MergeRange(options) {
+            return _super.call(this, options) || this;
+        }
+        MergeRange.prototype[Symbol.iterator] = function () {
+            var _a, ranges, _b, step, count, map, filter, index, elementIndex, extIndex, rangeIndex, _c, _d, element, e_1_1;
+            var e_1, _e;
+            return __generator(this, function (_f) {
+                switch (_f.label) {
+                    case 0:
+                        _a = this.options, ranges = _a.ranges, _b = _a.step, step = _b === void 0 ? 1 : _b, count = _a.count, map = _a.map, filter = _a.filter;
+                        index = 0;
+                        elementIndex = 0;
+                        extIndex = 1;
+                        rangeIndex = 0;
+                        _f.label = 1;
+                    case 1:
+                        if (!(rangeIndex < ranges.length)) return [3 /*break*/, 13];
+                        _f.label = 2;
+                    case 2:
+                        _f.trys.push([2, 10, 11, 12]);
+                        _c = (e_1 = void 0, __values(ranges[rangeIndex])), _d = _c.next();
+                        _f.label = 3;
+                    case 3:
+                        if (!!_d.done) return [3 /*break*/, 9];
+                        element = _d.value;
+                        if (extIndex % step !== 0) {
+                            extIndex++;
+                            return [3 /*break*/, 8];
+                        }
+                        if (count && index == count)
+                            return [2 /*return*/];
+                        if (filter && !filter(element, elementIndex)) {
+                            elementIndex++;
+                            return [3 /*break*/, 8];
+                        }
+                        if (!map) return [3 /*break*/, 5];
+                        return [4 /*yield*/, map(element, elementIndex)];
+                    case 4:
+                        _f.sent();
+                        return [3 /*break*/, 7];
+                    case 5: return [4 /*yield*/, element];
+                    case 6:
+                        _f.sent();
+                        _f.label = 7;
+                    case 7:
+                        extIndex++;
+                        elementIndex++;
+                        index++;
+                        _f.label = 8;
+                    case 8:
+                        _d = _c.next();
+                        return [3 /*break*/, 3];
+                    case 9: return [3 /*break*/, 12];
+                    case 10:
+                        e_1_1 = _f.sent();
+                        e_1 = { error: e_1_1 };
+                        return [3 /*break*/, 12];
+                    case 11:
+                        try {
+                            if (_d && !_d.done && (_e = _c.return)) _e.call(_c);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                        return [7 /*endfinally*/];
+                    case 12:
+                        rangeIndex++;
+                        return [3 /*break*/, 1];
+                    case 13: return [2 /*return*/];
+                }
+            });
+        };
+        return MergeRange;
+    }(AbstractRange));
+
     exports.AbstractDateRange = AbstractDateRange;
     exports.AbstractRange = AbstractRange;
     exports.AbstractRangeGenerator = AbstractRangeGenerator;
@@ -527,6 +629,7 @@
     exports.ColorRange = ColorRange;
     exports.DayRange = HourRange;
     exports.HourRange = HourRange$1;
+    exports.MergeRange = MergeRange;
     exports.MillisecondRange = MillisecondRange;
     exports.MinuteRange = MinuteRange;
     exports.MonthRange = MonthRange;

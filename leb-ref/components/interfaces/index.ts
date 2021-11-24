@@ -5,6 +5,8 @@ import ICharRangeOptions from './ICharRangeOptions';
 import IColorRangeOptions from './IColorRangeOptions';
 import IDateRangeOptions from './IDateRangeOptions';
 import IAnyRangeOptions from './IAnyRangeOptions';
+import IMergeRangeOptions from './IMergeRangeOptions';
+import IZipRangeOptions from './IZipRangeOptions';
 //TODO: Add MergeRanges interface type and ZipRannge interface type
 
 export {
@@ -15,4 +17,6 @@ export {
   IColorRangeOptions,
   IDateRangeOptions,
   IAnyRangeOptions,
+  IMergeRangeOptions,
+  IZipRangeOptions,
 }

@@ -52,6 +52,7 @@ export default abstract class AbstractDateRange extends AbstractRange<DateRangeO
       weekdays,
     } = this.options;
     let index = 0;
+    let extIndex = 0;
     start = new Date(start);
 
     const isLeepYear = (year: number) => (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
@@ -60,7 +61,8 @@ export default abstract class AbstractDateRange extends AbstractRange<DateRangeO
     };
 
     while ((count && index < count) || (!count && start <= end)) {
-      if (filter && !filter(new Date(start), index)) {
+      if (filter && !filter(new Date(start), extIndex)) {
+        extIndex++;
         addStep();
         continue;
       }
@@ -77,7 +79,9 @@ export default abstract class AbstractDateRange extends AbstractRange<DateRangeO
 
       if (map) yield map(new Date(start), index)
         else yield new Date(start);
-      index += 1;
+
+      index++;
+      extIndex++;
       addStep();
     }
   }

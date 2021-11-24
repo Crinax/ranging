@@ -4,12 +4,14 @@ import StringRangeGeneratorT from './StringRangeGeneratorT';
 import CharRangeGeneratorT from './CharRangeGeneratorT';
 import DateRangeGeneratorT from './DateRangeGeneratorT';
 import ColorRangeGeneratorT from './ColorRangeGeneratorT';
-
-//TODO: Add MergeRangesGeneratorT and ZipRangesGeneratorT
+import MergeRangeGeneratorT from './MergeRangeGeneratorT';
+import ZipRangeGeneratorT from './ZipRangeGeneratorT';
+import AnyRangeGeneratorT from './AnyRangeGeneratorT';
 
 type GeneratorType<T> = T extends RangeGeneratorT<infer T> ? T : never;
 
 export {
+  AnyRangeGeneratorT,
   RangeGeneratorT,
   GeneratorType,
   NumberRangeGeneratorT,
@@ -17,4 +19,6 @@ export {
   CharRangeGeneratorT,
   DateRangeGeneratorT,
   ColorRangeGeneratorT,
+  MergeRangeGeneratorT,
+  ZipRangeGeneratorT,
 }
