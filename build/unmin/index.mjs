@@ -215,6 +215,14 @@ var AbstractDateRange = /** @class */ (function (_super) {
     return AbstractDateRange;
 }(AbstractRange));
 
+var AbstractRandomRange = /** @class */ (function (_super) {
+    __extends(AbstractRandomRange, _super);
+    function AbstractRandomRange() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AbstractRandomRange;
+}(AbstractRange));
+
 /**
  * Reworked floating point numbers addition operator.
  * @author [Eugen Gritz]
@@ -684,4 +692,4 @@ var ZipRange = /** @class */ (function (_super) {
     return ZipRange;
 }(AbstractRange));
 
-export { AbstractDateRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, SecondRange, StringRange, YearRange, ZipRange };
+export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, SecondRange, StringRange, YearRange, ZipRange };

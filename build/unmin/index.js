@@ -221,6 +221,14 @@
         return AbstractDateRange;
     }(AbstractRange));
 
+    var AbstractRandomRange = /** @class */ (function (_super) {
+        __extends(AbstractRandomRange, _super);
+        function AbstractRandomRange() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        return AbstractRandomRange;
+    }(AbstractRange));
+
     /**
      * Reworked floating point numbers addition operator.
      * @author [Eugen Gritz]
@@ -691,6 +699,7 @@
     }(AbstractRange));
 
     exports.AbstractDateRange = AbstractDateRange;
+    exports.AbstractRandomRange = AbstractRandomRange;
     exports.AbstractRange = AbstractRange;
     exports.AbstractRangeGenerator = AbstractRangeGenerator;
     exports.CharRange = CharRange;

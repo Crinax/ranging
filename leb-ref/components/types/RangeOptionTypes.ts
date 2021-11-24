@@ -17,8 +17,8 @@ type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infe
 type OptionsItemType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? ItemT : never;
 type OptionsDateType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? DateT : never;
 
-type OptionsTypeFromClass<T> = T extends AbstractRange<infer OptionsT, infer GeneratorT> ? OptionsT : never;
-type GeneratorTypeFromClass<T> = T extends AbstractRange<infer OptionsT, infer GeneratorT> ? OptionsT : never;
+type OptionsTypeFromClass<T> = T extends AbstractRange<infer OptionsT, any> ? OptionsT : never;
+type GeneratorTypeFromClass<T> = T extends AbstractRange<any, infer GeneratorT> ? GeneratorT : never;
 
 export {
   AnyRangeOptionsT,

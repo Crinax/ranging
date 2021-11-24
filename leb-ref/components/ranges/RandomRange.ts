@@ -1,9 +1,9 @@
-import { AbstractRandomRange } from '../abstract';
-import { OptionsTypeFromClass } from '../types';
-import NumberRange from './NumberRange';
+import { AbstractRandomRange } from "../abstract";
+import { GetRT } from "../abstract/AbstractRandomRange";
+import NumberRange from "./NumberRange";
 
 class RandomNumbers extends AbstractRandomRange<NumberRange> {
-  constructor(options?: OptionsTypeFromClass<NumberRange>) {
+  constructor(options?: GetRT<NumberRange>) {
     super(
       options ||
       { start: -Infinity, end: Infinity, count: Infinity }
