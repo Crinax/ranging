@@ -7,6 +7,7 @@ import ColorRangeGeneratorT from './ColorRangeGeneratorT';
 import MergeRangeGeneratorT from './MergeRangeGeneratorT';
 import ZipRangeGeneratorT from './ZipRangeGeneratorT';
 import AnyRangeGeneratorT from './AnyRangeGeneratorT';
+import RandomRangeGeneratorT from './RandomRangeGeneratorT';
 
 type GeneratorType<T> = T extends RangeGeneratorT<infer T> ? T : never;
 
@@ -21,4 +22,5 @@ export {
   ColorRangeGeneratorT,
   MergeRangeGeneratorT,
   ZipRangeGeneratorT,
+  RandomRangeGeneratorT,
 }

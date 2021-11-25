@@ -1,11 +1,8 @@
-import AbstractRange from './AbstractRange';
-import { GeneratorTypeFromClass, OptionsTypeFromClass, RandomRangeOptionsT } from '../types';
+import AbstractRange from "./AbstractRange";
+import { RandomRangeOptionsT, RandomRangeGeneratorT, OptionsType } from "../types";
 
-export type GetRT<T> = RandomRangeOptionsT<OptionsTypeFromClass<T>>;
-export type GetGT<T> = GeneratorTypeFromClass<T>;
-
-export default abstract class AbstractRandomRange<T> extends AbstractRange<GetRT<T>, GetGT<T>> {
-  constructor(options: GetRT<T>) {
+class AbstractRandomRange<OptionsT, GeneratorT, Successor extends AbstractRange<RandomRangeOptionsT<OptionsT>, RandomRangeGeneratorT<GeneratorT>>> extends AbstractRange<RandomRangeOptionsT<OptionsT>, RandomRangeGeneratorT<GeneratorT>> {
+  constructor(options: RandomRangeOptionsT<OptionsType<OptionsT>>, cls: Successor) {
     super(options);
   }
 }
