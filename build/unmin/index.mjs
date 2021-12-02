@@ -217,8 +217,8 @@ var AbstractDateRange = /** @class */ (function (_super) {
 
 var AbstractRandomRange = /** @class */ (function (_super) {
     __extends(AbstractRandomRange, _super);
-    function AbstractRandomRange() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function AbstractRandomRange(options) {
+        return _super.call(this, options) || this;
     }
     return AbstractRandomRange;
 }(AbstractRange));
@@ -692,4 +692,57 @@ var ZipRange = /** @class */ (function (_super) {
     return ZipRange;
 }(AbstractRange));
 
-export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, SecondRange, StringRange, YearRange, ZipRange };
+var clamp = function (inp, min, max) { return inp > max ? max : inp < min ? min : inp; };
+function getRandomNumber(min, max, isFloat) {
+    if (isFloat) {
+        var rand = min + Math.random() * (max + 1 - min);
+        return clamp(rand, min, max + Number.MIN_VALUE);
+    }
+    return Math.floor(min + Math.random() * (max + 1 - min));
+}
+
+var RandomNumber = /** @class */ (function (_super) {
+    __extends(RandomNumber, _super);
+    function RandomNumber(options) {
+        return _super.call(this, options) || this;
+    }
+    RandomNumber.prototype[Symbol.iterator] = function () {
+        var _a, start, end, _b, count, _c, float, map, filter, extIndex, index, rand;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, _c = _a.float, float = _c === void 0 ? false : _c, map = _a.map, filter = _a.filter;
+                    extIndex = 0;
+                    index = 0;
+                    _d.label = 1;
+                case 1:
+                    if (!(index < count)) return [3 /*break*/, 7];
+                    rand = getRandomNumber(start, end, float);
+                    if (filter) {
+                        while (!filter(rand, extIndex)) {
+                            rand = getRandomNumber(start, end, float);
+                        }
+                    }
+                    if (!map) return [3 /*break*/, 3];
+                    return [4 /*yield*/, map(rand, index)];
+                case 2:
+                    _d.sent();
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, rand];
+                case 4:
+                    _d.sent();
+                    _d.label = 5;
+                case 5:
+                    extIndex++;
+                    _d.label = 6;
+                case 6:
+                    index++;
+                    return [3 /*break*/, 1];
+                case 7: return [2 /*return*/];
+            }
+        });
+    };
+    return RandomNumber;
+}(AbstractRange));
+
+export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, RandomNumber, SecondRange, StringRange, YearRange, ZipRange };

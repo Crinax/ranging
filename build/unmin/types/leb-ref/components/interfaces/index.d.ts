@@ -8,4 +8,5 @@ import IAnyRangeOptions from './IAnyRangeOptions';
 import IMergeRangeOptions from './IMergeRangeOptions';
 import IZipRangeOptions from './IZipRangeOptions';
 import IRandomRangeOptions from './IRandomRangeOptions';
-export { IRangeOptions, INumberRangeOptions, IStringRangeOptions, ICharRangeOptions, IColorRangeOptions, IDateRangeOptions, IAnyRangeOptions, IMergeRangeOptions, IZipRangeOptions, IRandomRangeOptions, };
+import IRandomNumberOptions from './IRandomNumberOptions';
+export { IRangeOptions, INumberRangeOptions, IStringRangeOptions, ICharRangeOptions, IColorRangeOptions, IDateRangeOptions, IAnyRangeOptions, IMergeRangeOptions, IZipRangeOptions, IRandomRangeOptions, IRandomNumberOptions, };

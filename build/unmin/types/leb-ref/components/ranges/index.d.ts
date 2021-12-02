@@ -11,4 +11,5 @@ import MonthRange from './MonthRange';
 import YearRange from './YearRange';
 import MergeRange from './MergeRange';
 import ZipRange from './ZipRange';
-export { CharRange, ColorRange, StringRange, MillisecondRange, NumberRange, SecondRange, MinuteRange, HourRange, DayRange, MonthRange, YearRange, MergeRange, ZipRange, };
+import RandomNumber from './RandomNumber';
+export { CharRange, ColorRange, StringRange, MillisecondRange, NumberRange, SecondRange, MinuteRange, HourRange, DayRange, MonthRange, YearRange, MergeRange, ZipRange, RandomNumber, };

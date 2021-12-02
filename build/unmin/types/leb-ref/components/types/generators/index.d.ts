@@ -7,5 +7,6 @@ import ColorRangeGeneratorT from './ColorRangeGeneratorT';
 import MergeRangeGeneratorT from './MergeRangeGeneratorT';
 import ZipRangeGeneratorT from './ZipRangeGeneratorT';
 import AnyRangeGeneratorT from './AnyRangeGeneratorT';
+import RandomRangeGeneratorT from './RandomRangeGeneratorT';
 declare type GeneratorType<T> = T extends RangeGeneratorT<infer T> ? T : never;
-export { AnyRangeGeneratorT, RangeGeneratorT, GeneratorType, NumberRangeGeneratorT, StringRangeGeneratorT, CharRangeGeneratorT, DateRangeGeneratorT, ColorRangeGeneratorT, MergeRangeGeneratorT, ZipRangeGeneratorT, };
+export { AnyRangeGeneratorT, RangeGeneratorT, GeneratorType, NumberRangeGeneratorT, StringRangeGeneratorT, CharRangeGeneratorT, DateRangeGeneratorT, ColorRangeGeneratorT, MergeRangeGeneratorT, ZipRangeGeneratorT, RandomRangeGeneratorT, };

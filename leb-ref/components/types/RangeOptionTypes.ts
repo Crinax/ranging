@@ -10,6 +10,7 @@ type StringRangeOptionsT = Interfaces.IStringRangeOptions;
 type MergeRangeOptionsT = Interfaces.IMergeRangeOptions;
 type ZipRangeOptionsT = Interfaces.IZipRangeOptions;
 type RandomRangeOptionsT<T> = Interfaces.IRandomRangeOptions<T>;
+type RandomNumberOptionsT = Interfaces.IRandomNumberOptions;
 
 type OptionsType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? T : never;
 type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? EdgeT : never;
@@ -32,4 +33,5 @@ export {
   MergeRangeOptionsT,
   ZipRangeOptionsT,
   RandomRangeOptionsT,
+  RandomNumberOptionsT,
 }

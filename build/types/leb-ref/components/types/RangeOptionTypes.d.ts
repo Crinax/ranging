@@ -1,4 +1,3 @@
-import { AbstractRange } from '../abstract';
 import * as Interfaces from '../interfaces';
 declare type AnyRangeOptionsT = Interfaces.IAnyRangeOptions;
 declare type CharRangeOptionsT = Interfaces.ICharRangeOptions;
@@ -10,10 +9,9 @@ declare type StringRangeOptionsT = Interfaces.IStringRangeOptions;
 declare type MergeRangeOptionsT = Interfaces.IMergeRangeOptions;
 declare type ZipRangeOptionsT = Interfaces.IZipRangeOptions;
 declare type RandomRangeOptionsT<T> = Interfaces.IRandomRangeOptions<T>;
+declare type RandomNumberOptionsT = Interfaces.IRandomNumberOptions;
 declare type OptionsType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? T : never;
 declare type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? EdgeT : never;
 declare type OptionsItemType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? ItemT : never;
 declare type OptionsDateType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? DateT : never;
-declare type OptionsTypeFromClass<T> = T extends AbstractRange<infer OptionsT, infer GeneratorT> ? OptionsT : never;
-declare type GeneratorTypeFromClass<T> = T extends AbstractRange<infer OptionsT, infer GeneratorT> ? OptionsT : never;
-export { AnyRangeOptionsT, OptionsType, OptionsItemType, OptionsEdgeType, OptionsDateType, CharRangeOptionsT, ColorRangeOptionsT, DateRangeOptionsT, NumberRangeOptionsT, RangeOptionsT, StringRangeOptionsT, MergeRangeOptionsT, ZipRangeOptionsT, OptionsTypeFromClass, GeneratorTypeFromClass, RandomRangeOptionsT, };
+export { AnyRangeOptionsT, OptionsType, OptionsItemType, OptionsEdgeType, OptionsDateType, CharRangeOptionsT, ColorRangeOptionsT, DateRangeOptionsT, NumberRangeOptionsT, RangeOptionsT, StringRangeOptionsT, MergeRangeOptionsT, ZipRangeOptionsT, RandomRangeOptionsT, RandomNumberOptionsT, };
