@@ -1,8 +1,9 @@
-const { RandomNumber } = require('./range');
+const { RandomCharRange } = require('./range');
 
-console.log(...new RandomNumber({
-  start: Number.MIN_SAFE_INTEGER,
-  end: Number.MAX_SAFE_INTEGER,
-  count: 10,
-  float: true,
-}));
+const charRange = new RandomCharRange({
+  start: '0',
+  end: '1',
+  count: 9,
+});
+
+console.log(parseInt(charRange.stringify, 2));

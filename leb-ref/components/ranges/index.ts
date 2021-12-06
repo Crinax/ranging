@@ -11,7 +11,8 @@ import MonthRange from './MonthRange';
 import YearRange from './YearRange';
 import MergeRange from './MergeRange';
 import ZipRange from './ZipRange';
-import RandomNumber from './RandomNumber';
+import RandomNumberRange from './RandomNumberRange';
+import RandomCharRange from './RandomCharRange';
 
 export {
   CharRange,
@@ -27,5 +28,6 @@ export {
   YearRange,
   MergeRange,
   ZipRange,
-  RandomNumber,
+  RandomNumberRange,
+  RandomCharRange,
 }

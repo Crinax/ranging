@@ -26,7 +26,7 @@ export default abstract class AbstractRange<OptionsT, GeneratorT> extends Abstra
     const gen = this[Symbol.iterator]();
     let i = 0;
 
-    while (!gen.next().done) i += 1;
+    while (!gen.next().done) i++;
 
     return i;
   }

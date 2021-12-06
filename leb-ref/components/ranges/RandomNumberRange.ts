@@ -1,9 +1,9 @@
 import { AbstractRange } from '../abstract';
-import { NumberRangeGeneratorT, RandomNumberOptionsT } from '../types';
+import { NumberRangeGeneratorT, RandomNumberRangeOptionsT } from '../types';
 import { getRandomNumber } from './utils/random';
 
-export default class RandomNumber extends AbstractRange<RandomNumberOptionsT, NumberRangeGeneratorT> {
-  constructor(options: RandomNumberOptionsT) {
+export default class RandomNumberRange extends AbstractRange<RandomNumberRangeOptionsT, NumberRangeGeneratorT> {
+  constructor(options: RandomNumberRangeOptionsT) {
     super(options);
   }
 

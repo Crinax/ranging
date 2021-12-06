@@ -8,7 +8,8 @@ import IAnyRangeOptions from './IAnyRangeOptions';
 import IMergeRangeOptions from './IMergeRangeOptions';
 import IZipRangeOptions from './IZipRangeOptions';
 import IRandomRangeOptions from './IRandomRangeOptions';
-import IRandomNumberOptions from './IRandomNumberOptions';
+import IRandomNumberRangeOptions from './IRandomNumberRangeOptions';
+import IRandomCharRangeOptions from './IRandomCharRangeOptions';
 
 export {
   IRangeOptions,
@@ -21,5 +22,6 @@ export {
   IMergeRangeOptions,
   IZipRangeOptions,
   IRandomRangeOptions,
-  IRandomNumberOptions,
+  IRandomNumberRangeOptions,
+  IRandomCharRangeOptions,
 }

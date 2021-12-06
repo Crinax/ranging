@@ -2,14 +2,14 @@ const initTest = require('./initTest');
 
 const tests = [
   `#1
-    new RandomNumber({ start: 10, end: 20, count: 10 }).length
+    new RandomNumberRange({ start: 10, end: 20, count: 10 }).length
 
     should return
 
     10
   `,
   `#2
-    [...new RandomNumber({
+    [...new RandomNumberRange({
       start: 30,
       end: 60,
       count: 5,
@@ -20,7 +20,7 @@ const tests = [
     true
   `,
   `#3
-    [...new RandomNumber({
+    [...new RandomNumberRange({
       start: 30,
       end: 60,
       count: 5,
@@ -32,7 +32,7 @@ const tests = [
     true
   `,
   `#4
-    [...new RandomNumber({
+    [...new RandomNumberRange({
       start: 30,
       end: 60,
       count: 5,
@@ -44,7 +44,7 @@ const tests = [
     true
   `,
   `#5
-    [...new RandomNumber({
+    [...new RandomNumberRange({
       start: 30,
       end: 60,
       count: 5,
@@ -56,7 +56,7 @@ const tests = [
     true
   `,
   `#6
-    [...new RandomNumber({
+    [...new RandomNumberRange({
       start: Number.MIN_SAFE_INTEGER,
       end: Number.MAX_SAFE_INTEGER,
       count: 5,
@@ -69,4 +69,4 @@ const tests = [
 ]
 
 console.clear();
-initTest('RandomNumber', tests, 'deepEqual');
+initTest('RandomNumberRange', tests, 'deepEqual');

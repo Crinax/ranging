@@ -14,7 +14,7 @@ const {
   YearRange,
   MergeRange,
   ZipRange,
-  RandomNumber,
+  RandomNumberRange,
 } = require('../');
 
 const initTest = (header, tests, assertMethod) => {

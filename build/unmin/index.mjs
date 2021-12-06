@@ -103,7 +103,7 @@ var AbstractRange = /** @class */ (function (_super) {
             var gen = this[Symbol.iterator]();
             var i = 0;
             while (!gen.next().done)
-                i += 1;
+                i++;
             return i;
         },
         enumerable: false,
@@ -701,12 +701,12 @@ function getRandomNumber(min, max, isFloat) {
     return Math.floor(min + Math.random() * (max + 1 - min));
 }
 
-var RandomNumber = /** @class */ (function (_super) {
-    __extends(RandomNumber, _super);
-    function RandomNumber(options) {
+var RandomNumberRange = /** @class */ (function (_super) {
+    __extends(RandomNumberRange, _super);
+    function RandomNumberRange(options) {
         return _super.call(this, options) || this;
     }
-    RandomNumber.prototype[Symbol.iterator] = function () {
+    RandomNumberRange.prototype[Symbol.iterator] = function () {
         var _a, start, end, _b, count, _c, float, map, filter, extIndex, index, rand;
         return __generator(this, function (_d) {
             switch (_d.label) {
@@ -742,7 +742,51 @@ var RandomNumber = /** @class */ (function (_super) {
             }
         });
     };
-    return RandomNumber;
+    return RandomNumberRange;
 }(AbstractRange));
 
-export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, RandomNumber, SecondRange, StringRange, YearRange, ZipRange };
+var RandomCharRange = /** @class */ (function (_super) {
+    __extends(RandomCharRange, _super);
+    function RandomCharRange(options) {
+        return _super.call(this, options) || this;
+    }
+    RandomCharRange.prototype[Symbol.iterator] = function () {
+        var _a, start, end, _b, count, map, filter, extIndex, index, rand;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, map = _a.map, filter = _a.filter;
+                    extIndex = 0;
+                    index = 0;
+                    _c.label = 1;
+                case 1:
+                    if (!(index < count)) return [3 /*break*/, 7];
+                    rand = getRandomNumber(start.codePointAt(0), end.codePointAt(0), false);
+                    if (filter) {
+                        while (!filter(String.fromCodePoint(rand), extIndex)) {
+                            rand = getRandomNumber(start.codePointAt(0), end.codePointAt(0), false);
+                        }
+                    }
+                    if (!map) return [3 /*break*/, 3];
+                    return [4 /*yield*/, map(String.fromCodePoint(rand), index)];
+                case 2:
+                    _c.sent();
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, String.fromCodePoint(rand)];
+                case 4:
+                    _c.sent();
+                    _c.label = 5;
+                case 5:
+                    extIndex++;
+                    _c.label = 6;
+                case 6:
+                    index++;
+                    return [3 /*break*/, 1];
+                case 7: return [2 /*return*/];
+            }
+        });
+    };
+    return RandomCharRange;
+}(AbstractRange));
+
+export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, RandomCharRange, RandomNumberRange, SecondRange, StringRange, YearRange, ZipRange };

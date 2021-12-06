@@ -2,7 +2,10 @@
 
 - Refactoring.
 
-- Added `RandomRange`.
+- Added random ranges.
+  - `RandomNumberRange`
+  - `RandomCharRange`
+  
 - Added more tests.
 - Added Wiki.
 - Added CHANGELOG.md.
