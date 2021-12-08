@@ -88,7 +88,7 @@ console.log(floats);
 > ```
 
 ## Infinite generator
-**Use of `NumberRange.integer` without specifying end**
+**Use of `NumberRange` without specifying end**
 ```javascript
 let counter = 0;
 const result = [];

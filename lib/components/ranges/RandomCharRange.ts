@@ -24,6 +24,7 @@ export default class RandomCharRange extends AbstractRange<RandomCharRangeOption
       if (filter) {
         while (!filter(String.fromCodePoint(rand), extIndex)) {
           rand = getRandomNumber(start.codePointAt(0)!, end.codePointAt(0)!, false);
+          extIndex++;
         }
       }
 

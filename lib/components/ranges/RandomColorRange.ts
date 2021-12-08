@@ -34,6 +34,7 @@ export default class RandomColorRange extends AbstractRange<RandomColorRangeOpti
       if (filter) {
         while (!filter(rand, extIndex)) {
           rand = toHEX(getRandomNumber(toInt(start), toInt(end), false));
+          extIndex++;
         }
       }
 

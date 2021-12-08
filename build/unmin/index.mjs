@@ -706,6 +706,20 @@ var RandomNumberRange$1 = /** @class */ (function (_super) {
     function RandomNumberRange(options) {
         return _super.call(this, options) || this;
     }
+    Object.defineProperty(RandomNumberRange.prototype, "sum", {
+        get: function () {
+            return this.reduce(add);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(RandomNumberRange.prototype, "product", {
+        get: function () {
+            return this.reduce(product, 1);
+        },
+        enumerable: false,
+        configurable: true
+    });
     RandomNumberRange.prototype[Symbol.iterator] = function () {
         var _a, start, end, _b, count, _c, float, map, filter, extIndex, index, rand;
         return __generator(this, function (_d) {
@@ -721,6 +735,7 @@ var RandomNumberRange$1 = /** @class */ (function (_super) {
                     if (filter) {
                         while (!filter(rand, extIndex)) {
                             rand = getRandomNumber(start, end, float);
+                            extIndex++;
                         }
                     }
                     if (!map) return [3 /*break*/, 3];
@@ -765,6 +780,7 @@ var RandomCharRange = /** @class */ (function (_super) {
                     if (filter) {
                         while (!filter(String.fromCodePoint(rand), extIndex)) {
                             rand = getRandomNumber(start.codePointAt(0), end.codePointAt(0), false);
+                            extIndex++;
                         }
                     }
                     if (!map) return [3 /*break*/, 3];
@@ -811,6 +827,7 @@ var RandomStringRange = /** @class */ (function (_super) {
                     if (filter) {
                         while (!filter(source[rand], extIndex)) {
                             rand = getRandomNumber(start, end, false);
+                            extIndex++;
                         }
                     }
                     if (!map) return [3 /*break*/, 3];
@@ -910,6 +927,7 @@ var RandomColorRange = /** @class */ (function (_super) {
                     if (filter) {
                         while (!filter(rand, extIndex)) {
                             rand = toHEX(getRandomNumber(toInt(start), toInt(end), false));
+                            extIndex++;
                         }
                     }
                     if (!map) return [3 /*break*/, 3];
@@ -940,23 +958,23 @@ var ShuffleRange = /** @class */ (function (_super) {
         return _super.call(this, options) || this;
     }
     ShuffleRange.prototype[Symbol.iterator] = function () {
-        var _a, range, _b, count, filter, map, rangeIter, shuffleArray, curr, extIndex, index, i, randIndex;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var _a, range, _b, count, filter, map, _c, accuracy, rangeIter, shuffleArray, curr, extIndex, index, i, randIndex;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
-                    _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map;
+                    _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map, _c = _a.accuracy, accuracy = _c === void 0 ? 10 : _c;
                     rangeIter = range.iterator;
                     shuffleArray = [];
                     curr = rangeIter.next();
                     extIndex = 0;
                     index = 0;
-                    for (i = 0; i < 5; i++) {
+                    for (i = 0; i < accuracy; i++) {
                         if (curr.done)
                             break;
                         shuffleArray.push(curr.value);
                         curr = rangeIter.next();
                     }
-                    _c.label = 1;
+                    _d.label = 1;
                 case 1:
                     if (!(shuffleArray.length !== 0 || count < index)) return [3 /*break*/, 6];
                     randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
@@ -974,12 +992,12 @@ var ShuffleRange = /** @class */ (function (_super) {
                     if (!map) return [3 /*break*/, 3];
                     return [4 /*yield*/, map(shuffleArray[randIndex], index)];
                 case 2:
-                    _c.sent();
+                    _d.sent();
                     return [3 /*break*/, 5];
                 case 3: return [4 /*yield*/, shuffleArray[randIndex]];
                 case 4:
-                    _c.sent();
-                    _c.label = 5;
+                    _d.sent();
+                    _d.label = 5;
                 case 5:
                     // console.log({ length: shuffleArray.length, randIndex, shuffleArray, curr: curr });
                     if (curr.done)

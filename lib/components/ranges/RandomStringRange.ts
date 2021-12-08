@@ -26,6 +26,7 @@ export default class RandomStringRange extends AbstractRange<RandomStringRangeOp
       if (filter) {
         while (!filter(source[rand], extIndex)) {
           rand = getRandomNumber(start, end, false);
+          extIndex++;
         }
       }
 
