@@ -15,6 +15,10 @@ const {
   MergeRange,
   ZipRange,
   RandomNumberRange,
+  RandomCharRange,
+  RandomStringRange,
+  RandomDateRange,
+  RandomColorRange,
 } = require('../');
 
 const initTest = (header, tests, assertMethod) => {

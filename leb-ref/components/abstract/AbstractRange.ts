@@ -1,6 +1,5 @@
 import AbstractRangeGenerator from './AbstractRangeGenerator';
 import { OptionsType } from '../types';
-import { RandomRangeOptionsT } from '../types';
 
 export default abstract class AbstractRange<OptionsT, GeneratorT> extends AbstractRangeGenerator<GeneratorT> {
   constructor(protected options: OptionsType<OptionsT>) {

@@ -13,6 +13,9 @@ import MergeRange from './MergeRange';
 import ZipRange from './ZipRange';
 import RandomNumberRange from './RandomNumberRange';
 import RandomCharRange from './RandomCharRange';
+import RandomStringRange from './RandomStringRange';
+import RandomDateRange from './RandomDateRange';
+import RandomColorRange from './RandomColorRange';
 
 export {
   CharRange,
@@ -30,4 +33,7 @@ export {
   ZipRange,
   RandomNumberRange,
   RandomCharRange,
+  RandomStringRange,
+  RandomDateRange,
+  RandomColorRange,
 }

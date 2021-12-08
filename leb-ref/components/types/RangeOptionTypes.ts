@@ -12,6 +12,9 @@ type ZipRangeOptionsT = Interfaces.IZipRangeOptions;
 type RandomRangeOptionsT<T> = Interfaces.IRandomRangeOptions<T>;
 type RandomNumberRangeOptionsT = Interfaces.IRandomNumberRangeOptions;
 type RandomCharRangeOptionsT = Interfaces.IRandomCharRangeOptions;
+type RandomStringRangeOptionsT = Interfaces.IRandomStringRangeOptions;
+type RandomDateRangeOptionsT = Interfaces.IRandomDateRangeOptions;
+type RandomColorRangeOptionsT = Interfaces.IRandomColorRangeOptions;
 
 type OptionsType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? T : never;
 type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? EdgeT : never;
@@ -36,4 +39,7 @@ export {
   RandomRangeOptionsT,
   RandomNumberRangeOptionsT,
   RandomCharRangeOptionsT,
+  RandomStringRangeOptionsT,
+  RandomDateRangeOptionsT,
+  RandomColorRangeOptionsT,
 }

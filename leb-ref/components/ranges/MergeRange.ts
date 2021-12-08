@@ -39,22 +39,5 @@ export default class MergeRange extends AbstractRange<MergeRangeOptionsT, MergeR
         index++;
       }
     }
-    // for (let rangeIndex = 0; rangeIndex < ranges.length; rangeIndex += 1) {
-    //   for (let element of ranges[rangeIndex]) {
-    //     if (extIndex % step !== 0) {
-    //       extIndex++;
-    //       continue;
-    //     } else {
-    //       if (filter) {
-    //         if (!filter(element, elementIndex - 1)) continue;
-    //       }
-    //       if (map) yield map(element, elementIndex)
-    //       else yield element;
-    //     }
-    //     elementIndex++;
-    //     extIndex++;
-    //     if (count && elementIndex == count) return;
-    //   }
-    // }
   }
 }

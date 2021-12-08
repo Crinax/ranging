@@ -10,4 +10,7 @@ import IZipRangeOptions from './IZipRangeOptions';
 import IRandomRangeOptions from './IRandomRangeOptions';
 import IRandomNumberRangeOptions from './IRandomNumberRangeOptions';
 import IRandomCharRangeOptions from './IRandomCharRangeOptions';
-export { IRangeOptions, INumberRangeOptions, IStringRangeOptions, ICharRangeOptions, IColorRangeOptions, IDateRangeOptions, IAnyRangeOptions, IMergeRangeOptions, IZipRangeOptions, IRandomRangeOptions, IRandomNumberRangeOptions, IRandomCharRangeOptions, };
+import IRandomStringRangeOptions from './IRandomStringRangeOptions';
+import IRandomDateRangeOptions from './IRandomDateRangeOptions';
+import IRandomColorRangeOptions from './IRandomColorRangeOptions';
+export { IRangeOptions, INumberRangeOptions, IStringRangeOptions, ICharRangeOptions, IColorRangeOptions, IDateRangeOptions, IAnyRangeOptions, IMergeRangeOptions, IZipRangeOptions, IRandomRangeOptions, IRandomNumberRangeOptions, IRandomCharRangeOptions, IRandomStringRangeOptions, IRandomDateRangeOptions, IRandomColorRangeOptions, };

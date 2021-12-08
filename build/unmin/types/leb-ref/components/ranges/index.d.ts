@@ -13,4 +13,7 @@ import MergeRange from './MergeRange';
 import ZipRange from './ZipRange';
 import RandomNumberRange from './RandomNumberRange';
 import RandomCharRange from './RandomCharRange';
-export { CharRange, ColorRange, StringRange, MillisecondRange, NumberRange, SecondRange, MinuteRange, HourRange, DayRange, MonthRange, YearRange, MergeRange, ZipRange, RandomNumberRange, RandomCharRange, };
+import RandomStringRange from './RandomStringRange';
+import RandomDateRange from './RandomDateRange';
+import RandomColorRange from './RandomColorRange';
+export { CharRange, ColorRange, StringRange, MillisecondRange, NumberRange, SecondRange, MinuteRange, HourRange, DayRange, MonthRange, YearRange, MergeRange, ZipRange, RandomNumberRange, RandomCharRange, RandomStringRange, RandomDateRange, RandomColorRange, };

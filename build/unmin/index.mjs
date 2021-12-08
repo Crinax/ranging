@@ -701,7 +701,7 @@ function getRandomNumber(min, max, isFloat) {
     return Math.floor(min + Math.random() * (max + 1 - min));
 }
 
-var RandomNumberRange = /** @class */ (function (_super) {
+var RandomNumberRange$1 = /** @class */ (function (_super) {
     __extends(RandomNumberRange, _super);
     function RandomNumberRange(options) {
         return _super.call(this, options) || this;
@@ -789,4 +789,149 @@ var RandomCharRange = /** @class */ (function (_super) {
     return RandomCharRange;
 }(AbstractRange));
 
-export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, RandomCharRange, RandomNumberRange, SecondRange, StringRange, YearRange, ZipRange };
+var RandomStringRange = /** @class */ (function (_super) {
+    __extends(RandomStringRange, _super);
+    function RandomStringRange(options) {
+        var _this = _super.call(this, options) || this;
+        _this.options.source = Array.from(_this.options.source);
+        return _this;
+    }
+    RandomStringRange.prototype[Symbol.iterator] = function () {
+        var _a, source, _b, count, start, end, filter, map, extIndex, index, rand;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _a = this.options, source = _a.source, _b = _a.count, count = _b === void 0 ? Infinity : _b, start = _a.start, end = _a.end, filter = _a.filter, map = _a.map;
+                    extIndex = 0;
+                    index = 0;
+                    _c.label = 1;
+                case 1:
+                    if (!(index < count)) return [3 /*break*/, 7];
+                    rand = getRandomNumber(start, end, false);
+                    if (filter) {
+                        while (!filter(source[rand], extIndex)) {
+                            rand = getRandomNumber(start, end, false);
+                        }
+                    }
+                    if (!map) return [3 /*break*/, 3];
+                    return [4 /*yield*/, map(source[rand], index)];
+                case 2:
+                    _c.sent();
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, source[rand]];
+                case 4:
+                    _c.sent();
+                    _c.label = 5;
+                case 5:
+                    extIndex++;
+                    _c.label = 6;
+                case 6:
+                    index++;
+                    return [3 /*break*/, 1];
+                case 7: return [2 /*return*/];
+            }
+        });
+    };
+    return RandomStringRange;
+}(AbstractRange));
+
+var RandomNumberRange = /** @class */ (function (_super) {
+    __extends(RandomNumberRange, _super);
+    function RandomNumberRange(options) {
+        return _super.call(this, options) || this;
+    }
+    RandomNumberRange.prototype[Symbol.iterator] = function () {
+        var _a, start, end, _b, count, map, filter, weekdays, leapYear, extIndex, index, isLeepYear, rand;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, map = _a.map, filter = _a.filter, weekdays = _a.weekdays, leapYear = _a.leapYear;
+                    extIndex = 0;
+                    index = 0;
+                    isLeepYear = function (year) { return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0); };
+                    _c.label = 1;
+                case 1:
+                    if (!(index < count)) return [3 /*break*/, 6];
+                    rand = getRandomNumber(start.getTime(), end.getTime(), false);
+                    if (filter && !filter(new Date(rand), extIndex)) {
+                        extIndex++;
+                        return [3 /*break*/, 1];
+                    }
+                    if (weekdays && weekdays.indexOf(new Date(rand).getDay()) === -1)
+                        return [3 /*break*/, 1];
+                    if (leapYear && !isLeepYear(new Date(rand).getFullYear()))
+                        return [3 /*break*/, 1];
+                    if (!map) return [3 /*break*/, 3];
+                    return [4 /*yield*/, map(new Date(rand), index)];
+                case 2:
+                    _c.sent();
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, new Date(rand)];
+                case 4:
+                    _c.sent();
+                    _c.label = 5;
+                case 5:
+                    extIndex++;
+                    index++;
+                    return [3 /*break*/, 1];
+                case 6: return [2 /*return*/];
+            }
+        });
+    };
+    return RandomNumberRange;
+}(AbstractRange));
+
+var RandomColorRange = /** @class */ (function (_super) {
+    __extends(RandomColorRange, _super);
+    function RandomColorRange(options) {
+        return _super.call(this, options) || this;
+    }
+    RandomColorRange.prototype[Symbol.iterator] = function () {
+        var _a, start, end, _b, count, map, filter, extIndex, toInt, toHEX, index, rand;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, map = _a.map, filter = _a.filter;
+                    extIndex = 0;
+                    toInt = function (s) { return parseInt(s.slice(1), 16); };
+                    toHEX = function (n) {
+                        var result = n.toString(16);
+                        var zerosBefore = '';
+                        if (result.length !== 6) {
+                            zerosBefore = Array.from({ length: 6 - result.length }, function () { return '0'; }).join('');
+                        }
+                        return '#' + zerosBefore + result;
+                    };
+                    index = 0;
+                    _c.label = 1;
+                case 1:
+                    if (!(index < count)) return [3 /*break*/, 7];
+                    rand = toHEX(getRandomNumber(toInt(start), toInt(end), false));
+                    if (filter) {
+                        while (!filter(rand, extIndex)) {
+                            rand = toHEX(getRandomNumber(toInt(start), toInt(end), false));
+                        }
+                    }
+                    if (!map) return [3 /*break*/, 3];
+                    return [4 /*yield*/, map(rand, index)];
+                case 2:
+                    _c.sent();
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, rand];
+                case 4:
+                    _c.sent();
+                    _c.label = 5;
+                case 5:
+                    extIndex++;
+                    _c.label = 6;
+                case 6:
+                    index++;
+                    return [3 /*break*/, 1];
+                case 7: return [2 /*return*/];
+            }
+        });
+    };
+    return RandomColorRange;
+}(AbstractRange));
+
+export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, RandomCharRange, RandomColorRange, RandomNumberRange as RandomDateRange, RandomNumberRange$1 as RandomNumberRange, RandomStringRange, SecondRange, StringRange, YearRange, ZipRange };
