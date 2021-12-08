@@ -1,9 +1,12 @@
-const { RandomColorRange } = require('./range');
+const { NumberRange, ShuffleRange } = require('.');
 
-const colorRange = new RandomColorRange({
-  start: '#000000',
-  end: '#000F00',
-  count: 5,
-});
+const numbers = new NumberRange({ start: 10, end: 20 });
+const shuffled = new ShuffleRange({ range: numbers });
 
-console.log([...colorRange]);
+console.log('original');
+
+console.log(...numbers);
+
+console.log('shuffled');
+
+console.log(...shuffled);

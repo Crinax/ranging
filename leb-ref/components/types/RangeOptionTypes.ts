@@ -15,6 +15,7 @@ type RandomCharRangeOptionsT = Interfaces.IRandomCharRangeOptions;
 type RandomStringRangeOptionsT = Interfaces.IRandomStringRangeOptions;
 type RandomDateRangeOptionsT = Interfaces.IRandomDateRangeOptions;
 type RandomColorRangeOptionsT = Interfaces.IRandomColorRangeOptions;
+type ShuffleRangeOptionsT = Interfaces.IShuffleRangeOptions;
 
 type OptionsType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? T : never;
 type OptionsEdgeType<T> = T extends RangeOptionsT<infer EdgeT, infer ItemT, infer DateT> ? EdgeT : never;
@@ -42,4 +43,5 @@ export {
   RandomStringRangeOptionsT,
   RandomDateRangeOptionsT,
   RandomColorRangeOptionsT,
+  ShuffleRangeOptionsT,
 }

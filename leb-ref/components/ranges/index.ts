@@ -16,6 +16,7 @@ import RandomCharRange from './RandomCharRange';
 import RandomStringRange from './RandomStringRange';
 import RandomDateRange from './RandomDateRange';
 import RandomColorRange from './RandomColorRange';
+import ShuffleRange from './ShuffleRange';
 
 export {
   CharRange,
@@ -36,4 +37,5 @@ export {
   RandomStringRange,
   RandomDateRange,
   RandomColorRange,
+  ShuffleRange,
 }

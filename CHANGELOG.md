@@ -3,16 +3,20 @@
 - Refactoring.
 
 - Added random ranges.
-  - `RandomNumberRange`
-  - `RandomCharRange`
-  
+  - `RandomNumberRange`.
+  - `RandomCharRange`.
+  - `RandomStringRange`.
+  - `RandomDateRange`.
+  - `RandomColorRange`.
+- Added `ShuffleRange`.
 - Added more tests.
 - Added Wiki.
 - Added CHANGELOG.md.
 
 - Removed `merged` getter from `ZipRange`. Use `dict` instead.
 - Removed `DateRange` class. Use `MillisecondRange` instead.
-- Removed `leepYear` parameter in `DateRangeOptionsT`. Use `leapYear` instead (grammar mistake :D)
+- Removed `leepYear` parameter in `DateRangeOptionsT`. Use `leapYear` instead (grammar mistake :D).
+- Removed `Range`.
 
 - Changed from `ZipRanges` to `ZipRange`.
 - Changed from `MergeRanges` to `MergeRange`.

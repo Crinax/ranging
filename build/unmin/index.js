@@ -940,6 +940,71 @@
         return RandomColorRange;
     }(AbstractRange));
 
+    var ShuffleRange = /** @class */ (function (_super) {
+        __extends(ShuffleRange, _super);
+        function ShuffleRange(options) {
+            return _super.call(this, options) || this;
+        }
+        ShuffleRange.prototype[Symbol.iterator] = function () {
+            var _a, range, _b, count, filter, map, rangeIter, shuffleArray, curr, extIndex, index, i, randIndex;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map;
+                        rangeIter = range.iterator;
+                        shuffleArray = [];
+                        curr = rangeIter.next();
+                        extIndex = 0;
+                        index = 0;
+                        for (i = 0; i < 5; i++) {
+                            if (curr.done)
+                                break;
+                            shuffleArray.push(curr.value);
+                            curr = rangeIter.next();
+                        }
+                        _c.label = 1;
+                    case 1:
+                        if (!(shuffleArray.length !== 0 || count < index)) return [3 /*break*/, 6];
+                        randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
+                        if (filter && !filter(shuffleArray[randIndex], extIndex)) {
+                            if (curr.done)
+                                shuffleArray.splice(randIndex, 1);
+                            else {
+                                curr = rangeIter.next();
+                                if (!curr.done)
+                                    shuffleArray[randIndex] = curr.value;
+                            }
+                            extIndex++;
+                            return [3 /*break*/, 1];
+                        }
+                        if (!map) return [3 /*break*/, 3];
+                        return [4 /*yield*/, map(shuffleArray[randIndex], index)];
+                    case 2:
+                        _c.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, shuffleArray[randIndex]];
+                    case 4:
+                        _c.sent();
+                        _c.label = 5;
+                    case 5:
+                        // console.log({ length: shuffleArray.length, randIndex, shuffleArray, curr: curr });
+                        if (curr.done)
+                            shuffleArray.splice(randIndex, 1);
+                        else {
+                            curr = rangeIter.next();
+                            if (!curr.done)
+                                shuffleArray[randIndex] = curr.value;
+                        }
+                        extIndex++;
+                        index++;
+                        return [3 /*break*/, 1];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        };
+        return ShuffleRange;
+    }(AbstractRange));
+
     exports.AbstractDateRange = AbstractDateRange;
     exports.AbstractRandomRange = AbstractRandomRange;
     exports.AbstractRange = AbstractRange;
@@ -959,6 +1024,7 @@
     exports.RandomNumberRange = RandomNumberRange$1;
     exports.RandomStringRange = RandomStringRange;
     exports.SecondRange = SecondRange;
+    exports.ShuffleRange = ShuffleRange;
     exports.StringRange = StringRange;
     exports.YearRange = YearRange;
     exports.ZipRange = ZipRange;

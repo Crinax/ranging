@@ -13,6 +13,7 @@ import IRandomCharRangeOptions from './IRandomCharRangeOptions';
 import IRandomStringRangeOptions from './IRandomStringRangeOptions';
 import IRandomDateRangeOptions from './IRandomDateRangeOptions';
 import IRandomColorRangeOptions from './IRandomColorRangeOptions';
+import IShuffleRangeOptions from './IShuffleRangeOptions';
 
 export {
   IRangeOptions,
@@ -30,4 +31,5 @@ export {
   IRandomStringRangeOptions,
   IRandomDateRangeOptions,
   IRandomColorRangeOptions,
+  IShuffleRangeOptions,
 }

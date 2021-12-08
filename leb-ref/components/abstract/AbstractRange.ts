@@ -2,7 +2,7 @@ import AbstractRangeGenerator from './AbstractRangeGenerator';
 import { OptionsType } from '../types';
 
 export default abstract class AbstractRange<OptionsT, GeneratorT> extends AbstractRangeGenerator<GeneratorT> {
-  constructor(protected options: OptionsType<OptionsT>) {
+  constructor(public options: OptionsType<OptionsT>) {
     super();
   }
 
