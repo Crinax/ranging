@@ -17,7 +17,7 @@ export default class MergeRange extends AbstractRange<MergeRangeOptionsT, MergeR
 
     let index = 0;
     let elementIndex = 0;
-    let extIndex = 1;
+    let extIndex = 0;
     
     for (let rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
       for (let element of ranges[rangeIndex]) {
@@ -27,10 +27,12 @@ export default class MergeRange extends AbstractRange<MergeRangeOptionsT, MergeR
         }
 
         if (count && index == count) return;
+
         if (filter && !filter(element, elementIndex)) {
           elementIndex++;
           continue;
         }
+
         if (map) yield map(element, elementIndex)
           else yield element;
         

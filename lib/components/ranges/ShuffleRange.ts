@@ -13,7 +13,7 @@ export default class ShuffleRange extends AbstractRange<ShuffleRangeOptionsT, Sh
       count = Infinity,
       filter,
       map,
-      accuracy = 10,
+      picking = 10,
     } = this.options;
 
     const rangeIter = range.iterator;
@@ -23,7 +23,7 @@ export default class ShuffleRange extends AbstractRange<ShuffleRangeOptionsT, Sh
     let extIndex = 0;
     let index = 0;
 
-    for (let i = 0; i < accuracy; i++) {
+    for (let i = 0; i < picking; i++) {
       if (curr.done) break;
 
       shuffleArray.push(curr.value);
@@ -47,8 +47,6 @@ export default class ShuffleRange extends AbstractRange<ShuffleRangeOptionsT, Sh
 
       if (map) yield map(shuffleArray[randIndex], index)
         else yield shuffleArray[randIndex];
-      
-      // console.log({ length: shuffleArray.length, randIndex, shuffleArray, curr: curr });
       
       if (curr.done) shuffleArray.splice(randIndex, 1)
         else {

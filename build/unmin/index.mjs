@@ -563,7 +563,7 @@ var MergeRange = /** @class */ (function (_super) {
                     _a = this.options, ranges = _a.ranges, _b = _a.step, step = _b === void 0 ? 1 : _b, count = _a.count, map = _a.map, filter = _a.filter;
                     index = 0;
                     elementIndex = 0;
-                    extIndex = 1;
+                    extIndex = 0;
                     rangeIndex = 0;
                     _f.label = 1;
                 case 1:
@@ -958,17 +958,17 @@ var ShuffleRange = /** @class */ (function (_super) {
         return _super.call(this, options) || this;
     }
     ShuffleRange.prototype[Symbol.iterator] = function () {
-        var _a, range, _b, count, filter, map, _c, accuracy, rangeIter, shuffleArray, curr, extIndex, index, i, randIndex;
+        var _a, range, _b, count, filter, map, _c, picking, rangeIter, shuffleArray, curr, extIndex, index, i, randIndex;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
-                    _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map, _c = _a.accuracy, accuracy = _c === void 0 ? 10 : _c;
+                    _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map, _c = _a.picking, picking = _c === void 0 ? 10 : _c;
                     rangeIter = range.iterator;
                     shuffleArray = [];
                     curr = rangeIter.next();
                     extIndex = 0;
                     index = 0;
-                    for (i = 0; i < accuracy; i++) {
+                    for (i = 0; i < picking; i++) {
                         if (curr.done)
                             break;
                         shuffleArray.push(curr.value);
@@ -999,7 +999,6 @@ var ShuffleRange = /** @class */ (function (_super) {
                     _d.sent();
                     _d.label = 5;
                 case 5:
-                    // console.log({ length: shuffleArray.length, randIndex, shuffleArray, curr: curr });
                     if (curr.done)
                         shuffleArray.splice(randIndex, 1);
                     else {
