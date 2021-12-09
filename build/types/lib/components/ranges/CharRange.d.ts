@@ -1,8 +1,6 @@
-import AbstractRange from './AbstractRange';
-import { CharRangeOptionsT } from '../types';
-declare class CharRange extends AbstractRange<string> {
-    protected options: CharRangeOptionsT;
+import { AbstractRange } from "../abstract";
+import { CharRangeGeneratorT, CharRangeOptionsT } from '../types';
+export default class CharRange extends AbstractRange<CharRangeOptionsT, CharRangeGeneratorT> {
     constructor(options?: CharRangeOptionsT);
-    [Symbol.iterator](): Iterator<string>;
+    [Symbol.iterator](): Generator<any, void, unknown>;
 }
-export default CharRange;

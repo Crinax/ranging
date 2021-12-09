@@ -968,7 +968,7 @@
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map, _c = _a.picking, picking = _c === void 0 ? 10 : _c;
+                        _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map, _c = _a.picking, picking = _c === void 0 ? 5 : _c;
                         rangeIter = range.iterator;
                         shuffleArray = [];
                         curr = rangeIter.next();
@@ -983,6 +983,8 @@
                         _d.label = 1;
                     case 1:
                         if (!(shuffleArray.length !== 0 || count < index)) return [3 /*break*/, 6];
+                        if (count < index)
+                            return [3 /*break*/, 6];
                         randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
                         if (filter && !filter(shuffleArray[randIndex], extIndex)) {
                             if (curr.done)

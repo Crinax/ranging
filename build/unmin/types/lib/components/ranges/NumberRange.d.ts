@@ -1,10 +1,8 @@
-import AbstractRange from './AbstractRange';
-import { NumberRangeOptionsT } from '../types';
-declare class NumberRange extends AbstractRange<number> {
-    protected options: NumberRangeOptionsT;
+import { AbstractRange } from '../abstract';
+import { NumberRangeGeneratorT, NumberRangeOptionsT } from '../types';
+export default class NumberRange extends AbstractRange<NumberRangeOptionsT, NumberRangeGeneratorT> {
     constructor(options?: NumberRangeOptionsT);
     get sum(): number;
     get product(): number;
-    [Symbol.iterator](): Iterator<number>;
+    [Symbol.iterator](): Generator<any, void, unknown>;
 }
-export default NumberRange;
