@@ -1,68 +1,41 @@
-import AbstractRange from './AbstractRange';
-import { CharRangeOptionsT } from '../types';
+import { AbstractRange } from "../abstract";
+import { CharRangeGeneratorT, CharRangeOptionsT } from '../types';
 
-class CharRange extends AbstractRange<string> {
-  protected options: CharRangeOptionsT;
-
+export default class CharRange extends AbstractRange<CharRangeOptionsT, CharRangeGeneratorT> {
   constructor(options?: CharRangeOptionsT) {
-    super();
-    this.options = {
-      start: 'A',
-      end: 'Z',
-      step: 1,
-      ...options,
-    };
+    super(
+      options ||
+      { start: 'A', end: 'Z', step: 1 }
+    );
   }
 
-  [Symbol.iterator](): Iterator<string> {
-    let { start } = this.options;
+  *[Symbol.iterator]() {
+    let { start = 'A' } = this.options;
     const {
-      end,
-      step,
+      end = 'Z',
+      step = 1,
       count,
       map,
       filter,
     } = this.options;
     let index = 0;
-    return {
-      next(): IteratorResult<string, void> {
-        if ((count && index < count) || (!count && start! <= end!)) {
-          const addChar = () => {
-            start = String.fromCodePoint(start!.codePointAt(0)! + step!);
-          };
-          if (index !== 0) {
-            addChar();
-          }
-          while (filter && !filter(start!, index)) {
-            if (!count && start! > end!) {
-              return {
-                value: undefined,
-                done: true,
-              };
-            }
-            addChar();
-          }
-          if ((!count && start! > end!)) {
-            return {
-              value: undefined,
-              done: true,
-            };
-          }
-          let mappedValue;
-          if (map) mappedValue = map(start!, index);
-          index += 1;
-          return {
-            value: mappedValue || start,
-            done: false,
-          };
-        }
-        return {
-          value: undefined,
-          done: true,
-        };
-      },
-    };
+    let extIndex = 0;
+
+    const addStep = () => start = String.fromCodePoint(start.codePointAt(0)! + step);
+
+    while ((count && index < count) || (!count && start <= end)) {
+      if (filter && !filter(start, extIndex)) {
+        extIndex++;
+        addStep();
+        continue;
+      }
+
+      if (map) yield map(start, index)
+        else yield start;
+
+      index++;
+      extIndex++;
+      addStep();
+    }
   }
 }
-
-export default CharRange;

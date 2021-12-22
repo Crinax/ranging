@@ -64,8 +64,7 @@ const tests = [
     new NumberRange({
       start: 1,
       count: 5,
-      // filter: (x) => (x % 5 === 0 && x % 3 === 0)
-    }).product should return 120/* 1215000 */
+    }).product should return 120
   `
 ]
 

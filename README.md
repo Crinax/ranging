@@ -14,12 +14,6 @@ yarn add ranging
 # Examples
 ## Importing
 ```javascript
-const { Range } = require('ranging');
-// ES
-import { Range } from 'ranging';
-```
-**Import specific modules**
-```javascript
 const { NumberRange, StringRange } = require('ranging');
 // ES
 import { NumberRange, StringRange } from 'ranging';
@@ -94,7 +88,7 @@ console.log(floats);
 > ```
 
 ## Infinite generator
-**Use of `NumberRange.integer` without specifying end**
+**Use of `NumberRange` without specifying end**
 ```javascript
 let counter = 0;
 const result = [];
