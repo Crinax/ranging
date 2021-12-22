@@ -1,20 +1,24 @@
 const parser = require('./parser');
 const assert = require('assert');
 const {
-  Range,
   NumberRange,
   CharRange,
   StringRange,
   ColorRange,
-  DateRange,
-  DayRange,
-  MonthRange,
-  YearRange,
+  MillisecondRange,
   SecondRange,
   MinuteRange,
   HourRange,
-  MergeRanges,
-  ZipRanges
+  DayRange,
+  MonthRange,
+  YearRange,
+  MergeRange,
+  ZipRange,
+  RandomNumberRange,
+  RandomCharRange,
+  RandomStringRange,
+  RandomDateRange,
+  RandomColorRange,
 } = require('../');
 
 const initTest = (header, tests, assertMethod) => {
