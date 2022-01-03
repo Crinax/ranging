@@ -42,7 +42,6 @@ export default class ShuffleRange extends AbstractRange<ShuffleRangeOptionsT, Sh
 
     while (shuffleArray.length !== 0 && count > index) {
       const randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
-      console.log({ randIndex, shuffleArray });
       
       if (filter && !filter(shuffleArray[randIndex], extIndex)) {
         arrSplice(shuffleArray, randIndex);

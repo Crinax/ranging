@@ -989,7 +989,6 @@ var ShuffleRange = /** @class */ (function (_super) {
                 case 1:
                     if (!(shuffleArray.length !== 0 && count > index)) return [3 /*break*/, 6];
                     randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
-                    console.log({ randIndex: randIndex, shuffleArray: shuffleArray });
                     if (filter && !filter(shuffleArray[randIndex], extIndex)) {
                         arrSplice(shuffleArray, randIndex);
                         extIndex++;

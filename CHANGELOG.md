@@ -1,3 +1,7 @@
+# v3.0.2
+
+- Removed logining
+
 # v3.0.1
 
 - Fixed [Double value in ShuffleRange #6](https://github.com/Crinax/ranging/issues/6)
