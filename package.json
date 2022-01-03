@@ -1,6 +1,6 @@
 {
   "name": "ranging",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Ranging helper classes based on iterators",
   "main": "range.js",
   "module": "range.mjs",
