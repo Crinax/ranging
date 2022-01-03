@@ -964,7 +964,7 @@
             return _super.call(this, options) || this;
         }
         ShuffleRange.prototype[Symbol.iterator] = function () {
-            var _a, range, _b, count, filter, map, _c, picking, rangeIter, shuffleArray, curr, extIndex, index, i, randIndex;
+            var _a, range, _b, count, filter, map, _c, picking, rangeIter, shuffleArray, curr, extIndex, index, i, arrSplice, randIndex;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -980,20 +980,24 @@
                             shuffleArray.push(curr.value);
                             curr = rangeIter.next();
                         }
-                        _d.label = 1;
-                    case 1:
-                        if (!(shuffleArray.length !== 0 || count < index)) return [3 /*break*/, 6];
-                        if (count < index)
-                            return [3 /*break*/, 6];
-                        randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
-                        if (filter && !filter(shuffleArray[randIndex], extIndex)) {
+                        arrSplice = function (shuffleArray, randIndex) {
                             if (curr.done)
                                 shuffleArray.splice(randIndex, 1);
                             else {
                                 curr = rangeIter.next();
                                 if (!curr.done)
                                     shuffleArray[randIndex] = curr.value;
+                                else
+                                    shuffleArray.splice(randIndex, 1);
                             }
+                        };
+                        _d.label = 1;
+                    case 1:
+                        if (!(shuffleArray.length !== 0 && count > index)) return [3 /*break*/, 6];
+                        randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
+                        console.log({ randIndex: randIndex, shuffleArray: shuffleArray });
+                        if (filter && !filter(shuffleArray[randIndex], extIndex)) {
+                            arrSplice(shuffleArray, randIndex);
                             extIndex++;
                             return [3 /*break*/, 1];
                         }
@@ -1007,13 +1011,7 @@
                         _d.sent();
                         _d.label = 5;
                     case 5:
-                        if (curr.done)
-                            shuffleArray.splice(randIndex, 1);
-                        else {
-                            curr = rangeIter.next();
-                            if (!curr.done)
-                                shuffleArray[randIndex] = curr.value;
-                        }
+                        arrSplice(shuffleArray, randIndex);
                         extIndex++;
                         index++;
                         return [3 /*break*/, 1];

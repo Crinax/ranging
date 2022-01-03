@@ -31,17 +31,21 @@ export default class ShuffleRange extends AbstractRange<ShuffleRangeOptionsT, Sh
       curr = rangeIter.next();
     }
 
-    while (shuffleArray.length !== 0 || count < index) {
-      if (count < index) break;
+    const arrSplice = (shuffleArray: any[], randIndex: number) => {
+      if (curr.done) shuffleArray.splice(randIndex, 1)
+        else {
+          curr = rangeIter.next();
+          if (!curr.done) shuffleArray[randIndex] = curr.value
+            else shuffleArray.splice(randIndex, 1);
+        }
+    }
 
+    while (shuffleArray.length !== 0 && count > index) {
       const randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
+      console.log({ randIndex, shuffleArray });
       
       if (filter && !filter(shuffleArray[randIndex], extIndex)) {
-        if (curr.done) shuffleArray.splice(randIndex, 1)
-          else {
-            curr = rangeIter.next();
-            if (!curr.done) shuffleArray[randIndex] = curr.value;
-          }
+        arrSplice(shuffleArray, randIndex);
           
         extIndex++;
         continue;
@@ -50,11 +54,7 @@ export default class ShuffleRange extends AbstractRange<ShuffleRangeOptionsT, Sh
       if (map) yield map(shuffleArray[randIndex], index)
         else yield shuffleArray[randIndex];
       
-      if (curr.done) shuffleArray.splice(randIndex, 1)
-        else {
-          curr = rangeIter.next();
-          if (!curr.done) shuffleArray[randIndex] = curr.value;
-        }
+      arrSplice(shuffleArray, randIndex);
 
       extIndex++;
       index++;
