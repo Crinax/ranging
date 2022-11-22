@@ -1,3 +1,7 @@
+# v3.0.3
+
+- Removed useless imports from index.mjs
+
 # v3.0.2
 
 - Removed logining
