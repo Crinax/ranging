@@ -1,10 +1,8 @@
 import {
-  Range,
   NumberRange,
   CharRange,
   StringRange,
   ColorRange,
-  DateRange,
   DayRange,
   MonthRange,
   YearRange,
@@ -15,12 +13,10 @@ import {
 } from './build/index.mjs';
 
 export {
-  Range,
   NumberRange,
   CharRange,
   StringRange,
   ColorRange,
-  DateRange,
   DayRange,
   MonthRange,
   YearRange,
