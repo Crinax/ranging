@@ -1,3 +1,5 @@
+# v3.0.4
+
 # v3.0.3
 
 - Removed useless imports from index.mjs
