@@ -1,65 +1,27 @@
-import { AbstractRange } from '../abstract';
-import { ZipRangeOptionsT, ZipRangeGeneratorT } from '../types';
+import { Range, RangeGeneratorType } from "../abstract";
 
-export default class ZipRange extends AbstractRange<ZipRangeOptionsT, ZipRangeGeneratorT> {
-  constructor(options: ZipRangeOptionsT) {
-    super(options);
+export type ZipKey = number | string | symbol;
+
+export class ZipRange<K extends ZipKey, T> extends Range<Record<K, T>> {
+  constructor(keyRange: Range<ZipKey>, valueRange: Range<T>) {
+    super();
+
+    this._itKey = keyRange[Symbol.iterator]();
+    this._itValue = valueRange[Symbol.iterator]();
   }
 
-  get dict() {
-    return this.reduce((prev, curr) => Object.assign(prev, curr), {});
-  }
+  private _itKey: RangeGeneratorType<ZipKey>;
+  private _itValue: RangeGeneratorType<T>;
 
-  *[Symbol.iterator]() {
-    const {
-      keys,
-      count,
-      values,
-      step = 1,
-      map,
-      filter
-    } = this.options;
-    const keysIterator = keys.iterator;
-    const valuesIterator = values.iterator;
-    let index = 0;
-    let elementIndex = 0;
-    let extIndex = 1;
+  *[Symbol.iterator](): RangeGeneratorType<Record<ZipKey, T>> {
+    let key = this._itKey.next();
+    let value = this._itValue.next();
 
-    let keysObj = keysIterator.next();
-    let valuesObj = valuesIterator.next();
+    while (!(key.done || value.done)) {
+      yield { [key.value]: value.value }
 
-    const addStep = () => {
-      keysObj = keysIterator.next();
-      valuesObj = valuesIterator.next();
-    }
-
-    while (!keysObj.done && !valuesObj.done) {
-      if (count && count === 0) return;
-
-      if (extIndex % step !== 0) {
-        addStep();
-
-        extIndex++;
-        continue;
-      }
-
-      let objResult = { [keysObj.value]: valuesObj.value };
-
-      if (filter && !filter(objResult, elementIndex)) {
-        addStep();
-
-        elementIndex++;
-        continue;
-      }
-
-      if (map) yield map(objResult, index)
-        else yield objResult;
-
-      addStep();
-
-      elementIndex++;
-      extIndex++;
-      index++;
+      key = this._itKey.next()
+      value = this._itValue.next()
     }
   }
 }

@@ -1,11 +1,19 @@
-import { AbstractDateRange } from '../abstract';
-import { DateRangeOptionsT } from '../types';
+import { Range, RangeGeneratorType } from "../abstract";
 
-export default class MonthRange extends AbstractDateRange {
-  constructor(options?: DateRangeOptionsT) {
-    super(
-      'M',
-      options || { start: new Date(), end: Infinity, step: 1 }
-    );
+export class MonthRange extends Range<Date> {
+  constructor(
+    private _start = new Date(),
+    private _end: Date | number = Infinity,
+    private _step = 1,
+  ) {
+    super();
+  }
+
+  *[Symbol.iterator](): RangeGeneratorType<Date> {
+    while (this._start < this._end) {
+      yield new Date(this._start);
+
+      this._start.setMonth(this._start.getMonth() + this._step);
+    }
   }
 }

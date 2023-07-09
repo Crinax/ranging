@@ -1,44 +1,19 @@
-import { AbstractRange } from '../abstract';
-import { DateRangeGeneratorT, RandomDateRangeOptionsT } from '../types';
-import { getRandomNumber } from './utils/random';
+import { getRandomNumber } from "../utils/random";
+import { Range, RangeGeneratorType } from "../abstract";
 
-export default class RandomNumberRange extends AbstractRange<RandomDateRangeOptionsT, DateRangeGeneratorT> {
-  constructor(options: RandomDateRangeOptionsT) {
-    super(options);
+export class RandomDateRange extends Range<Date> {
+  constructor(
+    private _start: Date,
+    private _end: Date,
+  ) {
+    super();
   }
 
-  *[Symbol.iterator]() {
-    const {
-      start,
-      end,
-      count = Infinity,
-      map,
-      filter,
-      weekdays,
-      leapYear,
-    } = this.options;
-
-    let extIndex = 0;
-    let index = 0;
-
-    const isLeepYear = (year: number) => (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
-
-    while (index < count) {
-      let rand = getRandomNumber(start.getTime(), end.getTime(), false);
-
-      if (filter && !filter(new Date(rand), extIndex)) {
-        extIndex++;
-        continue;
-      }
-
-      if (weekdays && weekdays.indexOf(new Date(rand).getDay()) === -1) continue;
-      if (leapYear && !isLeepYear(new Date(rand).getFullYear())) continue;
-
-      if (map) yield map(new Date(rand), index)
-        else yield new Date(rand);
-
-      extIndex++;
-      index++;
+  *[Symbol.iterator](): RangeGeneratorType<Date> {
+    while (true) {
+      yield new Date(
+        getRandomNumber(this._start.getTime(), this._end.getTime(), false)
+      );
     }
   }
 }

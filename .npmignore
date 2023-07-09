@@ -6,3 +6,4 @@ tests
 rollup.config.js
 tsconfig.js
 .github
+lib

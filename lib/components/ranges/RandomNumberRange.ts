@@ -1,47 +1,18 @@
-import { AbstractRange } from '../abstract';
-import { NumberRangeGeneratorT, RandomNumberRangeOptionsT } from '../types';
-import { getRandomNumber } from './utils/random';
-import { add, product } from './utils/fixNumberOperations';
+import { getRandomNumber } from "../utils/random";
+import { Range, RangeGeneratorType } from "../abstract";
 
-export default class RandomNumberRange extends AbstractRange<RandomNumberRangeOptionsT, NumberRangeGeneratorT> {
-  constructor(options: RandomNumberRangeOptionsT) {
-    super(options);
+export class RandomNumberRange extends Range<number> {
+  constructor(
+    private _start: number,
+    private _end: number,
+    private _isFloat: boolean = false,
+  ) {
+    super();
   }
 
-  get sum(): number {
-    return this.reduce(add);
-  }
-
-  get product(): number {
-    return this.reduce(product, 1);
-  }
-
-  *[Symbol.iterator]() {
-    const {
-      start,
-      end,
-      count = Infinity,
-      float = false,
-      map,
-      filter,
-    } = this.options;
-
-    let extIndex = 0;
-    
-    for (let index = 0; index < count; index++) {
-      let rand = getRandomNumber(start, end, float);
-      
-      if (filter) {
-        while (!filter(rand, extIndex)) {
-          rand = getRandomNumber(start, end, float);
-          extIndex++;
-        }
-      }
-
-      if (map) yield map(rand, index)
-        else yield rand;
-      
-      extIndex++;
+  *[Symbol.iterator](): RangeGeneratorType<number> {
+    while (true) {
+      yield getRandomNumber(this._start, this._end, this._isFloat);
     }
   }
 }

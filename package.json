@@ -5,6 +5,13 @@
   "main": "range.js",
   "module": "range.mjs",
   "typings": "range.d.ts",
+  "exports": {
+    ".": {
+      "import": "./range.mjs",
+      "require": "./range.js"
+    }
+  },
+  "default": "./range.mjs",
   "scripts": {
     "test": "mocha tests/*.test.js",
     "build": "npx rollup -c",
@@ -16,7 +23,7 @@
     "iterators",
     "Range",
     "NumberRange",
-    "CharRange",
+    "WalkerRange",
     "StringRange",
     "DateRange",
     "SecondRange",
@@ -25,6 +32,7 @@
     "DayRange",
     "MonthRange",
     "YearRange",
+    "RandomRanges",
     "number",
     "string",
     "date",

@@ -1,4 +1,10 @@
+# v4.0.0
+
+- New syntax
+
 # v3.0.4
+
+- fix: exports
 
 # v3.0.3
 

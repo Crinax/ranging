@@ -1,3 +1,3 @@
 export * from './abstract';
-export * from './types';
 export * from './ranges';
+export * from './operators';

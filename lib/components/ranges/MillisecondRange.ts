@@ -1,11 +1,19 @@
-import { AbstractDateRange } from '../abstract';
-import { DateRangeOptionsT } from '../types';
+import { Range, RangeGeneratorType } from "../abstract";
 
-export default class MillisecondRange extends AbstractDateRange {
-  constructor(options?: DateRangeOptionsT) {
-    super(
-      'ms',
-      options || { start: new Date(), end: Infinity, step: 1 }
-    );
+export class MillisecondRange extends Range<Date> {
+  constructor(
+    private _start = new Date(),
+    private _end: Date | number = Infinity,
+    private _step = 1,
+  ) {
+    super();
+  }
+
+  *[Symbol.iterator](): RangeGeneratorType<Date> {
+    while (this._start < this._end) {
+      yield new Date(this._start);
+
+      this._start.setTime(this._start.getTime() + this._step);
+    }
   }
 }

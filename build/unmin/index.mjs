@@ -57,171 +57,492 @@ function __generator(thisArg, body) {
     }
 }
 
-function __values(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
         }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+        finally { if (e) throw e.error; }
+    }
+    return ar;
 }
 
-var AbstractRangeGenerator = /** @class */ (function () {
-    function AbstractRangeGenerator() {
+var clamp = function (inp, min, max) { return inp > max ? max : inp < min ? min : inp; };
+function getRandomNumber(min, max, isFloat) {
+    if (isFloat) {
+        var rand = min + Math.random() * (max + 1 - min);
+        return clamp(rand, min, max + Number.MIN_VALUE);
     }
-    AbstractRangeGenerator.prototype[Symbol.iterator] = function () { return __generator(this, function (_a) {
-        return [2 /*return*/];
-    }); };
-    return AbstractRangeGenerator;
+    return Math.floor(min + Math.random() * (max + 1 - min));
+}
+
+var RangeGenerator = /** @class */ (function () {
+    function RangeGenerator() {
+    }
+    return RangeGenerator;
 }());
 
-var AbstractRange = /** @class */ (function (_super) {
-    __extends(AbstractRange, _super);
-    function AbstractRange(options) {
-        var _this = _super.call(this) || this;
-        _this.options = options;
-        return _this;
+var Range = /** @class */ (function (_super) {
+    __extends(Range, _super);
+    function Range() {
+        return _super.call(this) || this;
     }
-    AbstractRange.prototype.reduce = function (f, initial) {
-        if (initial === void 0) { initial = 0; }
-        var result = initial;
-        var gen = this[Symbol.iterator]();
-        var genObj = gen.next();
-        var i = 0;
-        while (!genObj.done) {
-            result = f(result, genObj.value, i);
-            i += 1;
-            genObj = gen.next();
+    Range.prototype.filter = function (condition) {
+        return new FilterRange(this, condition);
+    };
+    Range.prototype.map = function (mapper) {
+        return new MapRange(this, mapper);
+    };
+    Range.prototype.take = function (count) {
+        return new TakeRange(this, count);
+    };
+    Range.prototype.from = function (condition) {
+        return new FromRange(this, condition);
+    };
+    Range.prototype.to = function (condition) {
+        return new ToRange(this, condition);
+    };
+    Range.prototype.find = function (condition) {
+        return new FindRange(this, condition);
+    };
+    Range.prototype.reduce = function (reducer, start) {
+        if (start === void 0) { start = 0; }
+        return new ReduceRange(this, reducer, start !== null && start !== void 0 ? start : 0);
+    };
+    Range.prototype.count = function () {
+        return new CountRange(this);
+    };
+    Range.prototype.combine = function (range) {
+        return new CombineRange(this, range);
+    };
+    Range.prototype.shuffle = function (picking) {
+        if (picking === void 0) { picking = 5; }
+        return new ShuffleRange(this, picking);
+    };
+    Range.prototype.groupBy = function (count) {
+        return new GroupRange(this, count);
+    };
+    Range.prototype.collect = function () {
+        var it = this[Symbol.iterator]();
+        var item = it.next();
+        var result = [];
+        while (!item.done) {
+            result.push(item.value);
+            item = it.next();
         }
         return result;
     };
-    Object.defineProperty(AbstractRange.prototype, "length", {
-        get: function () {
-            var gen = this[Symbol.iterator]();
-            var i = 0;
-            while (!gen.next().done)
-                i++;
-            return i;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(AbstractRange.prototype, "iterator", {
-        get: function () {
-            return this[Symbol.iterator]();
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(AbstractRange.prototype, "stringify", {
-        get: function () {
-            return this.reduce(function (prev, curr) { return String(prev) + String(curr); }, '');
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return AbstractRange;
-}(AbstractRangeGenerator));
-
-var AbstractDateRange = /** @class */ (function (_super) {
-    __extends(AbstractDateRange, _super);
-    function AbstractDateRange(metric, options) {
-        var _this = _super.call(this, options) || this;
-        _this.metric = metric;
+    return Range;
+}(RangeGenerator));
+var GroupRange = /** @class */ (function (_super) {
+    __extends(GroupRange, _super);
+    function GroupRange(range, _count) {
+        var _this = _super.call(this) || this;
+        _this._count = _count;
+        _this._it = range[Symbol.iterator]();
         return _this;
     }
-    AbstractDateRange.prototype.setSearchMetricMap = function (start) {
-        this.dateGetters = {
-            'ms': start.getTime,
-            's': start.getSeconds,
-            'm': start.getMinutes,
-            'h': start.getHours,
-            'D': start.getDate,
-            'M': start.getMonth,
-            'Y': start.getFullYear,
-        };
-        this.dateSetters = {
-            'ms': start.setTime,
-            's': start.setSeconds,
-            'm': start.setMinutes,
-            'h': start.setHours,
-            'D': start.setDate,
-            'M': start.setMonth,
-            'Y': start.setFullYear,
-        };
-    };
-    AbstractDateRange.prototype.getTime = function (start) {
-        if (!this.dateGetters)
-            this.setSearchMetricMap(start);
-        return this.dateGetters[this.metric].call(start);
-    };
-    AbstractDateRange.prototype.setTime = function (start, value) {
-        if (!this.dateSetters)
-            this.setSearchMetricMap(start);
-        return this.dateSetters[this.metric].call(start, value);
-    };
-    AbstractDateRange.prototype[Symbol.iterator] = function () {
-        var _a, start, _b, _c, end, _d, step, count, map, filter, leapYear, weekdays, index, extIndex, isLeepYear, addStep;
-        var _this = this;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+    GroupRange.prototype[Symbol.iterator] = function () {
+        var group, item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = this.options.start, start = _a === void 0 ? new Date() : _a;
-                    _b = this.options, _c = _b.end, end = _c === void 0 ? Infinity : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, map = _b.map, filter = _b.filter, leapYear = _b.leapYear, weekdays = _b.weekdays;
-                    index = 0;
-                    extIndex = 0;
-                    start = new Date(start);
-                    isLeepYear = function (year) { return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0); };
-                    addStep = function () {
-                        _this.setTime(start, _this.getTime(start) + step);
-                    };
-                    _e.label = 1;
+                    group = [];
+                    item = this._it.next();
+                    _a.label = 1;
                 case 1:
-                    if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                    if (filter && !filter(new Date(start), extIndex)) {
-                        extIndex++;
-                        addStep();
-                        return [3 /*break*/, 1];
+                    if (!!item.done) return [3 /*break*/, 3];
+                    while (group.length < this._count) {
+                        if (item.done) {
+                            break;
+                        }
+                        group.push(item.value);
+                        item = this._it.next();
                     }
-                    if (leapYear && !isLeepYear(start.getFullYear())) {
-                        addStep();
-                        return [3 /*break*/, 1];
-                    }
-                    if (weekdays && weekdays.indexOf(start.getDay()) === -1) {
-                        addStep();
-                        return [3 /*break*/, 1];
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(new Date(start), index)];
+                    return [4 /*yield*/, group];
                 case 2:
-                    _e.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, new Date(start)];
-                case 4:
-                    _e.sent();
-                    _e.label = 5;
-                case 5:
-                    index++;
-                    extIndex++;
-                    addStep();
+                    _a.sent();
+                    group = [];
                     return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
+                case 3: return [2 /*return*/];
             }
         });
     };
-    return AbstractDateRange;
-}(AbstractRange));
-
-var AbstractRandomRange = /** @class */ (function (_super) {
-    __extends(AbstractRandomRange, _super);
-    function AbstractRandomRange(options) {
-        return _super.call(this, options) || this;
+    return GroupRange;
+}(Range));
+var ShuffleRange = /** @class */ (function (_super) {
+    __extends(ShuffleRange, _super);
+    function ShuffleRange(range, _picking) {
+        if (_picking === void 0) { _picking = 5; }
+        var _this = _super.call(this) || this;
+        _this._picking = _picking;
+        _this._it = range[Symbol.iterator]();
+        return _this;
     }
-    return AbstractRandomRange;
-}(AbstractRange));
+    ShuffleRange.prototype[Symbol.iterator] = function () {
+        var item, arrShuffle, i, index;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    arrShuffle = [];
+                    for (i = 0; i < this._picking; i++) {
+                        if (item.done) {
+                            break;
+                        }
+                        arrShuffle.push(item.value);
+                        item = this._it.next();
+                    }
+                    _a.label = 1;
+                case 1:
+                    if (!(arrShuffle.length >= 1)) return [3 /*break*/, 3];
+                    index = getRandomNumber(0, arrShuffle.length - 1, false);
+                    return [4 /*yield*/, arrShuffle.splice(index, 1)[0]];
+                case 2:
+                    _a.sent();
+                    if (!item.done) {
+                        arrShuffle.push(item.value);
+                    }
+                    item = this._it.next();
+                    return [3 /*break*/, 1];
+                case 3: return [2 /*return*/];
+            }
+        });
+    };
+    return ShuffleRange;
+}(Range));
+var CombineRange = /** @class */ (function (_super) {
+    __extends(CombineRange, _super);
+    function CombineRange(range1, range2) {
+        var _this = _super.call(this) || this;
+        _this._it1 = range1[Symbol.iterator]();
+        _this._it2 = range2[Symbol.iterator]();
+        return _this;
+    }
+    CombineRange.prototype[Symbol.iterator] = function () {
+        var item1, item2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item1 = this._it1.next();
+                    item2 = this._it2.next();
+                    _a.label = 1;
+                case 1:
+                    if (!!(item1.done || item2.done)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, [item1.value, item2.value]];
+                case 2:
+                    _a.sent();
+                    item1 = this._it1.next();
+                    item2 = this._it2.next();
+                    return [3 /*break*/, 1];
+                case 3: return [2 /*return*/];
+            }
+        });
+    };
+    return CombineRange;
+}(Range));
+var CountRange = /** @class */ (function (_super) {
+    __extends(CountRange, _super);
+    function CountRange(range) {
+        var _this = _super.call(this) || this;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    CountRange.prototype[Symbol.iterator] = function () {
+        var item, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    result = 0;
+                    while (!item.done) {
+                        result++;
+                        item = this._it.next();
+                    }
+                    return [4 /*yield*/, result];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    };
+    return CountRange;
+}(Range));
+var ReduceRange = /** @class */ (function (_super) {
+    __extends(ReduceRange, _super);
+    function ReduceRange(range, _reducer, _start) {
+        if (_start === void 0) { _start = 0; }
+        var _this = _super.call(this) || this;
+        _this._reducer = _reducer;
+        _this._start = _start;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    ReduceRange.prototype[Symbol.iterator] = function () {
+        var item, index, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    index = 0;
+                    if (item.done) {
+                        return [2 /*return*/];
+                    }
+                    result = this._start;
+                    while (!item.done) {
+                        result = this._reducer(result, item.value, index);
+                        item = this._it.next();
+                    }
+                    return [4 /*yield*/, result];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    };
+    return ReduceRange;
+}(Range));
+var FilterRange = /** @class */ (function (_super) {
+    __extends(FilterRange, _super);
+    function FilterRange(range, _condition) {
+        var _this = _super.call(this) || this;
+        _this._condition = _condition;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    FilterRange.prototype[Symbol.iterator] = function () {
+        var item, index;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    index = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!!item.done) return [3 /*break*/, 4];
+                    if (!this._condition(item.value, index)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, item.value];
+                case 2:
+                    _a.sent();
+                    _a.label = 3;
+                case 3:
+                    item = this._it.next();
+                    index++;
+                    return [3 /*break*/, 1];
+                case 4: return [2 /*return*/];
+            }
+        });
+    };
+    return FilterRange;
+}(Range));
+var FindRange = /** @class */ (function (_super) {
+    __extends(FindRange, _super);
+    function FindRange(range, _condition) {
+        var _this = _super.call(this) || this;
+        _this._condition = _condition;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    FindRange.prototype[Symbol.iterator] = function () {
+        var item, index;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    index = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!!item.done) return [3 /*break*/, 4];
+                    if (!this._condition(item.value, index)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, item.value];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    item = this._it.next();
+                    index++;
+                    return [3 /*break*/, 1];
+                case 4: return [2 /*return*/];
+            }
+        });
+    };
+    return FindRange;
+}(Range));
+var FromRange = /** @class */ (function (_super) {
+    __extends(FromRange, _super);
+    function FromRange(range, _condition) {
+        var _this = _super.call(this) || this;
+        _this._condition = _condition;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    FromRange.prototype[Symbol.iterator] = function () {
+        var item, wasFound, index;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    wasFound = false;
+                    index = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!!item.done) return [3 /*break*/, 4];
+                    if (!this._condition(item.value, index)) {
+                        return [3 /*break*/, 1];
+                    }
+                    if (!wasFound) {
+                        wasFound = true;
+                    }
+                    if (!wasFound) return [3 /*break*/, 3];
+                    return [4 /*yield*/, item.value];
+                case 2:
+                    _a.sent();
+                    _a.label = 3;
+                case 3:
+                    item = this._it.next();
+                    index++;
+                    return [3 /*break*/, 1];
+                case 4: return [2 /*return*/];
+            }
+        });
+    };
+    return FromRange;
+}(Range));
+var MapRange = /** @class */ (function (_super) {
+    __extends(MapRange, _super);
+    function MapRange(range, _mapper) {
+        var _this = _super.call(this) || this;
+        _this._mapper = _mapper;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    MapRange.prototype[Symbol.iterator] = function () {
+        var item, index;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    index = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!!item.done) return [3 /*break*/, 3];
+                    return [4 /*yield*/, this._mapper(item.value, index)];
+                case 2:
+                    _a.sent();
+                    item = this._it.next();
+                    index++;
+                    return [3 /*break*/, 1];
+                case 3: return [2 /*return*/];
+            }
+        });
+    };
+    return MapRange;
+}(Range));
+var TakeRange = /** @class */ (function (_super) {
+    __extends(TakeRange, _super);
+    function TakeRange(range, _count) {
+        var _this = _super.call(this) || this;
+        _this._count = _count;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    TakeRange.prototype[Symbol.iterator] = function () {
+        var item, i;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < this._count)) return [3 /*break*/, 4];
+                    if (item.done) {
+                        return [3 /*break*/, 4];
+                    }
+                    return [4 /*yield*/, item.value];
+                case 2:
+                    _a.sent();
+                    item = this._it.next();
+                    _a.label = 3;
+                case 3:
+                    i++;
+                    return [3 /*break*/, 1];
+                case 4: return [2 /*return*/];
+            }
+        });
+    };
+    return TakeRange;
+}(Range));
+var ToRange = /** @class */ (function (_super) {
+    __extends(ToRange, _super);
+    function ToRange(range, _condition) {
+        var _this = _super.call(this) || this;
+        _this._condition = _condition;
+        _this._it = range[Symbol.iterator]();
+        return _this;
+    }
+    ToRange.prototype[Symbol.iterator] = function () {
+        var item, wasEnd, index;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    wasEnd = false;
+                    index = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!!item.done) return [3 /*break*/, 3];
+                    if (wasEnd) {
+                        return [3 /*break*/, 3];
+                    }
+                    return [4 /*yield*/, item.value];
+                case 2:
+                    _a.sent();
+                    wasEnd = this._condition(item.value, index);
+                    item = this._it.next();
+                    index++;
+                    return [3 /*break*/, 1];
+                case 3: return [2 /*return*/];
+            }
+        });
+    };
+    return ToRange;
+}(Range));
+
+var WalkerRange = /** @class */ (function (_super) {
+    __extends(WalkerRange, _super);
+    function WalkerRange(iterable) {
+        var _this = _super.call(this) || this;
+        _this._it = iterable[Symbol.iterator]();
+        return _this;
+    }
+    WalkerRange.prototype[Symbol.iterator] = function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    item = this._it.next();
+                    _a.label = 1;
+                case 1:
+                    if (!!item.done) return [3 /*break*/, 3];
+                    return [4 /*yield*/, item.value];
+                case 2:
+                    _a.sent();
+                    item = this._it.next();
+                    return [3 /*break*/, 1];
+                case 3: return [2 /*return*/];
+            }
+        });
+    };
+    return WalkerRange;
+}(Range));
 
 /**
  * Reworked floating point numbers addition operator.
@@ -281,738 +602,451 @@ function fixOperation(a, b, oper) {
     return +(res + exponent);
 }
 var add = function (a, b) { return fixOperation(a, b, '+'); };
-var product = function (a, b) { return fixOperation(a, b, '*'); };
 
 var NumberRange = /** @class */ (function (_super) {
     __extends(NumberRange, _super);
-    function NumberRange(options) {
-        return _super.call(this, options ||
-            { start: 0, end: Infinity, step: 1, float: false }) || this;
+    function NumberRange(_start, _end, _step, _isFloat) {
+        if (_start === void 0) { _start = 0; }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        if (_isFloat === void 0) { _isFloat = false; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        _this._isFloat = _isFloat;
+        return _this;
     }
-    Object.defineProperty(NumberRange.prototype, "sum", {
-        get: function () {
-            return this.reduce(add);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(NumberRange.prototype, "product", {
-        get: function () {
-            return this.reduce(product, 1);
-        },
-        enumerable: false,
-        configurable: true
-    });
     NumberRange.prototype[Symbol.iterator] = function () {
-        var _a, start, _b, _c, end, _d, step, count, float, map, filter, index, extIndex, addStep;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var _add, i;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = this.options.start, start = _a === void 0 ? 0 : _a;
-                    _b = this.options, _c = _b.end, end = _c === void 0 ? Infinity : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, float = _b.float, map = _b.map, filter = _b.filter;
-                    index = 0;
-                    extIndex = 0;
-                    addStep = function () {
-                        if (float)
-                            return (start = add(start, step), start);
-                        else
-                            (start = start + step);
-                    };
-                    _e.label = 1;
+                    _add = this._isFloat
+                        ? function (a, b) { return add(a, b); }
+                        : function (a, b) { return a + b; };
+                    i = this._start;
+                    _a.label = 1;
                 case 1:
-                    if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                    if (filter && !filter(start, extIndex)) {
-                        extIndex++;
-                        addStep();
-                        return [3 /*break*/, 1];
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(start, index)];
+                    if (!(i <= this._end)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, i];
                 case 2:
-                    _e.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, start];
-                case 4:
-                    _e.sent();
-                    _e.label = 5;
-                case 5:
-                    index++;
-                    extIndex++;
-                    addStep();
+                    _a.sent();
+                    _a.label = 3;
+                case 3:
+                    i = _add(i, this._step);
                     return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     };
     return NumberRange;
-}(AbstractRange));
-
-var CharRange = /** @class */ (function (_super) {
-    __extends(CharRange, _super);
-    function CharRange(options) {
-        return _super.call(this, options ||
-            { start: 'A', end: 'Z', step: 1 }) || this;
-    }
-    CharRange.prototype[Symbol.iterator] = function () {
-        var _a, start, _b, _c, end, _d, step, count, map, filter, index, extIndex, addStep;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
-                case 0:
-                    _a = this.options.start, start = _a === void 0 ? 'A' : _a;
-                    _b = this.options, _c = _b.end, end = _c === void 0 ? 'Z' : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, map = _b.map, filter = _b.filter;
-                    index = 0;
-                    extIndex = 0;
-                    addStep = function () { return start = String.fromCodePoint(start.codePointAt(0) + step); };
-                    _e.label = 1;
-                case 1:
-                    if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                    if (filter && !filter(start, extIndex)) {
-                        extIndex++;
-                        addStep();
-                        return [3 /*break*/, 1];
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(start, index)];
-                case 2:
-                    _e.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, start];
-                case 4:
-                    _e.sent();
-                    _e.label = 5;
-                case 5:
-                    index++;
-                    extIndex++;
-                    addStep();
-                    return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
-            }
-        });
-    };
-    return CharRange;
-}(AbstractRange));
-
-var StringRange = /** @class */ (function (_super) {
-    __extends(StringRange, _super);
-    function StringRange(options) {
-        var _this = _super.call(this, options) || this;
-        _this.options.source = Array.from(_this.options.source);
-        return _this;
-    }
-    StringRange.prototype[Symbol.iterator] = function () {
-        var _a, start, _b, source, _c, end, _d, step, count, map, filter, index, extIndex, addStep;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
-                case 0:
-                    _a = this.options.start, start = _a === void 0 ? 0 : _a;
-                    _b = this.options, source = _b.source, _c = _b.end, end = _c === void 0 ? this.options.source.length : _c, _d = _b.step, step = _d === void 0 ? 1 : _d, count = _b.count, map = _b.map, filter = _b.filter;
-                    index = 0;
-                    extIndex = 0;
-                    addStep = function () { return start += step; };
-                    _e.label = 1;
-                case 1:
-                    if (!((source[start] !== undefined) && ((count && index < count) || (!count && start <= end)))) return [3 /*break*/, 6];
-                    if (filter && !filter(source[start], extIndex)) {
-                        extIndex++;
-                        addStep();
-                        return [3 /*break*/, 1];
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(source[start], index)];
-                case 2:
-                    _e.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, source[start]];
-                case 4:
-                    _e.sent();
-                    _e.label = 5;
-                case 5:
-                    index++;
-                    extIndex++;
-                    addStep();
-                    return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
-            }
-        });
-    };
-    return StringRange;
-}(AbstractRange));
-
-var ColorRange = /** @class */ (function (_super) {
-    __extends(ColorRange, _super);
-    function ColorRange(options) {
-        return _super.call(this, options ||
-            { start: '#000000', end: '#FFFFFF', step: 1 }) || this;
-    }
-    ColorRange.prototype[Symbol.iterator] = function () {
-        var _a, _b, start, _c, end, _d, _e, step, count, map, filter, index, extIndex, addStep;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
-                case 0:
-                    _a = this.options, _b = _a.start, start = _b === void 0 ? '#000000' : _b, _c = _a.end, end = _c === void 0 ? '#FFFFFF' : _c;
-                    _d = this.options, _e = _d.step, step = _e === void 0 ? 1 : _e, count = _d.count, map = _d.map, filter = _d.filter;
-                    index = 0;
-                    extIndex = 0;
-                    start = start.toLowerCase();
-                    end = end.toLowerCase();
-                    addStep = function () {
-                        var intStart = parseInt(start.slice(1), 16);
-                        var hexStart = (intStart + step).toString(16);
-                        var zerosBefore = '';
-                        if (hexStart.length !== 6) {
-                            zerosBefore = Array.from({ length: 6 - hexStart.length }, function () { return '0'; }).join('');
-                        }
-                        start = "#" + zerosBefore + hexStart;
-                    };
-                    _f.label = 1;
-                case 1:
-                    if (!((count && index < count) || (!count && start <= end))) return [3 /*break*/, 6];
-                    if (filter && !filter(start, extIndex)) {
-                        extIndex++;
-                        addStep();
-                        return [3 /*break*/, 1];
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(start, index)];
-                case 2:
-                    _f.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, start];
-                case 4:
-                    _f.sent();
-                    _f.label = 5;
-                case 5:
-                    index++;
-                    extIndex++;
-                    addStep();
-                    return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
-            }
-        });
-    };
-    return ColorRange;
-}(AbstractRange));
+}(Range));
 
 var MillisecondRange = /** @class */ (function (_super) {
     __extends(MillisecondRange, _super);
-    function MillisecondRange(options) {
-        return _super.call(this, 'ms', options || { start: new Date(), end: Infinity, step: 1 }) || this;
+    function MillisecondRange(_start, _end, _step) {
+        if (_start === void 0) { _start = new Date(); }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        return _this;
     }
-    return MillisecondRange;
-}(AbstractDateRange));
-
-var SecondRange = /** @class */ (function (_super) {
-    __extends(SecondRange, _super);
-    function SecondRange(options) {
-        return _super.call(this, 's', options || { start: new Date(), end: Infinity, step: 1 }) || this;
-    }
-    return SecondRange;
-}(AbstractDateRange));
-
-var MinuteRange = /** @class */ (function (_super) {
-    __extends(MinuteRange, _super);
-    function MinuteRange(options) {
-        return _super.call(this, 'm', options || { start: new Date(), end: Infinity, step: 1 }) || this;
-    }
-    return MinuteRange;
-}(AbstractDateRange));
-
-var HourRange$1 = /** @class */ (function (_super) {
-    __extends(HourRange, _super);
-    function HourRange(options) {
-        return _super.call(this, 'h', options || { start: new Date(), end: Infinity, step: 1 }) || this;
-    }
-    return HourRange;
-}(AbstractDateRange));
-
-var HourRange = /** @class */ (function (_super) {
-    __extends(HourRange, _super);
-    function HourRange(options) {
-        return _super.call(this, 'D', options || { start: new Date(), end: Infinity, step: 1 }) || this;
-    }
-    return HourRange;
-}(AbstractDateRange));
-
-var MonthRange = /** @class */ (function (_super) {
-    __extends(MonthRange, _super);
-    function MonthRange(options) {
-        return _super.call(this, 'M', options || { start: new Date(), end: Infinity, step: 1 }) || this;
-    }
-    return MonthRange;
-}(AbstractDateRange));
-
-var YearRange = /** @class */ (function (_super) {
-    __extends(YearRange, _super);
-    function YearRange(options) {
-        return _super.call(this, 'Y', options || { start: new Date(), end: Infinity, step: 1 }) || this;
-    }
-    return YearRange;
-}(AbstractDateRange));
-
-var MergeRange = /** @class */ (function (_super) {
-    __extends(MergeRange, _super);
-    function MergeRange(options) {
-        return _super.call(this, options) || this;
-    }
-    MergeRange.prototype[Symbol.iterator] = function () {
-        var _a, ranges, _b, step, count, map, filter, index, elementIndex, extIndex, rangeIndex, _c, _d, element, e_1_1;
-        var e_1, _e;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
+    MillisecondRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = this.options, ranges = _a.ranges, _b = _a.step, step = _b === void 0 ? 1 : _b, count = _a.count, map = _a.map, filter = _a.filter;
-                    index = 0;
-                    elementIndex = 0;
-                    extIndex = 0;
-                    rangeIndex = 0;
-                    _f.label = 1;
+                    if (!(this._start < this._end)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, new Date(this._start)];
                 case 1:
-                    if (!(rangeIndex < ranges.length)) return [3 /*break*/, 13];
-                    _f.label = 2;
-                case 2:
-                    _f.trys.push([2, 10, 11, 12]);
-                    _c = (e_1 = void 0, __values(ranges[rangeIndex])), _d = _c.next();
-                    _f.label = 3;
-                case 3:
-                    if (!!_d.done) return [3 /*break*/, 9];
-                    element = _d.value;
-                    if (extIndex % step !== 0) {
-                        extIndex++;
-                        return [3 /*break*/, 8];
-                    }
-                    if (count && index == count)
-                        return [2 /*return*/];
-                    if (filter && !filter(element, elementIndex)) {
-                        elementIndex++;
-                        return [3 /*break*/, 8];
-                    }
-                    if (!map) return [3 /*break*/, 5];
-                    return [4 /*yield*/, map(element, elementIndex)];
-                case 4:
-                    _f.sent();
-                    return [3 /*break*/, 7];
-                case 5: return [4 /*yield*/, element];
-                case 6:
-                    _f.sent();
-                    _f.label = 7;
-                case 7:
-                    extIndex++;
-                    elementIndex++;
-                    index++;
-                    _f.label = 8;
-                case 8:
-                    _d = _c.next();
-                    return [3 /*break*/, 3];
-                case 9: return [3 /*break*/, 12];
-                case 10:
-                    e_1_1 = _f.sent();
-                    e_1 = { error: e_1_1 };
-                    return [3 /*break*/, 12];
-                case 11:
-                    try {
-                        if (_d && !_d.done && (_e = _c.return)) _e.call(_c);
-                    }
-                    finally { if (e_1) throw e_1.error; }
-                    return [7 /*endfinally*/];
-                case 12:
-                    rangeIndex++;
-                    return [3 /*break*/, 1];
-                case 13: return [2 /*return*/];
+                    _a.sent();
+                    this._start.setTime(this._start.getTime() + this._step);
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
             }
         });
     };
-    return MergeRange;
-}(AbstractRange));
+    return MillisecondRange;
+}(Range));
+
+var SecondRange = /** @class */ (function (_super) {
+    __extends(SecondRange, _super);
+    function SecondRange(_start, _end, _step) {
+        if (_start === void 0) { _start = new Date(); }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        return _this;
+    }
+    SecondRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(this._start < this._end)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, new Date(this._start)];
+                case 1:
+                    _a.sent();
+                    this._start.setSeconds(this._start.getSeconds() + this._step);
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return SecondRange;
+}(Range));
+
+var MinuteRange = /** @class */ (function (_super) {
+    __extends(MinuteRange, _super);
+    function MinuteRange(_start, _end, _step) {
+        if (_start === void 0) { _start = new Date(); }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        return _this;
+    }
+    MinuteRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(this._start < this._end)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, new Date(this._start)];
+                case 1:
+                    _a.sent();
+                    this._start.setMinutes(this._start.getMinutes() + this._step);
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return MinuteRange;
+}(Range));
+
+var HourRange = /** @class */ (function (_super) {
+    __extends(HourRange, _super);
+    function HourRange(_start, _end, _step) {
+        if (_start === void 0) { _start = new Date(); }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        return _this;
+    }
+    HourRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(this._start < this._end)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, new Date(this._start)];
+                case 1:
+                    _a.sent();
+                    this._start.setHours(this._start.getHours() + this._step);
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return HourRange;
+}(Range));
+
+var DayRange = /** @class */ (function (_super) {
+    __extends(DayRange, _super);
+    function DayRange(_start, _end, _step) {
+        if (_start === void 0) { _start = new Date(); }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        return _this;
+    }
+    DayRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(this._start < this._end)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, new Date(this._start)];
+                case 1:
+                    _a.sent();
+                    this._start.setDate(this._start.getDate() + this._step);
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return DayRange;
+}(Range));
+
+var MonthRange = /** @class */ (function (_super) {
+    __extends(MonthRange, _super);
+    function MonthRange(_start, _end, _step) {
+        if (_start === void 0) { _start = new Date(); }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        return _this;
+    }
+    MonthRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(this._start < this._end)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, new Date(this._start)];
+                case 1:
+                    _a.sent();
+                    this._start.setMonth(this._start.getMonth() + this._step);
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return MonthRange;
+}(Range));
+
+var YearRange = /** @class */ (function (_super) {
+    __extends(YearRange, _super);
+    function YearRange(_start, _end, _step) {
+        if (_start === void 0) { _start = new Date(); }
+        if (_end === void 0) { _end = Infinity; }
+        if (_step === void 0) { _step = 1; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._step = _step;
+        return _this;
+    }
+    YearRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(this._start < this._end)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, new Date(this._start)];
+                case 1:
+                    _a.sent();
+                    this._start.setFullYear(this._start.getFullYear() + this._step);
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return YearRange;
+}(Range));
+
+var RandomNumberRange = /** @class */ (function (_super) {
+    __extends(RandomNumberRange, _super);
+    function RandomNumberRange(_start, _end, _isFloat) {
+        if (_isFloat === void 0) { _isFloat = false; }
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        _this._isFloat = _isFloat;
+        return _this;
+    }
+    RandomNumberRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    return [4 /*yield*/, getRandomNumber(this._start, this._end, this._isFloat)];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return RandomNumberRange;
+}(Range));
+
+var RandomDateRange = /** @class */ (function (_super) {
+    __extends(RandomDateRange, _super);
+    function RandomDateRange(_start, _end) {
+        var _this = _super.call(this) || this;
+        _this._start = _start;
+        _this._end = _end;
+        return _this;
+    }
+    RandomDateRange.prototype[Symbol.iterator] = function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    return [4 /*yield*/, new Date(getRandomNumber(this._start.getTime(), this._end.getTime(), false))];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 0];
+                case 2: return [2 /*return*/];
+            }
+        });
+    };
+    return RandomDateRange;
+}(Range));
 
 var ZipRange = /** @class */ (function (_super) {
     __extends(ZipRange, _super);
-    function ZipRange(options) {
-        return _super.call(this, options) || this;
+    function ZipRange(keyRange, valueRange) {
+        var _this = _super.call(this) || this;
+        _this._itKey = keyRange[Symbol.iterator]();
+        _this._itValue = valueRange[Symbol.iterator]();
+        return _this;
     }
-    Object.defineProperty(ZipRange.prototype, "dict", {
-        get: function () {
-            return this.reduce(function (prev, curr) { return Object.assign(prev, curr); }, {});
-        },
-        enumerable: false,
-        configurable: true
-    });
     ZipRange.prototype[Symbol.iterator] = function () {
-        var _a, keys, count, values, _b, step, map, filter, keysIterator, valuesIterator, index, elementIndex, extIndex, keysObj, valuesObj, addStep, objResult;
-        var _c;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var key, value;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a = this.options, keys = _a.keys, count = _a.count, values = _a.values, _b = _a.step, step = _b === void 0 ? 1 : _b, map = _a.map, filter = _a.filter;
-                    keysIterator = keys.iterator;
-                    valuesIterator = values.iterator;
-                    index = 0;
-                    elementIndex = 0;
-                    extIndex = 1;
-                    keysObj = keysIterator.next();
-                    valuesObj = valuesIterator.next();
-                    addStep = function () {
-                        keysObj = keysIterator.next();
-                        valuesObj = valuesIterator.next();
-                    };
-                    _d.label = 1;
+                    key = this._itKey.next();
+                    value = this._itValue.next();
+                    _b.label = 1;
                 case 1:
-                    if (!(!keysObj.done && !valuesObj.done)) return [3 /*break*/, 6];
-                    if (count && count === 0)
-                        return [2 /*return*/];
-                    if (extIndex % step !== 0) {
-                        addStep();
-                        extIndex++;
-                        return [3 /*break*/, 1];
-                    }
-                    objResult = (_c = {}, _c[keysObj.value] = valuesObj.value, _c);
-                    if (filter && !filter(objResult, elementIndex)) {
-                        addStep();
-                        elementIndex++;
-                        return [3 /*break*/, 1];
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(objResult, index)];
+                    if (!!(key.done || value.done)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, (_a = {}, _a[key.value] = value.value, _a)];
                 case 2:
-                    _d.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, objResult];
-                case 4:
-                    _d.sent();
-                    _d.label = 5;
-                case 5:
-                    addStep();
-                    elementIndex++;
-                    extIndex++;
-                    index++;
+                    _b.sent();
+                    key = this._itKey.next();
+                    value = this._itValue.next();
                     return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
+                case 3: return [2 /*return*/];
             }
         });
     };
     return ZipRange;
-}(AbstractRange));
+}(Range));
 
-var clamp = function (inp, min, max) { return inp > max ? max : inp < min ? min : inp; };
-function getRandomNumber(min, max, isFloat) {
-    if (isFloat) {
-        var rand = min + Math.random() * (max + 1 - min);
-        return clamp(rand, min, max + Number.MIN_VALUE);
-    }
-    return Math.floor(min + Math.random() * (max + 1 - min));
-}
-
-var RandomNumberRange$1 = /** @class */ (function (_super) {
-    __extends(RandomNumberRange, _super);
-    function RandomNumberRange(options) {
-        return _super.call(this, options) || this;
-    }
-    Object.defineProperty(RandomNumberRange.prototype, "sum", {
-        get: function () {
-            return this.reduce(add);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RandomNumberRange.prototype, "product", {
-        get: function () {
-            return this.reduce(product, 1);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    RandomNumberRange.prototype[Symbol.iterator] = function () {
-        var _a, start, end, _b, count, _c, float, map, filter, extIndex, index, rand;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
-                case 0:
-                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, _c = _a.float, float = _c === void 0 ? false : _c, map = _a.map, filter = _a.filter;
-                    extIndex = 0;
-                    index = 0;
-                    _d.label = 1;
-                case 1:
-                    if (!(index < count)) return [3 /*break*/, 7];
-                    rand = getRandomNumber(start, end, float);
-                    if (filter) {
-                        while (!filter(rand, extIndex)) {
-                            rand = getRandomNumber(start, end, float);
-                            extIndex++;
-                        }
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(rand, index)];
-                case 2:
-                    _d.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, rand];
-                case 4:
-                    _d.sent();
-                    _d.label = 5;
-                case 5:
-                    extIndex++;
-                    _d.label = 6;
-                case 6:
-                    index++;
-                    return [3 /*break*/, 1];
-                case 7: return [2 /*return*/];
-            }
-        });
-    };
-    return RandomNumberRange;
-}(AbstractRange));
-
-var RandomCharRange = /** @class */ (function (_super) {
-    __extends(RandomCharRange, _super);
-    function RandomCharRange(options) {
-        return _super.call(this, options) || this;
-    }
-    RandomCharRange.prototype[Symbol.iterator] = function () {
-        var _a, start, end, _b, count, map, filter, extIndex, index, rand;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, map = _a.map, filter = _a.filter;
-                    extIndex = 0;
-                    index = 0;
-                    _c.label = 1;
-                case 1:
-                    if (!(index < count)) return [3 /*break*/, 7];
-                    rand = getRandomNumber(start.codePointAt(0), end.codePointAt(0), false);
-                    if (filter) {
-                        while (!filter(String.fromCodePoint(rand), extIndex)) {
-                            rand = getRandomNumber(start.codePointAt(0), end.codePointAt(0), false);
-                            extIndex++;
-                        }
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(String.fromCodePoint(rand), index)];
-                case 2:
-                    _c.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, String.fromCodePoint(rand)];
-                case 4:
-                    _c.sent();
-                    _c.label = 5;
-                case 5:
-                    extIndex++;
-                    _c.label = 6;
-                case 6:
-                    index++;
-                    return [3 /*break*/, 1];
-                case 7: return [2 /*return*/];
-            }
-        });
-    };
-    return RandomCharRange;
-}(AbstractRange));
-
-var RandomStringRange = /** @class */ (function (_super) {
-    __extends(RandomStringRange, _super);
-    function RandomStringRange(options) {
-        var _this = _super.call(this, options) || this;
-        _this.options.source = Array.from(_this.options.source);
+var MergeRange = /** @class */ (function (_super) {
+    __extends(MergeRange, _super);
+    function MergeRange(_rule, ranges) {
+        var _this = _super.call(this) || this;
+        _this._rule = _rule;
+        _this._its = [];
+        var rangeIt = ranges[Symbol.iterator]();
+        var range = rangeIt.next();
+        while (!range.done) {
+            _this._its.push(range.value[Symbol.iterator]());
+            range = rangeIt.next();
+        }
         return _this;
     }
-    RandomStringRange.prototype[Symbol.iterator] = function () {
-        var _a, source, _b, count, start, end, filter, map, extIndex, index, rand;
+    MergeRange.prototype[Symbol.iterator] = function () {
+        var valueIndex, index, nextValueUsed, stopUsed, nextValueCached, nextUseCached, indexesInsideRanges, rangeNumber, _nextValue, nextValue, switchTo, stop, itValue, _a, item, allFinished;
+        var _b;
+        var _this = this;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    _a = this.options, source = _a.source, _b = _a.count, count = _b === void 0 ? Infinity : _b, start = _a.start, end = _a.end, filter = _a.filter, map = _a.map;
-                    extIndex = 0;
+                    valueIndex = 0;
                     index = 0;
-                    _c.label = 1;
-                case 1:
-                    if (!(index < count)) return [3 /*break*/, 7];
-                    rand = getRandomNumber(start, end, false);
-                    if (filter) {
-                        while (!filter(source[rand], extIndex)) {
-                            rand = getRandomNumber(start, end, false);
-                            extIndex++;
+                    nextValueUsed = false;
+                    stopUsed = false;
+                    nextUseCached = false;
+                    indexesInsideRanges = Array.from({ length: this._its.length }, function () { return 0; });
+                    rangeNumber = function () { return index; };
+                    _nextValue = function (item) {
+                        if (!item.done) {
+                            return [item.value, false];
                         }
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(source[rand], index)];
-                case 2:
-                    _c.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, source[rand]];
-                case 4:
-                    _c.sent();
-                    _c.label = 5;
-                case 5:
-                    extIndex++;
-                    _c.label = 6;
-                case 6:
-                    index++;
-                    return [3 /*break*/, 1];
-                case 7: return [2 /*return*/];
-            }
-        });
-    };
-    return RandomStringRange;
-}(AbstractRange));
-
-var RandomNumberRange = /** @class */ (function (_super) {
-    __extends(RandomNumberRange, _super);
-    function RandomNumberRange(options) {
-        return _super.call(this, options) || this;
-    }
-    RandomNumberRange.prototype[Symbol.iterator] = function () {
-        var _a, start, end, _b, count, map, filter, weekdays, leapYear, extIndex, index, isLeepYear, rand;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, map = _a.map, filter = _a.filter, weekdays = _a.weekdays, leapYear = _a.leapYear;
-                    extIndex = 0;
-                    index = 0;
-                    isLeepYear = function (year) { return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0); };
+                        var startIndex = index;
+                        var allIsOver = false;
+                        var result = _this._its[index].next();
+                        while (result.done) {
+                            index++;
+                            if (index >= _this._its.length) {
+                                index = 0;
+                            }
+                            if (index === startIndex) {
+                                allIsOver = true;
+                                break;
+                            }
+                            result = _this._its[index].next();
+                        }
+                        indexesInsideRanges[index]++;
+                        allFinished = allIsOver;
+                        if (allIsOver) {
+                            return [void 0, true];
+                        }
+                        return [result.value, false];
+                    };
+                    nextValue = function (value) { return function () {
+                        if (nextValueUsed) {
+                            throw new ReferenceError('Cannot be used more than once in iteration');
+                        }
+                        var _a = __read(_nextValue(value), 2), item = _a[0], allIsOver = _a[1];
+                        if (allIsOver) {
+                            throw new ReferenceError('All ranges are over');
+                        }
+                        nextUseCached = true;
+                        nextValueCached = item;
+                        return nextValueCached;
+                    }; };
+                    switchTo = function (value) {
+                        if (value < 0 || value >= _this._its.length) {
+                            throw new TypeError('You cannot set the range number, more than the number of ranges, or less than zero');
+                        }
+                        index = value;
+                    };
+                    stop = function () { return (stopUsed = true); };
+                    itValue = this._its[index].next();
+                    _a = __read(_nextValue(itValue), 2), item = _a[0], allFinished = _a[1];
                     _c.label = 1;
                 case 1:
-                    if (!(index < count)) return [3 /*break*/, 6];
-                    rand = getRandomNumber(start.getTime(), end.getTime(), false);
-                    if (filter && !filter(new Date(rand), extIndex)) {
-                        extIndex++;
-                        return [3 /*break*/, 1];
-                    }
-                    if (weekdays && weekdays.indexOf(new Date(rand).getDay()) === -1)
-                        return [3 /*break*/, 1];
-                    if (leapYear && !isLeepYear(new Date(rand).getFullYear()))
-                        return [3 /*break*/, 1];
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(new Date(rand), index)];
+                    if (!!(allFinished || stopUsed)) return [3 /*break*/, 6];
+                    this._rule(item, valueIndex, {
+                        rangeNumber: rangeNumber,
+                        nextValue: nextValue(itValue),
+                        switchTo: switchTo,
+                        stop: stop,
+                    });
+                    if (!nextUseCached) return [3 /*break*/, 3];
+                    nextUseCached = false;
+                    return [4 /*yield*/, nextValueCached];
                 case 2:
                     _c.sent();
                     return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, new Date(rand)];
+                case 3: return [4 /*yield*/, item];
                 case 4:
                     _c.sent();
                     _c.label = 5;
                 case 5:
-                    extIndex++;
-                    index++;
+                    itValue = this._its[index].next();
+                    _b = __read(_nextValue(itValue), 2), item = _b[0], allFinished = _b[1];
+                    valueIndex++;
                     return [3 /*break*/, 1];
                 case 6: return [2 /*return*/];
             }
         });
     };
-    return RandomNumberRange;
-}(AbstractRange));
+    return MergeRange;
+}(Range));
 
-var RandomColorRange = /** @class */ (function (_super) {
-    __extends(RandomColorRange, _super);
-    function RandomColorRange(options) {
-        return _super.call(this, options) || this;
+var isLeapYear = function (val) {
+    var year = val.getFullYear();
+    return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
+};
+var hasWeekday = function () {
+    var weekdays = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        weekdays[_i] = arguments[_i];
     }
-    RandomColorRange.prototype[Symbol.iterator] = function () {
-        var _a, start, end, _b, count, map, filter, extIndex, toInt, toHEX, index, rand;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _a = this.options, start = _a.start, end = _a.end, _b = _a.count, count = _b === void 0 ? Infinity : _b, map = _a.map, filter = _a.filter;
-                    extIndex = 0;
-                    toInt = function (s) { return parseInt(s.slice(1), 16); };
-                    toHEX = function (n) {
-                        var result = n.toString(16);
-                        var zerosBefore = '';
-                        if (result.length !== 6) {
-                            zerosBefore = Array.from({ length: 6 - result.length }, function () { return '0'; }).join('');
-                        }
-                        return '#' + zerosBefore + result;
-                    };
-                    index = 0;
-                    _c.label = 1;
-                case 1:
-                    if (!(index < count)) return [3 /*break*/, 7];
-                    rand = toHEX(getRandomNumber(toInt(start), toInt(end), false));
-                    if (filter) {
-                        while (!filter(rand, extIndex)) {
-                            rand = toHEX(getRandomNumber(toInt(start), toInt(end), false));
-                            extIndex++;
-                        }
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(rand, index)];
-                case 2:
-                    _c.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, rand];
-                case 4:
-                    _c.sent();
-                    _c.label = 5;
-                case 5:
-                    extIndex++;
-                    _c.label = 6;
-                case 6:
-                    index++;
-                    return [3 /*break*/, 1];
-                case 7: return [2 /*return*/];
-            }
-        });
-    };
-    return RandomColorRange;
-}(AbstractRange));
+    return function (val) { return weekdays.includes(val.getDay()); };
+};
+var keepUnique = function () {
+    var _store = [];
+    return function (value) { return !_store.includes(value) && (_store.push(value), true); };
+};
 
-var ShuffleRange = /** @class */ (function (_super) {
-    __extends(ShuffleRange, _super);
-    function ShuffleRange(options) {
-        return _super.call(this, options) || this;
-    }
-    ShuffleRange.prototype[Symbol.iterator] = function () {
-        var _a, range, _b, count, filter, map, _c, picking, rangeIter, shuffleArray, curr, extIndex, index, i, arrSplice, randIndex;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
-                case 0:
-                    _a = this.options, range = _a.range, _b = _a.count, count = _b === void 0 ? Infinity : _b, filter = _a.filter, map = _a.map, _c = _a.picking, picking = _c === void 0 ? 5 : _c;
-                    rangeIter = range.iterator;
-                    shuffleArray = [];
-                    curr = rangeIter.next();
-                    extIndex = 0;
-                    index = 0;
-                    for (i = 0; i < picking; i++) {
-                        if (curr.done)
-                            break;
-                        shuffleArray.push(curr.value);
-                        curr = rangeIter.next();
-                    }
-                    arrSplice = function (shuffleArray, randIndex) {
-                        if (curr.done)
-                            shuffleArray.splice(randIndex, 1);
-                        else {
-                            curr = rangeIter.next();
-                            if (!curr.done)
-                                shuffleArray[randIndex] = curr.value;
-                            else
-                                shuffleArray.splice(randIndex, 1);
-                        }
-                    };
-                    _d.label = 1;
-                case 1:
-                    if (!(shuffleArray.length !== 0 && count > index)) return [3 /*break*/, 6];
-                    randIndex = getRandomNumber(0, shuffleArray.length - 1, false);
-                    if (filter && !filter(shuffleArray[randIndex], extIndex)) {
-                        arrSplice(shuffleArray, randIndex);
-                        extIndex++;
-                        return [3 /*break*/, 1];
-                    }
-                    if (!map) return [3 /*break*/, 3];
-                    return [4 /*yield*/, map(shuffleArray[randIndex], index)];
-                case 2:
-                    _d.sent();
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, shuffleArray[randIndex]];
-                case 4:
-                    _d.sent();
-                    _d.label = 5;
-                case 5:
-                    arrSplice(shuffleArray, randIndex);
-                    extIndex++;
-                    index++;
-                    return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
-            }
-        });
-    };
-    return ShuffleRange;
-}(AbstractRange));
+var sum = function (acc, value) { return add(acc, value); };
 
-export { AbstractDateRange, AbstractRandomRange, AbstractRange, AbstractRangeGenerator, CharRange, ColorRange, HourRange as DayRange, HourRange$1 as HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, RandomCharRange, RandomColorRange, RandomNumberRange as RandomDateRange, RandomNumberRange$1 as RandomNumberRange, RandomStringRange, SecondRange, ShuffleRange, StringRange, YearRange, ZipRange };
+export { DayRange, HourRange, MergeRange, MillisecondRange, MinuteRange, MonthRange, NumberRange, RandomDateRange, RandomNumberRange, Range, RangeGenerator, SecondRange, WalkerRange, YearRange, ZipRange, hasWeekday, isLeapYear, keepUnique, sum };

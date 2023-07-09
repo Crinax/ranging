@@ -1,6 +1,7 @@
-import { AbstractRange } from '../abstract';
-import { DateRangeGeneratorT, RandomDateRangeOptionsT } from '../types';
-export default class RandomNumberRange extends AbstractRange<RandomDateRangeOptionsT, DateRangeGeneratorT> {
-    constructor(options: RandomDateRangeOptionsT);
-    [Symbol.iterator](): Generator<any, void, unknown>;
+import { Range, RangeGeneratorType } from "../abstract";
+export declare class RandomDateRange extends Range<Date> {
+    private _start;
+    private _end;
+    constructor(_start: Date, _end: Date);
+    [Symbol.iterator](): RangeGeneratorType<Date>;
 }

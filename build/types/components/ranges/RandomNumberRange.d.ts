@@ -1,8 +1,8 @@
-import { AbstractRange } from '../abstract';
-import { NumberRangeGeneratorT, RandomNumberRangeOptionsT } from '../types';
-export default class RandomNumberRange extends AbstractRange<RandomNumberRangeOptionsT, NumberRangeGeneratorT> {
-    constructor(options: RandomNumberRangeOptionsT);
-    get sum(): number;
-    get product(): number;
-    [Symbol.iterator](): Generator<any, void, unknown>;
+import { Range, RangeGeneratorType } from "../abstract";
+export declare class RandomNumberRange extends Range<number> {
+    private _start;
+    private _end;
+    private _isFloat;
+    constructor(_start: number, _end: number, _isFloat?: boolean);
+    [Symbol.iterator](): RangeGeneratorType<number>;
 }
