@@ -34,6 +34,14 @@ const { NumberRange, WalkerRange } = require('ranging');
 import { NumberRange, WalkerRange } from 'ranging';
 ```
 
+For NodeJS module you should use:
+
+```javascript
+// I tried to realize it, but previous import does not work :(
+// Use this please
+import { NumberRange, WalkerRange } from 'ranging/index.mjs';
+```
+
 ---
 
 ## Number ranges

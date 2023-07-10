@@ -2,16 +2,17 @@
   "name": "ranging",
   "version": "4.0.0",
   "description": "Ranging helper classes based on iterators",
-  "main": "range.js",
-  "module": "range.mjs",
-  "typings": "range.d.ts",
+  "main": "index.js",
+  "module": "index.mjs",
+  "typings": "index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./range.mjs",
-      "require": "./range.js"
-    }
+      "import": "./index.mjs",
+      "require": "./index.js"
+    },
+    "default": "./index.mjs"
   },
-  "default": "./range.mjs",
   "scripts": {
     "test": "mocha tests/*.test.js",
     "build": "npx rollup -c",
