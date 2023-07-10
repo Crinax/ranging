@@ -1,3 +1,7 @@
+# v4.0.2
+
+- fix readme
+
 # v4.0.1
 
 - fix exports

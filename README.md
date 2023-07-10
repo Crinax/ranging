@@ -20,7 +20,7 @@ yarn add ranging
 
 ## Important!
 
-- **JavaScript** supports only **ES5 and older**
+- **JavaScript** supports only **ES5 and newer**
 - **Typescript** supports only for **v1.1.0+**
 - **New Syntax** supports only for **v4.0.0+ (and chain mode also)**
 
