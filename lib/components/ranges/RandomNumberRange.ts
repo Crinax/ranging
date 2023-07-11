@@ -16,3 +16,9 @@ export class RandomNumberRange extends Range<number> {
     }
   }
 }
+
+export const randomNumberRange = (
+  start: number,
+  end: number,
+  isFloat: boolean = false,
+) => new RandomNumberRange(start, end, isFloat);

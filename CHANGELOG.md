@@ -1,3 +1,8 @@
+# v4.1.0
+
+- add function analogs for classes
+- fix typings for ZipRange
+
 # v4.0.2
 
 - fix readme

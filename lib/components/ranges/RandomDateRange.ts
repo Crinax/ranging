@@ -17,3 +17,8 @@ export class RandomDateRange extends Range<Date> {
     }
   }
 }
+
+export const randomDateRange = (
+  start: Date,
+  end: Date,
+) => new RandomDateRange(start, end);

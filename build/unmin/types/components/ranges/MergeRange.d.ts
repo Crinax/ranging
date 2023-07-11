@@ -7,6 +7,7 @@ export interface AccessFunction<T> {
     switchTo: (value: number) => void;
     stop: () => boolean;
 }
+export declare const mergeRange: <T extends IRange<_F>, A extends ExtractRange<T>, _F = A>(rule: RuleFunction<_F>, ranges: Iterable<T>) => MergeRange<T, ExtractRange<T>, _F>;
 export declare class MergeRange<T extends IRange<_F>, A extends ExtractRange<T>, _F = A> extends Range<_F> {
     private _rule;
     constructor(_rule: RuleFunction<_F>, ranges: Iterable<T>);

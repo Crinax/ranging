@@ -6,3 +6,4 @@ export declare class RandomNumberRange extends Range<number> {
     constructor(_start: number, _end: number, _isFloat?: boolean);
     [Symbol.iterator](): RangeGeneratorType<number>;
 }
+export declare const randomNumberRange: (start: number, end: number, isFloat?: boolean) => RandomNumberRange;

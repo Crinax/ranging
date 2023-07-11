@@ -7,3 +7,4 @@ export declare class NumberRange extends Range<number> {
     constructor(_start?: number, _end?: number, _step?: number, _isFloat?: boolean);
     [Symbol.iterator](): RangeGeneratorType<number>;
 }
+export declare const numberRange: (start?: number, end?: number, step?: number, isFloat?: boolean) => NumberRange;

@@ -17,3 +17,9 @@ export class HourRange extends Range<Date> {
     }
   }
 }
+
+export const hourRange = (
+  start = new Date(),
+  end: Date | number = Infinity,
+  step = 1,
+) => new HourRange(start, end, step);

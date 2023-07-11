@@ -3,7 +3,7 @@ import { Range, RangeGeneratorType } from "../abstract";
 export type ZipKey = number | string | symbol;
 
 export class ZipRange<K extends ZipKey, T> extends Range<Record<K, T>> {
-  constructor(keyRange: Range<ZipKey>, valueRange: Range<T>) {
+  constructor(keyRange: Range<K>, valueRange: Range<T>) {
     super();
 
     this._itKey = keyRange[Symbol.iterator]();
@@ -25,3 +25,8 @@ export class ZipRange<K extends ZipKey, T> extends Range<Record<K, T>> {
     }
   }
 }
+
+export const zipRange = <K extends ZipKey, T>(
+  keyRange: Range<K>,
+  valueRange: Range<T>
+) => new ZipRange(keyRange, valueRange);

@@ -17,3 +17,9 @@ export class YearRange extends Range<Date> {
     }
   }
 }
+
+export const yearRange = (
+  start = new Date(),
+  end: Date | number = Infinity,
+  step = 1,
+) => new YearRange(start, end, step);

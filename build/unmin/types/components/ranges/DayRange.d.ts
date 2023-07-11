@@ -6,3 +6,4 @@ export declare class DayRange extends Range<Date> {
     constructor(_start?: Date, _end?: Date | number, _step?: number);
     [Symbol.iterator](): RangeGeneratorType<Date>;
 }
+export declare const dayRange: (start?: Date, end?: Date | number, step?: number) => DayRange;

@@ -17,3 +17,9 @@ export class DayRange extends Range<Date> {
     }
   }
 }
+
+export const dayRange = (
+  start = new Date(),
+  end: Date | number = Infinity,
+  step = 1,
+) => new DayRange(start, end, step);

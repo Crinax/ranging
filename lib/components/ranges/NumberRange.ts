@@ -25,3 +25,10 @@ export class NumberRange extends Range<number> {
     }
   }
 }
+
+export const numberRange = (
+  start = 0,
+  end = Infinity,
+  step = 1,
+  isFloat = false,
+) => new NumberRange(start, end, step, isFloat);

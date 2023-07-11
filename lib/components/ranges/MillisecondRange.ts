@@ -17,3 +17,9 @@ export class MillisecondRange extends Range<Date> {
     }
   }
 }
+
+export const millisecondRange = (
+  start = new Date(),
+  end: Date | number = Infinity,
+  step = 1,
+) => new MillisecondRange(start, end, step);

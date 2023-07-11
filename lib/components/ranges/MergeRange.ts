@@ -10,6 +10,11 @@ export interface AccessFunction<T> {
   stop: () => boolean,
 }
 
+export const mergeRange = <T extends IRange<_F>, A extends ExtractRange<T>, _F = A>(
+  rule: RuleFunction<_F>,
+  ranges: Iterable<T>,
+) => new MergeRange(rule, ranges);
+
 export class MergeRange<T extends IRange<_F>, A extends ExtractRange<T>, _F = A> extends Range<_F> {
   constructor(private _rule: RuleFunction<_F>, ranges: Iterable<T>) {
     super();

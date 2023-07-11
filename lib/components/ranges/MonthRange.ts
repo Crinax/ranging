@@ -17,3 +17,9 @@ export class MonthRange extends Range<Date> {
     }
   }
 }
+
+export const monthRange = (
+  start = new Date(),
+  end: Date | number = Infinity,
+  step = 1,
+) => new MonthRange(start, end, step);

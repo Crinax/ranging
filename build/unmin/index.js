@@ -549,6 +549,7 @@
         };
         return WalkerRange;
     }(Range));
+    var walkerRange = function (iterable) { return new WalkerRange(iterable); };
 
     /**
      * Reworked floating point numbers addition operator.
@@ -648,6 +649,13 @@
         };
         return NumberRange;
     }(Range));
+    var numberRange = function (start, end, step, isFloat) {
+        if (start === void 0) { start = 0; }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        if (isFloat === void 0) { isFloat = false; }
+        return new NumberRange(start, end, step, isFloat);
+    };
 
     var MillisecondRange = /** @class */ (function (_super) {
         __extends(MillisecondRange, _super);
@@ -677,6 +685,12 @@
         };
         return MillisecondRange;
     }(Range));
+    var millisecondRange = function (start, end, step) {
+        if (start === void 0) { start = new Date(); }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        return new MillisecondRange(start, end, step);
+    };
 
     var SecondRange = /** @class */ (function (_super) {
         __extends(SecondRange, _super);
@@ -706,6 +720,12 @@
         };
         return SecondRange;
     }(Range));
+    var secondRange = function (start, end, step) {
+        if (start === void 0) { start = new Date(); }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        return new SecondRange(start, end, step);
+    };
 
     var MinuteRange = /** @class */ (function (_super) {
         __extends(MinuteRange, _super);
@@ -735,6 +755,12 @@
         };
         return MinuteRange;
     }(Range));
+    var minuteRange = function (start, end, step) {
+        if (start === void 0) { start = new Date(); }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        return new MinuteRange(start, end, step);
+    };
 
     var HourRange = /** @class */ (function (_super) {
         __extends(HourRange, _super);
@@ -764,6 +790,12 @@
         };
         return HourRange;
     }(Range));
+    var hourRange = function (start, end, step) {
+        if (start === void 0) { start = new Date(); }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        return new HourRange(start, end, step);
+    };
 
     var DayRange = /** @class */ (function (_super) {
         __extends(DayRange, _super);
@@ -793,6 +825,12 @@
         };
         return DayRange;
     }(Range));
+    var dayRange = function (start, end, step) {
+        if (start === void 0) { start = new Date(); }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        return new DayRange(start, end, step);
+    };
 
     var MonthRange = /** @class */ (function (_super) {
         __extends(MonthRange, _super);
@@ -822,6 +860,12 @@
         };
         return MonthRange;
     }(Range));
+    var monthRange = function (start, end, step) {
+        if (start === void 0) { start = new Date(); }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        return new MonthRange(start, end, step);
+    };
 
     var YearRange = /** @class */ (function (_super) {
         __extends(YearRange, _super);
@@ -851,6 +895,12 @@
         };
         return YearRange;
     }(Range));
+    var yearRange = function (start, end, step) {
+        if (start === void 0) { start = new Date(); }
+        if (end === void 0) { end = Infinity; }
+        if (step === void 0) { step = 1; }
+        return new YearRange(start, end, step);
+    };
 
     var RandomNumberRange = /** @class */ (function (_super) {
         __extends(RandomNumberRange, _super);
@@ -876,6 +926,10 @@
         };
         return RandomNumberRange;
     }(Range));
+    var randomNumberRange = function (start, end, isFloat) {
+        if (isFloat === void 0) { isFloat = false; }
+        return new RandomNumberRange(start, end, isFloat);
+    };
 
     var RandomDateRange = /** @class */ (function (_super) {
         __extends(RandomDateRange, _super);
@@ -899,6 +953,7 @@
         };
         return RandomDateRange;
     }(Range));
+    var randomDateRange = function (start, end) { return new RandomDateRange(start, end); };
 
     var ZipRange = /** @class */ (function (_super) {
         __extends(ZipRange, _super);
@@ -931,7 +986,9 @@
         };
         return ZipRange;
     }(Range));
+    var zipRange = function (keyRange, valueRange) { return new ZipRange(keyRange, valueRange); };
 
+    var mergeRange = function (rule, ranges) { return new MergeRange(rule, ranges); };
     var MergeRange = /** @class */ (function (_super) {
         __extends(MergeRange, _super);
         function MergeRange(_rule, ranges) {
@@ -1070,10 +1127,23 @@
     exports.WalkerRange = WalkerRange;
     exports.YearRange = YearRange;
     exports.ZipRange = ZipRange;
+    exports.dayRange = dayRange;
     exports.hasWeekday = hasWeekday;
+    exports.hourRange = hourRange;
     exports.isLeapYear = isLeapYear;
     exports.keepUnique = keepUnique;
+    exports.mergeRange = mergeRange;
+    exports.millisecondRange = millisecondRange;
+    exports.minuteRange = minuteRange;
+    exports.monthRange = monthRange;
+    exports.numberRange = numberRange;
+    exports.randomDateRange = randomDateRange;
+    exports.randomNumberRange = randomNumberRange;
+    exports.secondRange = secondRange;
     exports.sum = sum;
+    exports.walkerRange = walkerRange;
+    exports.yearRange = yearRange;
+    exports.zipRange = zipRange;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

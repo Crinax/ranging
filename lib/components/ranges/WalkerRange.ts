@@ -19,3 +19,5 @@ export class WalkerRange<T> extends Range<T> {
     }
   }
 }
+
+export const walkerRange = <T>(iterable: Iterable<T>) => new WalkerRange(iterable);

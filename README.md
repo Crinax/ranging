@@ -42,6 +42,12 @@ For NodeJS module you should use:
 import { NumberRange, WalkerRange } from 'ranging/index.mjs';
 ```
 
+And you can use function analogs of classes:
+
+```javascript
+import { zipRange, walkerRange, mergeRange } from 'ranging';
+```
+
 ---
 
 ## Number ranges

@@ -17,3 +17,9 @@ export class MinuteRange extends Range<Date> {
     }
   }
 }
+
+export const minuteRange = (
+  start = new Date(),
+  end: Date | number = Infinity,
+  step = 1,
+) => new MinuteRange(start, end, step);

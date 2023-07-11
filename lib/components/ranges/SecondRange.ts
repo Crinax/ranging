@@ -17,3 +17,9 @@ export class SecondRange extends Range<Date> {
     }
   }
 }
+
+export const secondRange = (
+  start = new Date(),
+  end: Date | number = Infinity,
+  step = 1,
+) => new SecondRange(start, end, step);

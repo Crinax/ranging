@@ -5,3 +5,4 @@ export declare class RandomDateRange extends Range<Date> {
     constructor(_start: Date, _end: Date);
     [Symbol.iterator](): RangeGeneratorType<Date>;
 }
+export declare const randomDateRange: (start: Date, end: Date) => RandomDateRange;
